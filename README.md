@@ -1,75 +1,66 @@
 # Flockinator
 
-A visually compelling experimental platform for intelligent agents and
-distributed inference - built with Meta Muse models for the Meta hackathon.
+An experimental platform for intelligent agents and distributed
+inference, built and directed with Meta Muse models.
 
-Sixteen independent ESP32-S3 nodes each drive a 64x64 pixel, 160x160 mm RGB
-panel. They sense, retain local state, communicate, and act as members of a
-swarm. They do not form one logical or visual screen. Each node is a physical
-body; its brain can run locally, on an external CPU/GPU system, or across
-both. An ESP32-S31 Korvo controller hosts the web controls, tabletop planner,
-communication/learning lab, and experiment archives; a LilyGo handheld
-provides portable management.
+Sixteen independent ESP32-S3 nodes each drive a 64x64, 160x160 mm RGB
+panel. Each node is a physical body - sensing, local state, display,
+audio, SD storage - whose brain can run locally, on an external host,
+or across both. A Korvo (ESP32-S31) controller hosts the fleet controls,
+planner, and learning lab; a LilyGo handheld provides portable
+management. The fleet is visualised as a fictional drone-survey swarm
+so humans can watch agents learn.
 
-## Explore the visual guide
+## Why
 
-[**Reading the swarm — illustrated field guide**](https://guruswami-ai.github.io/flockinator-public/)
+Small models are trained in isolation, then judged by a hostile world.
+Kulira, the adversarial host, injects graded friction - interference,
+impersonation, and false reports on the experimental channel - so the
+swarm must earn trust: validate identity, corroborate independently,
+degrade gracefully, recover. It is nature's optimisation story
+(hardship and selection) compressed into seeded, reproducible runs,
+studying intelligence in the node, external to the node, and between
+nodes. Full method: [docs/experiments.md](docs/experiments.md).
 
-Follow a quadcopter survey rehearsal through 25 panel states, an illustrated
-mission timeline, a conceptual decision tree, and paired communication flashes.
-The guide explains each display and distinguishes scripted presentation from
-measured communication and learning. Read the
-[full scenario documentation](docs/scenarios/quadcopter-survey/README.md)
-or [watch the project video](https://youtu.be/C9KMvd3-J5c).
+## Meta Muse models
 
-## Meta Muse models at the centre
+A sixteen-lane Muse swarm (Wonder and Spark tiers, coordinated by
+Muse Wonder Full) mirrors the physical swarm: one assessor per node,
+sealed evidence, cited claims, canary deployments. Muse models helped
+build the firmware, model the 3D hardware, troubleshoot nodes, and
+direct the experiments. Evidence and reproduction:
+[docs/meta-muse/](docs/meta-muse/README.md).
 
-Flockinator is directed by a swarm of Meta Muse models mirroring the
-physical swarm: sixteen Muse assessor lanes (Wonder and Spark tiers), one
-per node, coordinated by Muse Wonder Full. Muse models helped build the
-firmware, model the 3D hardware, troubleshoot per-node evidence, and direct
-the agentic swarm's experiments. See
-[docs/meta-muse/](docs/meta-muse/README.md) for the model matrix, inference
-pipeline, role prompts, and how to reproduce it.
+## Explore
 
-Highlights:
-- **Learning under adversity:** small models train in isolation and improve
-  under graded friction - disruption, impersonation, and false reports -
-  injected by a bounded adversary (`kulira-core`, `SPEC-kulira-core.md`).
-  Intelligence is studied in the node, external to the node, and between nodes.
-- **Controlled experiments:** seeded, replayable runs; director truth kept
-  separate from agent inputs; communication-lab evidence that message
-  *meaning* - not packet volume - drives learning.
-- **Real hardware:** firmware in `firmware/`, 3D-printable models in `cad/`,
-  browser previews in `previews/`, host tools in `tools/`.
+| Area | Entry point |
+|---|---|
+| Architecture and traffic classes | [docs/architecture.md](docs/architecture.md) |
+| Experimental methodology | [docs/experiments.md](docs/experiments.md) |
+| Illustrated survey scenario | [docs/scenarios/quadcopter-survey/](docs/scenarios/quadcopter-survey/README.md) |
+| Hardware, components, finished CAD | [docs/hardware.md](docs/hardware.md), [cad/](cad/README.md) |
+| Build and host tools | [docs/build.md](docs/build.md) |
+| Firmware | [firmware/node-platform](firmware/node-platform/README.md), [firmware/korvo-monitor](firmware/korvo-monitor/README.md), [firmware/management-console](firmware/management-console/README.md) |
+| Browser preview | [previews/recon-hud](previews/recon-hud/README.md) |
+| Adversary tooling | [tools/kulira-core](tools/kulira-core/README.md) |
 
-## Reproduce
+## Quick start
 
 ```sh
-# browser preview
 uv run --project tools/node-commissioner python previews/recon-hud/serve.py
 # open http://127.0.0.1:8766/
-
-# tests
-node --test validation/recon-hud/*.test.mjs 2>/dev/null || true
-uv run --project tools/kulira-core python -m pytest tools/kulira-core -q
 ```
 
-Firmware build/flash commands, board details, and acceptance checks are in
-each `firmware/*/README.md`. CAD sources and print validation are in `cad/`.
+## Scope of this repository
 
-## What is not here
-
-This public repository is a sanitized subset of a private working repository.
-Private per-node data - device identities and keys, MAC/IP inventory, raw
-flash/SD backups, and journals derived from real nodes - is never published.
-People can reproduce the experiments and build the hardware from what is
-here; the private operational data stays private. Purchased/licensed
-reference models and third-party assets are likewise excluded and must be
-obtained from their original sources.
+A public subset of a private working project: firmware, host tools,
+finished 3D models, and experiment design - everything needed to
+reproduce the experiments and build the hardware. Private per-node
+data (identities, keys, network inventory, raw backups, real-node
+journals) and licensed third-party assets are never published here.
 
 ## Licence
 
-Apache-2.0 - see [LICENSE](LICENSE). Documentation and design material are
-provided for reproduction of the experiments; third-party dependencies
-retain their own licences (recreate them from the pinned manifests).
+Apache-2.0 (see [LICENSE](LICENSE)); third-party components retain
+their own licences. Contributions: [CONTRIBUTING.md](CONTRIBUTING.md).
+Security: [SECURITY.md](SECURITY.md).

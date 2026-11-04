@@ -523,7 +523,7 @@ pixels sharp when resizing; do not redraw them with an image-generation model.
   12-second coordination illustration.
 - [Communication-learning exercise](../../../tools/mission-host/coordination_lab.py):
   the separate symbolic receiver-learning experiment.
-- [Existing experiment explanation](../../design/communication-learning-demo.md):
+- Existing experiment explanation:
   controls, limitations and reported simulation comparisons.
 - [Source hashes and rendering inputs](source-manifest.json): the exact source
   content used for these thumbnails, including uncommitted source changes.

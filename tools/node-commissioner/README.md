@@ -1,8 +1,8 @@
 # Node commissioner
 
-Controller bring-up client for the approved [node specification](../../SPEC-node-platform.md). The current release supports USB identity assignment, private Wi-Fi/key provisioning, authenticated Wi-Fi status, display paging, a short tone, evidence capture and application OTA. The `provision` command provides a resumable backup/flash/configuration/inventory transaction. Explicit SD inspection/reset/testing is available via authenticated Wi-Fi or the LilyGo ESP-NOW relay; see below.
+Controller bring-up client for the approved node specification. The current release supports USB identity assignment, private Wi-Fi/key provisioning, authenticated Wi-Fi status, display paging, a short tone, evidence capture and application OTA. The `provision` command provides a resumable backup/flash/configuration/inventory transaction. Explicit SD inspection/reset/testing is available via authenticated Wi-Fi or the LilyGo ESP-NOW relay; see below.
 
-Run from the project root; see [Linux setup](../../docs/development.md).
+Run from the project root; see Linux setup.
 
 ```sh
 uv run --project tools/node-commissioner python -m node_commissioner list
@@ -30,7 +30,7 @@ Unless `--skip-backup` is supplied or already recorded in that transaction, the 
 
 If interrupted, leave the same controller connected and rerun the **same command with the same manifest**. The default journal is `~/.local/share/flockinator/commissioning/<MAC>/<label>-initial/`; its path is printed before work starts. Resume checks the device again and refuses changed package bytes, identity or management key. Backups and completed stage records are never overwritten. Use `--transaction <private-directory>` only for a deliberately separate commissioning run, then retain that same path for retries. For later application changes use `update`, rather than repeating initial installation.
 
-First fresh-device station validation completed on A2; see [A2 evidence](../../docs/validation/nodes/A2/A2-initial/README.md). Flash writes remain in the bootloader until every artifact is verified. Startup response timeouts retain the USB connection to avoid repeated resets. Authoritative reports are atomically saved under the private transaction's `evidence/` directory, then exported without overwriting and digest-checked on the project volume before inventory commit. An interrupted export is not a completed report; resume creates a fresh sequence. At A2's measured speed, the initial full 32 MiB backup took about 14 minutes.
+First fresh-device station validation completed on A2; see A2 evidence. Flash writes remain in the bootloader until every artifact is verified. Startup response timeouts retain the USB connection to avoid repeated resets. Authoritative reports are atomically saved under the private transaction's `evidence/` directory, then exported without overwriting and digest-checked on the project volume before inventory commit. An interrupted export is not a completed report; resume creates a fresh sequence. At A2's measured speed, the initial full 32 MiB backup took about 14 minutes.
 
 The lower-level USB commands `assign`, `wifi`, `pair-key` and `reboot` remain available. `assign` changes only the firmware label; it does not execute the full commissioning transaction.
 

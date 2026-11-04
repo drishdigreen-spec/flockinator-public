@@ -9,7 +9,7 @@ class Device:
     def write(self,raw):
         if self.fail: raise OSError("unplugged")
         request=json.loads(raw)
-        response={"v":1,"type":"status","request_id":request["id"],"ok":True,"base_mac":MAC if not self.wrong else "00:11:22:33:44:55","label":"A1"}
+        response={"v":1,"type":"status","request_id":request["id"],"ok":True,"base_mac":MAC if not self.wrong else "02:00:00:00:00:02","label":"A1"}
         self.lines=[b"boot log\n",json.dumps(response).encode()+b"\n"]
     def read_until(self,*args): return self.lines.pop(0) if self.lines else b""
 @pytest.fixture

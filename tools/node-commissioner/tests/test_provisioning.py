@@ -184,7 +184,7 @@ def test_disconnect_does_not_commit_then_resumes_without_overwriting_backups(set
 
 def test_duplicate_label_blocks_before_device_calls(setup):
     run, device = setup
-    run.inventory.write_text("label,factory_base_mac,status\nA1,00:11:22:33:44:55,done\n")
+    run.inventory.write_text("label,factory_base_mac,status\nA1,02:00:00:00:00:02,done\n")
     with pytest.raises(ValueError, match="conflict"):
         run.run()
     assert device.calls == []
@@ -196,7 +196,7 @@ def test_resume_rechecks_selected_physical_board_before_any_write(setup):
     with pytest.raises(OSError): run.run()
     previous = list(device.calls)
     device.fail = None
-    device.mac = "00:11:22:33:44:55"
+    device.mac = "02:00:00:00:00:02"
     with pytest.raises(ValueError, match="mismatch"): run.run()
     assert device.calls[len(previous):] == ["probe"]
 

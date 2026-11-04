@@ -14,7 +14,7 @@ def test_signature_binds_target_method_path_counter_and_body():
     assert auth_headers(key,CHALLENGE,MAC,"GET","/v1/status",b"")!=headers
 
 def test_wrong_target_unconfigured_or_malformed_challenge_rejected():
-    for change in ({"base_mac":"00:11:22:33:44:55"},{"configured":False},{"nonce":"x"},{"next_counter":0}):
+    for change in ({"base_mac":"02:00:00:00:00:02"},{"configured":False},{"nonce":"x"},{"next_counter":0}):
         with pytest.raises(ValueError): auth_headers(b"x"*32,CHALLENGE|change,MAC,"GET","/v1/status",b"")
 
 def test_key_never_appears_in_headers():

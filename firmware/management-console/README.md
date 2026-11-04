@@ -3,12 +3,12 @@
 Current deployed release: **0.3.3-missions**. Open **Missions** for scenario,
 goal, survey duration, repeat, Launch and Stop all. Touch alignment is now under
 Diagnostics. Overview displays READY / OM / KIA / MIA / CHARGING with separate
-link warnings, in the physical panel arrangement. See the [remote guide](../../docs/design/hud-remote-usage.md)
-and [verification](../../docs/validation/overview-status/README.md).
+link warnings, in the physical panel arrangement. See the remote guide
+and verification.
 
 This PlatformIO project runs the live management remote on the owner's **LilyGo T5 4.7-inch S3, V2.4, with glass capacitive touchscreen**. The MCU is an ESP32-S3 with 16 MB flash and 8 MB PSRAM; the identified console factory/STA MAC is **00:11:22:33:44:55** (example value in this public tree — before building for real hardware, set your own console's factory MAC in `ExpectedMac` in `src/live_link.cpp` and in `firmware/korvo-monitor/main/main.c`'s operator check, or identity verification will refuse every device). This prototype checks that console identity explicitly. It is USB-powered, with no battery or optional expansion header fitted. Neither the expansion header nor the optional touch-wake solder link is required.
 
-The owner approved the live integration on 13 October 2026 in [SPEC-management-console.md](../../SPEC-management-console.md), [SPEC-flock-network.md](../../SPEC-flock-network.md) and [SPEC-cluster-deployment.md](../../SPEC-cluster-deployment.md). The current build version is defined in `include/console_model.h`; actual hardware observations and deployment results are recorded separately from these implemented capabilities.
+The owner approved the live integration on 13 October 2026 in SPEC-management-console.md, SPEC-flock-network.md and SPEC-cluster-deployment.md. The current build version is defined in `include/console_model.h`; actual hardware observations and deployment results are recorded separately from these implemented capabilities.
 
 ## Live node status
 
@@ -40,7 +40,7 @@ The existing card mounts at 4 MHz with automatic formatting disabled. Firmware i
 
 The host transfers images over identified USB JSON in chunks of at most 512 bytes. The console then reads the selected SD file and sends authenticated, acknowledged ESP-NOW chunks to the chosen node. The node writes its inactive **internal flash** OTA slot and validates the image before booting it. This path does not stage images on the node's SD card. On success, fresh post-boot health supplies the final verification; failures and missing verification remain visible.
 
-Node SD staging, central log collection, bulk media distribution, concurrent multi-node deployment and BLE/acoustic transports are future capabilities. The current SD integration stores deployment images; it does not claim to be a central logging service. Live ESP-NOW deployment acceptance is recorded in [deployment evidence](../../docs/validation/cluster-deployment/), not inferred from this README or from a successful build.
+Node SD staging, central log collection, bulk media distribution, concurrent multi-node deployment and BLE/acoustic transports are future capabilities. The current SD integration stores deployment images; it does not claim to be a central logging service. Live ESP-NOW deployment acceptance is recorded in deployment evidence, not inferred from this README or from a successful build.
 
 ## USB management
 
@@ -82,9 +82,9 @@ Identify the physical LilyGo and exact MAC before any upload. USB VID/PID `303A:
 
 ## Evidence and remaining acceptance
 
-[Live commissioning evidence](../../docs/validation/commissioning-link/) contains the current integration observations. [Cluster deployment evidence](../../docs/validation/cluster-deployment/) is the record for actual image transfers and post-boot results. Build/native/host tests alone do not establish live deployment, touch alignment, wake reliability or all-sixteen-node behaviour.
+Live commissioning evidence contains the current integration observations. Cluster deployment evidence is the record for actual image transfers and post-boot results. Build/native/host tests alone do not establish live deployment, touch alignment, wake reliability or all-sixteen-node behaviour.
 
-[Earlier management-console evidence](../../docs/validation/management-console/) belongs to the 0.1 demo milestone. Its fixture dashboard, preview renders and single-character serial soak must remain labelled historical; they are not evidence of live telemetry or radio deployment. Demo fixtures retained in host test code never populate the runtime table.
+Earlier management-console evidence belongs to the 0.1 demo milestone. Its fixture dashboard, preview renders and single-character serial soak must remain labelled historical; they are not evidence of live telemetry or radio deployment. Demo fixtures retained in host test code never populate the runtime table.
 
 Manual acceptance still covers all sixteen touch selections, alignment targets, responsive touch during radio work, retained sleep status, wake freshness and card-absent boot. Battery runtime is untested because no battery is fitted. Power down before changing cards. The vendor e-paper driver has no panel-presence result and contains allocation assertions; memory guards do not make every allocation failure recoverable.
 
