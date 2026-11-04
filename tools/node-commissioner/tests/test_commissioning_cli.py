@@ -117,7 +117,7 @@ def test_provision_command_wires_private_credentials_and_closes_on_failure(tmp_p
     assert calls["transaction"]["skip_backup"] is skip_backup
     assert calls["transaction"]["wifi"]["password"] == "secret"
     assert calls["transaction"]["key"] == b"k" * 32
-    assert calls["transaction"]["transaction"] == tmp_path / ".local/share/flockinator/commissioning/38-44-BE-CC-6E-4C/A1-initial"
+    assert calls["transaction"]["transaction"] == tmp_path / ".local/share/flockinator/commissioning/00-11-22-33-44-55/A1-initial"
     assert calls["transaction"]["backup_root"].is_relative_to(tmp_path / ".local/share/flockinator")
 
 @pytest.mark.parametrize('invalid', ['same_boot', 'same_slot', 'pending_validation', 'wrong_digest', 'no_receiver'])

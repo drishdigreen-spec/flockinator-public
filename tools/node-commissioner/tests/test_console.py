@@ -25,7 +25,7 @@ def test_bound_request_skips_logs():
     assert p.sent[0]['target']==MAC
 
 def test_wrong_console_rejected():
-    c=ConsoleClient('unused',MAC,serial_port=Port(lambda r:r.update(base_mac='00:11:22:33:44:55')))
+    c=ConsoleClient('unused',MAC,serial_port=Port(lambda r:r.update(base_mac='02:00:00:00:00:02')))
     with pytest.raises(ValueError,match='identity'):c.request('status')
 
 def test_device_rejection_preserves_error():
@@ -128,7 +128,7 @@ def test_console_reset_invalidates_even_otherwise_verified_result(clock):
 
 def test_changed_target_identity_invalidates_result(clock):
     done = verified_snapshot()
-    done['nodes'][0]['mac'] = '00:11:22:33:44:55'
+    done['nodes'][0]['mac'] = '02:00:00:00:00:02'
     with pytest.raises(RuntimeError, match='identity changed'):
         DeploymentClient([done]).deploy('A1', 'node.bin', IMAGE)
 

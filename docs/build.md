@@ -1,0 +1,44 @@
+# Build and tools
+
+## Firmware
+
+| Target | Build | Notes |
+|---|---|---|
+| Node | `pio run --project-dir firmware/node-platform -e waveshare-s3` | ESP-IDF; run PlatformIO jobs sequentially |
+| Handheld | `pio run --project-dir firmware/management-console -e lilygo-s3` | LilyGo T5 S3 |
+| Korvo | ESP-IDF 6.1; see `firmware/korvo-monitor/README.md` | Needs pinned ESP-IDF + board SDK; build in a local copy on network-mounted workspaces |
+
+Native tests: `pio test --project-dir <target> -e native` for node and
+handheld; Korvo portable model checks are listed in its README.
+
+## Host tools (`tools/`)
+
+| Tool | Purpose |
+|---|---|
+| `node-commissioner` | USB provisioning, identity/inventory binding, OTA, SD maintenance |
+| `korvo-monitor` | Korvo provisioning and legacy USB bridge (recovery only) |
+| `mission-host` | Browser lab, planner, and exercise memory (host-side) |
+| `survey-simulator` | Host-owned fictional survey session (Node.js) |
+| `kulira-core` | Seeded chaos-campaign orchestrator (see `tools/kulira-core/README.md`) |
+
+Python is managed with uv, never system pip:
+
+```sh
+uv sync --project tools/node-commissioner --group dev
+uv run --project tools/node-commissioner python -m pytest tools/node-commissioner/tests -q
+```
+
+On SMB/network-mounted workspaces, keep virtualenvs off the mount, e.g.
+`UV_PROJECT_ENVIRONMENT="$HOME/.cache/<project>/venv"`.
+
+## Browser preview
+
+```sh
+uv run --project tools/node-commissioner python previews/recon-hud/serve.py
+# open http://127.0.0.1:8766/
+node --test validation/recon-hud/*.test.mjs
+```
+
+Credentials are loaded from a private local store or vault references at
+runtime. Nothing secret belongs in this repository; use synthetic
+fixtures in tests (see [../SECURITY.md](../SECURITY.md)).

@@ -13,7 +13,7 @@ def test_unique_binding_and_unrelated_rows_preserved(table):
 def test_conflicts_leave_original_unchanged(table):
     update_inventory(table,"A1",MAC,{"status":"usb_verified"});old=table.read_bytes()
     with pytest.raises(ValueError): update_inventory(table,"A2",MAC,{})
-    with pytest.raises(ValueError): update_inventory(table,"A1","00:11:22:33:44:55",{})
+    with pytest.raises(ValueError): update_inventory(table,"A1","02:00:00:00:00:02",{})
     assert old==table.read_bytes()
 def test_invalid_label_never_creates_row(table):
     with pytest.raises(ValueError): update_inventory(table,"Z1",MAC,{})
