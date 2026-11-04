@@ -58,3 +58,41 @@ The illustrated quadcopter survey
 orders, deployment, scanning, sightings, sharing, doubt, verification,
 return, and charging - including the false-report (deception) beat that
 Kulira-style experiments formalise.
+
+## Why this is worth doing
+
+**Security.** Agent swarms that trust peer messages inherit every
+failure of naive trust: impersonation, replay, false reports, and
+correlated errors that look like consensus. Flockinator makes those
+failures cheap, visible, and measurable *before* they are expensive:
+bounded adversarial friction (Kulira) against authenticated management
+planes, dangerous-direction metrics (Enemy->Friendly, not just raw
+accuracy), pre-registered promotion gates, and canary deployment.
+A swarm that has never been lied to in training has no earned reason
+to be trusted in deployment.
+
+**Extra-node intelligence.** The most interesting signal in these
+experiments is not inside any single node. A node's policy can be
+scored alone, but corroboration norms, trust weighting, abstention,
+and recovery are properties of the *interaction graph* - they exist
+between nodes, in the timing and provenance of messages, and in what
+the swarm collectively refuses to believe. Nature is full of this:
+no single ant, cell, or virion holds the colony-, immune-, or
+ecosystem-level strategy, yet those higher-level patterns are real,
+adaptive, and abundant. They are also hard to quantify, because our
+metrics are built per-agent. Flockinator is an instrument for that
+measurement problem: sixteen embodied agents with sealed ground truth,
+so extra-node intelligence can be defined operationally - the paired
+gain of the communicating swarm over the sum of its isolated agents,
+at matched observation and energy budgets - and watched as it emerges,
+fails, or is deceived.
+
+**Implication for agent design.** If intelligence can live between
+agents, then designing intelligent systems in the AI age is not only
+about bigger individual models. It is about the protocols, trust
+economics, and selective pressures *between* many small models -
+which is trainable, testable, and, as the rejected candidates here
+show, falsifiable. Small isolated models plus a well-measured
+interaction layer may be a more robust path to capable swarms than
+any single large one, because the interaction layer is where
+verification, diversity, and recovery naturally live.

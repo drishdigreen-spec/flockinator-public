@@ -20,7 +20,9 @@ swarm must earn trust: validate identity, corroborate independently,
 degrade gracefully, recover. It is nature's optimisation story
 (hardship and selection) compressed into seeded, reproducible runs,
 studying intelligence in the node, external to the node, and between
-nodes. Full method: [docs/experiments.md](docs/experiments.md).
+nodes. Full method and why this is worth doing (security, and the
+extra-node intelligence that lives between agents, not inside them):
+[docs/experiments.md](docs/experiments.md).
 
 ## Meta Muse models
 
