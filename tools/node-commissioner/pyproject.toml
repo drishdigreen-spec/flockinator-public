@@ -6,7 +6,7 @@ dependencies = ["pyserial==3.5"]
 [dependency-groups]
 dev = [
     "pillow>=13.0.0",
-    "pytest==8.4.2",
+    "pytest>=9.0.3",
 ]
 [build-system]
 requires = ["hatchling"]
