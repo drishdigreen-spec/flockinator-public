@@ -1,0 +1,11 @@
+{
+  "name": "flockinator-validation",
+  "private": true,
+  "scripts": {
+    "test": "node --test validation/recon-hud/*.test.mjs validation/survey-simulator/*.test.mjs",
+    "test:browser": "node validation/run-browsers.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}

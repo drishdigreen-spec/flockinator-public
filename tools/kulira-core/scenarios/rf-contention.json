@@ -1,0 +1,4 @@
+{"id": "rf-contention-001", "seed": 42, "plane": "rf", "targets": ["lab"],
+ "authorised": false, "gadget_ref": "docs/inventory/rf-gadgets.csv#unassigned",
+ "attacks": [{"module": "kulira-disrupt", "action": "cochannel-contention", "at_s": 10, "duration_s": 30, "intensity": 1}],
+ "limits": {"max_duration_s": 600, "intensity_cap": 3, "require_management_health": true}}

@@ -1,0 +1,17 @@
+side,clockwise_position,centre_from_clockwise_start_corner_mm,node_id,extension
+top,1,80,A1,measure stock 150 mm lead reach
+top,2,240,A2,measure stock 150 mm lead reach
+top,3,400,A3,measure stock 150 mm lead reach
+top,4,560,A4,measure stock 150 mm lead reach
+right,1,80,B3,required; measure route
+right,2,240,B4,measure stock 150 mm lead reach
+right,3,400,C4,measure stock 150 mm lead reach
+right,4,560,D4,measure stock 150 mm lead reach
+bottom,1,80,C3,required; measure route
+bottom,2,240,D3,measure stock 150 mm lead reach
+bottom,3,400,D2,measure stock 150 mm lead reach
+bottom,4,560,D1,measure stock 150 mm lead reach
+left,1,80,C2,required; measure route
+left,2,240,C1,measure stock 150 mm lead reach
+left,3,400,B1,measure stock 150 mm lead reach
+left,4,560,B2,required; measure route

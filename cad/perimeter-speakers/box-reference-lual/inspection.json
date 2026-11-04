@@ -1,0 +1,77 @@
+{
+  "source_url": "https://www.printables.com/model/1766846-speaker-box-for-8ohm-5w-mini-speaker",
+  "author": "lual",
+  "license": "CC BY-NC-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "author_target_speaker_mm": [
+    99,
+    45,
+    21
+  ],
+  "owner_speaker_mm": [
+    98,
+    44,
+    20
+  ],
+  "obj_bounds": [
+    [
+      -56.5,
+      -24.0,
+      0.0
+    ],
+    [
+      56.5,
+      24.0,
+      23.0
+    ]
+  ],
+  "obj_extents": [
+    113.0,
+    48.0,
+    23.0
+  ],
+  "watertight": false,
+  "winding_consistent": true,
+  "source_files_sha256": {
+    "8ohm_5w_speaker_boxlual.obj": "81ccd488f5905307b9540a6f978fea720f66975a9b73e7a817164eeed208fa1c",
+    "8ohm_5w_speaker_boxlual.3mf": "b5937fdfbba085c84904e29df3132e0a5b45a94b4b4c032e7e08561e280081a7",
+    "1766846-speaker-box-for-8ohm-5w-mini-speaker-4fd2cd37-1b4e-46f9-9850-fe00acc62659.pdf": "a7487a1d201dc11b7c9bc3372af7a39d077b8a21489f2450e3cb5fa48414ad0a"
+  },
+  "obj_note": "OBJ has separate face seams on initial load; do not infer an unprintable model from that import. The 3MF mesh is the validated source.",
+  "three_mf": {
+    "units": "millimeter",
+    "bounds_mm": [
+      [
+        -56.5,
+        -24.0,
+        -11.5
+      ],
+      [
+        56.5,
+        24.0,
+        11.5
+      ]
+    ],
+    "extents_mm": [
+      113.0,
+      48.0,
+      23.0
+    ],
+    "watertight": true,
+    "winding_consistent": true,
+    "connected_bodies": 1,
+    "construction": "front slotted grille, side walls, internal snap features, open rear",
+    "cavity_section_at_z5_mm": [
+      108,
+      45
+    ],
+    "note": "Cavity section excludes snap features at other depths and is not a guaranteed fit envelope."
+  },
+  "integration": {
+    "existing_twin_speaker_centres_mm": 110,
+    "box_long_axis_mm": 113,
+    "coplanar_twin_boxes_overlap_mm": 3,
+    "proposed_min_centre_spacing_with_2mm_gap": 115,
+    "status": "No adapter geometry created; snap fit and actual rear clearance unverified"
+  }
+}

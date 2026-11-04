@@ -1,0 +1,22 @@
+{
+  "all_valid": true,
+  "single_solids": {
+    "Deck_carrier_PROTOTYPE": 1,
+    "Insert_blank_TEMPLATE": 1,
+    "Insert_env_vented_PROTOTYPE": 1,
+    "Insert_mmwave_radome_PROTOTYPE": 1,
+    "Insert_module_rail_PROTOTYPE": 1,
+    "ARGB_diffuser_PROTOTYPE": 1
+  },
+  "insert_window_clearance_per_side_mm": 0.3,
+  "ledge_overlap_per_side_mm": 4.0,
+  "vent_max_bridge_mm": 12.0,
+  "ok": true,
+  "status": "PASS",
+  "open_measurements": [
+    "Each real module outline/hole pattern before a fitted insert",
+    "LD2410C vs HMMD selection, antenna keepout and radome guidance",
+    "ARGB strip width/pitch for the channel; ring not accommodated here",
+    "Carrier-to-v6-deck attachment (plate is freestanding in this study)"
+  ]
+}

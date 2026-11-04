@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flockinator · Mission control</title><link rel="stylesheet" href="/style.css"><script src="/operator.js" defer></script><script src="/app.js" defer></script></head>
+<body><main><header><p>FLOCKINATOR / SCRIPTED WORLD</p><h1>Mission control</h1><strong id="status">Connecting…</strong><p><a class="planner-link" href="/planner">Open mission planner →</a> · <a class="planner-link" href="/lab">Learning lab →</a> </p></header>
+<section aria-labelledby="control"><h2 id="control">Mission settings</h2><form id="settings">
+<label>Scenario<select id="scenario"><option>Mixed outcomes</option><option>Survey and return</option><option>Link disruption</option></select></label>
+<label>Goal<select id="goal"><option>Observe</option><option selected>Compare reports</option><option>Recovery</option></select></label>
+<label>Flight segment<select id="seconds"><option value="64">64 seconds</option><option value="96">96 seconds</option></select></label>
+<label class="repeat"><input id="repeat" type="checkbox" checked> Repeat</label>
+<button id="start" type="button" disabled>Start mission</button><button id="stop" type="button" disabled>Stop fleet</button>
+</form><p id="result" role="status"></p><p id="error" role="alert"></p></section>
+<section><h2>Shared world</h2><p id="summary"></p><canvas width="800" height="360" aria-label="Overhead map of scripted drone positions. Unit states are listed below."></canvas></section>
+<section><h2>Fleet</h2><p>Mission phase follows the Korvo clock. Panel health comes from the physical fleet.</p><ul id="fleet"></ul></section></main></body></html>

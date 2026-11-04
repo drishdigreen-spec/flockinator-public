@@ -1,0 +1,135 @@
+# Node commissioner
+
+Controller bring-up client for the approved [node specification](../../SPEC-node-platform.md). The current release supports USB identity assignment, private Wi-Fi/key provisioning, authenticated Wi-Fi status, display paging, a short tone, evidence capture and application OTA. The `provision` command provides a resumable backup/flash/configuration/inventory transaction. Explicit SD inspection/reset/testing is available via authenticated Wi-Fi or the LilyGo ESP-NOW relay; see below.
+
+Run from the project root; see [Linux setup](../../docs/development.md).
+
+```sh
+uv run --project tools/node-commissioner python -m node_commissioner list
+uv run --project tools/node-commissioner python -m node_commissioner status --label A1 --address 192.168.1.10
+uv run --project tools/node-commissioner python -m node_commissioner next-page --label A1 --address 192.168.1.10
+uv run --project tools/node-commissioner python -m node_commissioner tone --label A1 --address 192.168.1.10
+uv run --project tools/node-commissioner python -m node_commissioner test --label A1 --address 192.168.1.10 --seconds 120
+```
+
+The address is A1's observed DHCP address on 13 October 2026; it may change. Omitting `--address` selects a USB device only when its serial matches the recorded factory MAC uniquely. `--port` is available explicitly, but status still verifies the actual board identity. Opening the USB port can reset this board; use Wi-Fi for uninterrupted observation.
+
+For a newly identified controller, use `provision` with its physically assigned label, exact factory MAC, explicit USB port and the selected initial-install release manifest:
+
+**Current fleet instruction (14 October 2026):** the owner waived factory backups for the remaining fresh nodes A3–D4. Add `--skip-backup` to each initial provisioning command. The waiver is recorded before flashing and retained on resume; identification, flash verification, reboot checks and inventory recording still apply. Existing A1/A2 backups are preserved. Reports explicitly say `waived_by_owner` with no backup digest.
+
+```sh
+uv run --project tools/node-commissioner python -m node_commissioner provision \
+  --label A2 --mac "$FLOCKINATOR_NODE_MAC" --port "$FLOCKINATOR_NODE_PORT" \
+  --manifest "$FLOCKINATOR_MANIFEST"
+```
+
+Set those variables from the identified controller and reviewed release before running. `list` shows USB descriptors; the transaction independently verifies the ROM factory MAC, chip, flash capacity and protection state. A complete initial-install manifest must include trusted hashes for `bootloader.bin`, `partitions.bin`, `ota_data_initial.bin` and `firmware.bin`, plus the firmware version and embedded application digest. These have fixed offsets `0`, `0x8000`, `0xF000` and `0x20000`. Application-only releases cannot be used for initial installation. Explicitly rejected and rollback-test packages are blocked; selecting a candidate manifest does not make it a fleet-approved release.
+
+Unless `--skip-backup` is supplied or already recorded in that transaction, the command preserves a unique private full-flash backup and verifies it against the device before writing. It then verifies the shared firmware, saves the label, private Wi-Fi configuration and per-node management key, reboots, checks actual identity/build/core health and records `commissioned_for_installation`. Panel, speaker, SD-card and peer acceptance remain separate, so an unattached peripheral does not block installation. No card is formatted, no whole-flash erase is issued and no eFuses are changed.
+
+If interrupted, leave the same controller connected and rerun the **same command with the same manifest**. The default journal is `~/.local/share/flockinator/commissioning/<MAC>/<label>-initial/`; its path is printed before work starts. Resume checks the device again and refuses changed package bytes, identity or management key. Backups and completed stage records are never overwritten. Use `--transaction <private-directory>` only for a deliberately separate commissioning run, then retain that same path for retries. For later application changes use `update`, rather than repeating initial installation.
+
+First fresh-device station validation completed on A2; see [A2 evidence](../../docs/validation/nodes/A2/A2-initial/README.md). Flash writes remain in the bootloader until every artifact is verified. Startup response timeouts retain the USB connection to avoid repeated resets. Authoritative reports are atomically saved under the private transaction's `evidence/` directory, then exported without overwriting and digest-checked on the project volume before inventory commit. An interrupted export is not a completed report; resume creates a fresh sequence. At A2's measured speed, the initial full 32 MiB backup took about 14 minutes.
+
+The lower-level USB commands `assign`, `wifi`, `pair-key` and `reboot` remain available. `assign` changes only the firmware label; it does not execute the full commissioning transaction.
+
+Wi-Fi and identity-bound management keys are read from the private controller store at `~/.local/share/flockinator/controller-secrets/credentials.json`. On 2 November 2026 the owner requested persistent controller credentials so routine status, deployment, provisioning and console setup do not require repeated 1Password/fingerprint prompts. Existing node keys are retained: no key rotation or firmware change is required.
+
+One-time bootstrap on an authorised control host (may require one 1Password unlock):
+
+```sh
+uv run --project tools/node-commissioner python -m node_commissioner.credentials import-vault
+```
+
+The importer validates all records before writing a complete store, creates a private 0700 directory and 0600 file, and never overwrites an existing store. The store contains actual shared management secrets and Wi-Fi credentials, is outside the repository, and must not be committed or included in ordinary source backups. `FLOCK_CREDENTIAL_STORE` selects a separate private store on another controller. The local file is the default once present; invalid, insecure or missing local records fail explicitly without silently prompting through the vault. Before a local store exists, the legacy vault provider remains available through the packaged reference manifest (`FLOCK_CREDENTIAL_REFERENCES` overrides it).
+
+For another authorised control host, securely copy the private directory with its owner-only permissions, or run the one-time import there. The handheld already retains its provisioned node roster/keys. No fleet-wide replacement key is introduced; the host and each node retain their existing shared key. `save-wifi` remains disabled; credential changes must be explicit. Raw flash backups remain separate private recovery material. Application OTA preserves the identity partition; a full erase does not.
+
+Example update using the packaged, normal A1 bring-up image:
+
+```sh
+uv run --project tools/node-commissioner python -m node_commissioner update \
+  --label A1 --address 192.168.1.10 \
+  --image firmware/node-platform/releases/0.4.2-bringup/firmware.bin \
+  --sha256 f8c4174cc2714ca7e53b79098b71d326f4e43ce161aad4e1c712bba5d7361c26
+```
+
+The supplied hash covers the whole file; runtime status reports the embedded ESP image digest, which is different. The client verifies both image integrity and the expected post-boot digest. SHA-256 alone is not publisher authentication: HMAC authorises the transfer using the private per-node key. HTTP payloads are not encrypted. This is local-network maintenance, not an internet-exposed service or a TLS deployment system.
+
+Only record manual acceptance after observing that exact node:
+
+```sh
+uv run --project tools/node-commissioner python -m node_commissioner accept \
+  --label A1 --address 192.168.1.10 --check panel --result pass
+```
+
+Checks also include `speaker`, `microphone_channels`, `button` and `motion`. These create separate operator records tied to the running build; automatic codec/driver success never supplies manual acceptance. `test` saves immutable snapshots and detects restart/build changes; it does not automatically declare every peripheral passed.
+
+Validation:
+
+```sh
+uv run --project tools/node-commissioner python -m pytest tools/node-commissioner/tests -q
+```
+
+## LilyGo remote management
+
+The separate `node_commissioner.console` client targets the identified LilyGo, whose factory/STA MAC is `00:11:22:33:44:55`. Set `FLOCKINATOR_LILYGO_PORT` to its verified USB port, distinct from a Waveshare node. Global options such as `--port`, `--mac` and `--output` go **before** the subcommand:
+
+```sh
+uv run --project tools/node-commissioner python -m node_commissioner.console \
+  --port "$FLOCKINATOR_LILYGO_PORT" status
+uv run --project tools/node-commissioner python -m node_commissioner.console \
+  --port "$FLOCKINATOR_LILYGO_PORT" setup
+```
+
+`setup` privately loads the existing Wi-Fi file and the inventory's per-node keys, provisions Wi-Fi and registers known labels/MACs with the handheld. It does not fabricate entries for uncommissioned nodes. Repeat it after commissioning another node. Conflicting bindings are rejected. The current prototype requires console and nodes on the same 2.4 GHz access point/channel; health/deployment traffic uses ESP-NOW on that channel.
+
+To store a reviewed node application on the console's SD card:
+
+```sh
+uv run --project tools/node-commissioner python -m node_commissioner.console \
+  --port "$FLOCKINATOR_LILYGO_PORT" image \
+  --image "$FLOCKINATOR_IMAGE" --sha256 "$FLOCKINATOR_FILE_SHA256" \
+  --name "$FLOCKINATOR_IMAGE_NAME"
+```
+
+Choose a unique name of at most 63 characters containing letters, digits, `.`, `_` or `-`, beginning with a letter or digit. Existing images are not overwritten. The file is published under `/flockinator/images/` only after verification. The reported `image_sha256` is the embedded runtime digest; use that different digest for deployment:
+
+```sh
+uv run --project tools/node-commissioner python -m node_commissioner.console \
+  --port "$FLOCKINATOR_LILYGO_PORT" deploy \
+  --label A1 --name "$FLOCKINATOR_IMAGE_NAME" \
+  --image-sha256 "$FLOCKINATOR_IMAGE_SHA256" --timeout 900
+```
+
+This starts one node's ESP-NOW transfer and keeps the same serial connection open while reporting progress. Success requires a fresh authenticated report from the same target, a changed boot count, the expected image digest and valid OTA state. Command acceptance or completed byte transfer alone is not success. If the host times out or disconnects, the controller operation may still be running; inspect status before attempting another deployment. Do not open a competing serial monitor or repeatedly reconnect USB during transfer, because reopening the port can reset the handheld.
+
+The current implementation is an integration prototype. Actual transfer and recovery acceptance are tracked under `docs/validation/cluster-deployment/`; these usage examples do not establish that the hardware tests passed. The [console README](../../firmware/management-console/README.md) describes touch controls, freshness states, SD storage and the live JSON protocol. Its historical single-character serial soak tool does not apply to live firmware.
+
+
+## SD maintenance
+
+Firmware node 0.5.1 and console 0.2.11 support remote card maintenance, including nodes without DHCP. Identify the node and its current card before erasing. The owner has already authorised the current A1–D4 fleet reset/qualification pass; this excludes LilyGo and host storage. Nothing formats automatically on boot, inspection or timeout.
+
+```sh
+# Read-only inspection and a short-lived card-bound permit:
+uv run --project tools/node-commissioner python -m node_commissioner.sd --label B1 --address 192.168.1.10 --output /tmp/b1-inspection
+# Explicit entire-card MBR/FAT32 reset plus 16 MiB write/read comparison:
+uv run --project tools/node-commissioner python -m node_commissioner.sd --label B1 --address 192.168.1.10 --format quick --erase --output /tmp/b1-quick
+# The same operation through the identified handheld, without a node IP:
+uv run --project tools/node-commissioner python -m node_commissioner.sd --label D1 --console-port /dev/cu.usbmodem201101 --format quick --erase --output /tmp/d1-quick
+```
+
+Use a new evidence directory each time. `--format full --erase` recreates the filesystem and writes all available data clusters before reading/validating every byte. This is a destructive new job, **not** a status command. Test files are capped at 1 GiB. Quick success does not verify full capacity or remaining flash endurance. Measured throughput includes the configured SD interface and background-worker scheduling; it is not a card speed-class benchmark.
+
+The job continues on the node after the host's `--wait` observation period (default 180 seconds). For status, use `--status` with the same node/transport and a new evidence directory. This only sends a read request and does not replace the current test or permit. Do not prepare another job merely to poll. OTA is unavailable on that node while SD maintenance is active. Power loss/restart interrupts the test and is recorded; no automatic destructive retry occurs. A full pass can require roughly 9–33 hours (estimated from the observed short-test rates) on these 32/64 GB cards. Keep the panels powered until completion.
+
+The worker rechecks card identity before formatting and remounting, records destructive intent/results in internal NVS, and reports failures separately from no-response/unknown presence. Filesystem reset is not forensic secure erasure. Replacement cards require a new identified run and retain separate results.
+
+
+Console 0.2.13 exposes `image_status` for bulk-upload recovery. If a chunk reply is lost, the host checks the same console boot, upload name, size, SHA-256 and stored offset. It retries a chunk only when that ordered readback proves the chunk was not stored. A changed session or unexpected offset stops the operation. Final whole-file and ESP-image checksums remain mandatory before publication/deployment. The pinned Arduino HWCDC transport can still delay/drop replies; recovery is not a claim that the underlying USB issue is eliminated.
+
+### Verified Wi-Fi reinstall
+
+The `update` command verifies a greater boot counter, alternate OTA slot, expected embedded digest, valid OTA state and retained receiver support before reporting success. This applies when reinstalling the identical binary too: a matching hash from the pre-update boot is insufficient. A timeout leaves completion unverified; inspect the target before retrying. An update reboots the node automatically. Standalone remote reboot is not exposed by the current Wi-Fi/ESP-NOW command interfaces.

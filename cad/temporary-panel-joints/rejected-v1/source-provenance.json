@@ -1,0 +1,8 @@
+{
+  "source": "$HOME",
+  "sha256": "970bde4a86661dd45f3e29d88add597e0f133d38f5cda348d9b1db320691cb14",
+  "author": "John Turner",
+  "title": "Matrix Panel HUB 75 2.5mm pitch 64x64 bracket",
+  "source_license": "GPL-3.0, stated in supplied Printables PDF",
+  "modification": "New four-way geometry informed by source hole spacing and plate thickness; not a direct STL mirror. Candidate mounting offsets inferred pending physical measurement."
+}

@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-29",
+  "source": "Owner physical print and fit observation",
+  "verbatim": "the base of the box printed and the component board lines up perfectly with the mounting holes. there is ample space in the box bottom for additional components, even the speaker or sensors from the exapantion header.",
+  "printed": {
+    "part": "Node tray / box base (Node_tray_PROTOTYPE)",
+    "result": "Printed; component board lines up perfectly with the mounting holes"
+  },
+  "controller_fit": {
+    "result": "Owner reports perfect alignment of the component board with the mounting holes",
+    "scope": "Confirms the printed base and board mounting alignment on the owner's tested node. Controller outline/mount data were 50.01 x 42 mm PCB, M2.5 at 42.54 mm from official references; HUB75_CENTRE in parameters.py was provisional (0, 0) and tray USB/SD cutouts follow it."
+  },
+  "internal_volume": {
+    "result": "Owner reports ample space in the box bottom for additional components, even the speaker or sensors from the expansion header",
+    "scope": "Owner volume assessment of the printed base only. No speaker, sensor, cable, thermal or acoustic fit is established by this observation."
+  },
+  "print_quality_tip": {
+    "date": "2026-10-29",
+    "verbatim": "the air vents are drooping as they did not have support. they are very fine vents, that are unsupported over a large distance. some vertical supports or a reinforcement vertical grid on the inside of the box may be a good idea for next time so the vents remain aesthetically stylised but structually sound.",
+    "action_taken": "Tray rev 2 in build.py/parameters.py: vents are now segmented horizontal slots (12 mm max unsupported bridge, 4 mm vertical ribs) on both side walls, backed by a 1.6 mm internal vertical rib grid protruding 4 mm. Rebuilt and re-verified PASS (tray single solid, vent_max_bridge_mm 12). Not yet printed."
+  },
+  "not_yet_reported": [
+    "Speaker cradle and four clips printed or fitted",
+    "Panel seated on the tray standoffs with the 5 mm riser",
+    "Track section and screw tabs fitted",
+    "Plugged VH4 power connector, latch and cable-bend clearance",
+    "USB-C programming and SD removal sweeps in the printed tray"
+  ]
+}

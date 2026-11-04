@@ -1,0 +1,17 @@
+{
+  "pitch_mm": 250,
+  "panel_face_mm": 160,
+  "nominal_opening_mm": 214.2,
+  "panel_clearance_per_side_mm": 27.1,
+  "panel_edge_gap_mm": 90,
+  "short_span_mm": 42.9,
+  "counts": {
+    "crosses": 9,
+    "tees": 12,
+    "corners": 4,
+    "stock_100mm_straights": 28,
+    "adaptation_spans": 12
+  },
+  "panel_overlap_area_mm2": 0,
+  "status": "Face fit only; mount holes, depth, couplers and seam phase unverified"
+}

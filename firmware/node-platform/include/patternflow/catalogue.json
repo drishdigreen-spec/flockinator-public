@@ -1,0 +1,175 @@
+{
+  "upstream_commit": "ae1e3df16179366b93ccd34111688b3f2ae3cc05",
+  "patterns": [
+    {
+      "file": "0510.h",
+      "namespace": "Pattern0510",
+      "name": "0510"
+    },
+    {
+      "file": "0511.h",
+      "namespace": "Pattern0511",
+      "name": "0511"
+    },
+    {
+      "file": "0512.h",
+      "namespace": "Pattern0512",
+      "name": "0512"
+    },
+    {
+      "file": "0513.h",
+      "namespace": "Pattern0513",
+      "name": "0513"
+    },
+    {
+      "file": "0514.h",
+      "namespace": "Pattern0514",
+      "name": "0514"
+    },
+    {
+      "file": "0515.h",
+      "namespace": "Pattern0515",
+      "name": "0515"
+    },
+    {
+      "file": "0515_3.h",
+      "namespace": "Pattern05153",
+      "name": "0515-3"
+    },
+    {
+      "file": "0515_4.h",
+      "namespace": "Pattern05154",
+      "name": "0515-4"
+    },
+    {
+      "file": "0518.h",
+      "namespace": "Pattern0518",
+      "name": "0518"
+    },
+    {
+      "file": "0519_1.h",
+      "namespace": "Pattern05191",
+      "name": "0519-1"
+    },
+    {
+      "file": "0520.h",
+      "namespace": "Pattern0520",
+      "name": "0520"
+    },
+    {
+      "file": "0521.h",
+      "namespace": "Pattern0521",
+      "name": "0521"
+    },
+    {
+      "file": "0522.h",
+      "namespace": "Pattern0522",
+      "name": "0522"
+    },
+    {
+      "file": "0527.h",
+      "namespace": "Pattern0527",
+      "name": "0527"
+    },
+    {
+      "file": "0528.h",
+      "namespace": "Pattern0528",
+      "name": "0528"
+    },
+    {
+      "file": "0531.h",
+      "namespace": "Pattern0531",
+      "name": "0531"
+    },
+    {
+      "file": "0601.h",
+      "namespace": "Pattern0601",
+      "name": "0601"
+    },
+    {
+      "file": "0602.h",
+      "namespace": "Pattern0602",
+      "name": "0602"
+    },
+    {
+      "file": "0628.h",
+      "namespace": "RetroDigitalTapestry",
+      "name": "Retro Digital Tapestry"
+    },
+    {
+      "file": "0629.h",
+      "namespace": "ChromaticAberrationVortexPattern",
+      "name": "Chromatic Vortex"
+    },
+    {
+      "file": "0629_2.h",
+      "namespace": "VectorFieldParticleFlowPattern",
+      "name": "Vector Field Flow"
+    },
+    {
+      "file": "0701.h",
+      "namespace": "LissajousWeave",
+      "name": "Lissajous Weave"
+    },
+    {
+      "file": "0707.h",
+      "namespace": "UntitledPattern",
+      "name": "Untitled pattern"
+    },
+    {
+      "file": "0710.h",
+      "namespace": "TileWaves",
+      "name": "TileWaves"
+    },
+    {
+      "file": "0712.h",
+      "namespace": "MidsummerSea",
+      "name": "Midsummer Sea"
+    },
+    {
+      "file": "0712_2.h",
+      "namespace": "BreakoutArcade",
+      "name": "Breakout Arcade"
+    },
+    {
+      "file": "0713.h",
+      "namespace": "FireflyHollow",
+      "name": "Firefly Hollow"
+    },
+    {
+      "file": "0715.h",
+      "namespace": "PoincareSphere",
+      "name": "Poincar\u00e9 Sphere"
+    },
+    {
+      "file": "0716.h",
+      "namespace": "TriMarch",
+      "name": "Tri March"
+    },
+    {
+      "file": "0718.h",
+      "namespace": "WarpedWave",
+      "name": "Warped Wave"
+    },
+    {
+      "file": "0719.h",
+      "namespace": "MagVortex",
+      "name": "MagVortex"
+    },
+    {
+      "file": "a_big_hit.h",
+      "namespace": "PatternABigHit",
+      "name": "a big hit"
+    },
+    {
+      "file": "origin.h",
+      "namespace": "Origin",
+      "name": "Origin"
+    },
+    {
+      "file": "wave_saw.h",
+      "namespace": "WaveSaw",
+      "name": "Wave Saw"
+    }
+  ]
+}

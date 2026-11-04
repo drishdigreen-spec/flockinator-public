@@ -1,0 +1,77 @@
+{
+  "status": "FIT TEST CANDIDATE, hole offsets await owner measurement",
+  "bounds_mm": [
+    77.99885608602116,
+    77.99771217204231,
+    6.0
+  ],
+  "volume_mm3": 13438.547336987569,
+  "valid_solid": true,
+  "solid_count": 1,
+  "hole_centres_mm": [
+    [
+      -10.0,
+      -33.0
+    ],
+    [
+      -33.0,
+      -10.0
+    ],
+    [
+      -10.0,
+      33.0
+    ],
+    [
+      -33.0,
+      10.0
+    ],
+    [
+      10.0,
+      -33.0
+    ],
+    [
+      33.0,
+      -10.0
+    ],
+    [
+      10.0,
+      33.0
+    ],
+    [
+      33.0,
+      10.0
+    ]
+  ],
+  "hole_diameter_mm": 4.0,
+  "plate_mm": 3.0,
+  "rib_total_height_mm": 6.0,
+  "source_STL_holes_mm": [
+    [
+      -5,
+      -24
+    ],
+    [
+      15,
+      -24
+    ],
+    [
+      -28,
+      -47
+    ],
+    [
+      38,
+      -47
+    ]
+  ],
+  "inference": "Source paired X centres imply offsets 10 and 33 around X=5; Y junction at -57 is inferred by corner symmetry, not measured. Published DWG suggests 7 and 35 instead.",
+  "quantity_for_4x4_internal_junctions": 9,
+  "structural_tested": false,
+  "hardware_clearance_tested": false,
+  "STL": {
+    "watertight": true,
+    "consistent_winding": true,
+    "connected_bodies": 1,
+    "triangles": 5452,
+    "volume_mm3": 13438.19443787063
+  }
+}

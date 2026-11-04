@@ -1,0 +1,17 @@
+side,position_clockwise,node,carrier,extended_center_node_lead,stock_lead_mm,extension_plan
+top,1,A1,single 1,False,150,stock lead preferred; routed reach to verify
+top,2,A2,twin,False,150,stock lead preferred; routed reach to verify
+top,3,B2,twin,True,150,planned; length to measure
+top,4,A3,single 2,False,150,stock lead preferred; routed reach to verify
+right,1,A4,single 1,False,150,stock lead preferred; routed reach to verify
+right,2,B4,twin,False,150,stock lead preferred; routed reach to verify
+right,3,B3,twin,True,150,planned; length to measure
+right,4,C4,single 2,False,150,stock lead preferred; routed reach to verify
+bottom,1,D4,single 1,False,150,stock lead preferred; routed reach to verify
+bottom,2,D3,twin,False,150,stock lead preferred; routed reach to verify
+bottom,3,C3,twin,True,150,planned; length to measure
+bottom,4,D2,single 2,False,150,stock lead preferred; routed reach to verify
+left,1,D1,single 1,False,150,stock lead preferred; routed reach to verify
+left,2,C1,twin,False,150,stock lead preferred; routed reach to verify
+left,3,C2,twin,True,150,planned; length to measure
+left,4,B1,single 2,False,150,stock lead preferred; routed reach to verify

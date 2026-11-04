@@ -1,0 +1,76 @@
+{
+  "units": "mm",
+  "pattern_mm": [
+    90,
+    36
+  ],
+  "parts": [
+    {
+      "file": "Speaker_post_guide_D5p2.stl",
+      "purpose": "Four posts, 90 x 36 pattern; shoulder height 15 mm",
+      "parameter_mm": 5.2,
+      "bounds_mm": [
+        100.0,
+        45.0,
+        20.0
+      ],
+      "volume_mm3": 8949.095801483556
+    },
+    {
+      "file": "Speaker_post_guide_D5p6.stl",
+      "purpose": "Four posts, 90 x 36 pattern; shoulder height 15 mm",
+      "parameter_mm": 5.6,
+      "bounds_mm": [
+        100.0,
+        45.0,
+        20.0
+      ],
+      "volume_mm3": 9015.948893151946
+    },
+    {
+      "file": "Speaker_post_guide_D5p9.stl",
+      "purpose": "Four posts, 90 x 36 pattern; shoulder height 15 mm",
+      "parameter_mm": 5.9,
+      "bounds_mm": [
+        100.0,
+        45.0,
+        20.0
+      ],
+      "volume_mm3": 9069.387384189507
+    },
+    {
+      "file": "Speaker_lug_gap_2p2.stl",
+      "purpose": "Slide an accessible rigid lug edge between jaws; do not force",
+      "parameter_mm": 2.2,
+      "bounds_mm": [
+        18.0,
+        12.0,
+        8.2
+      ],
+      "volume_mm3": 1375.1999999999998
+    },
+    {
+      "file": "Speaker_lug_gap_2p6.stl",
+      "purpose": "Slide an accessible rigid lug edge between jaws; do not force",
+      "parameter_mm": 2.6,
+      "bounds_mm": [
+        18.0,
+        12.0,
+        8.6
+      ],
+      "volume_mm3": 1389.6
+    },
+    {
+      "file": "Speaker_lug_gap_3p0.stl",
+      "purpose": "Slide an accessible rigid lug edge between jaws; do not force",
+      "parameter_mm": 3.0,
+      "bounds_mm": [
+        18.0,
+        12.0,
+        9.0
+      ],
+      "volume_mm3": 1404.0
+    }
+  ],
+  "status": "Fit gauges only; not installed mounts or final snap clips"
+}

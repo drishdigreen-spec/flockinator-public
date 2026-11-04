@@ -1,0 +1,444 @@
+{
+  "status": "Geometric prototype, not sliced or physically fitted",
+  "outer_envelope_mm": [
+    780,
+    780
+  ],
+  "panel_array_mm": [
+    640,
+    640
+  ],
+  "centres_per_side_mm": [
+    80,
+    240,
+    400,
+    560
+  ],
+  "straight_pitch_mm": 160,
+  "body_joint_gap_mm": 0.4,
+  "lap_depth_clearance_mm": 0.3,
+  "max_printed_rear_z_mm": 7.3,
+  "rear_mount_seat_depth": "unknown; spacer selection requires measurement",
+  "hex_holes_per_speaker": 57,
+  "speaker_reference_envelope_mm": [
+    99.5,
+    44.8,
+    21.3
+  ],
+  "fibre_reservation_mm": [
+    80,
+    26,
+    5
+  ],
+  "parts": {
+    "straight-shell": {
+      "stem": "Flockinator-straight-shell-v3",
+      "full_array_quantity": 16,
+      "size_mm": [
+        159.6,
+        68.0,
+        31.0
+      ],
+      "volume_mm3": 110438.83148344993,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": false,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "7eeb0c505e4669a9f9a4ae31bebe71088e2b9dc2c5ee3719a94572e82700fe56"
+    },
+    "straight-grille": {
+      "stem": "Flockinator-straight-grille-v3",
+      "full_array_quantity": 16,
+      "size_mm": [
+        163.8,
+        68.0,
+        3.0
+      ],
+      "volume_mm3": 26281.699136757503,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": true,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "2c8e190e7be632adaba70bcb16564be92f2d5846f3554ec752f4ae307e523f09"
+    },
+    "speaker-retainer": {
+      "stem": "Flockinator-speaker-retainer-v3",
+      "full_array_quantity": 16,
+      "size_mm": [
+        102.0,
+        48.0,
+        2.500000000000001
+      ],
+      "volume_mm3": 4139.999999999996,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": false,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "8180b2ce5b7a3d40ae67619300b3632aa4ae5d946c963ddb372f658f9ad704ea"
+    },
+    "straight-rear-cover": {
+      "stem": "Flockinator-straight-rear-cover-v3",
+      "full_array_quantity": 16,
+      "size_mm": [
+        159.6,
+        83.0,
+        10.8
+      ],
+      "volume_mm3": 44344.31855284315,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": true,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "d6ce757c36416c1d64ca391220d3673256665e436a8d9db01471c2d083955b4e"
+    },
+    "corner-shell": {
+      "stem": "Flockinator-corner-shell-v3",
+      "full_array_quantity": 4,
+      "size_mm": [
+        74.0,
+        70.0,
+        34.000000000000014
+      ],
+      "volume_mm3": 45015.2404529246,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": true,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "ec482ea7aa154400b5a5afcc08b8a595e17cde538eaa66342ee333aa209d466c"
+    },
+    "corner-rear-cover": {
+      "stem": "Flockinator-corner-rear-cover-v3",
+      "full_array_quantity": 4,
+      "size_mm": [
+        111.0,
+        111.0,
+        8.3
+      ],
+      "volume_mm3": 22448.464880178097,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": true,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "0101f5317f0b3d6b1125428439bda8497c9a92e74ba2e34fe09b63ec2e7caf49"
+    },
+    "snap-bridge": {
+      "stem": "Flockinator-snap-bridge-v3",
+      "full_array_quantity": 40,
+      "size_mm": [
+        18.0,
+        8.0,
+        2.3999999999999995
+      ],
+      "volume_mm3": 209.56704917381347,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": false,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "da24b614dcda9e539d9a96d8f9b797692048612ed27ed19ec272b37bb0a744b8"
+    },
+    "snap-bridge-loose": {
+      "stem": "Flockinator-snap-bridge-loose-v3",
+      "full_array_quantity": 0,
+      "size_mm": [
+        18.0,
+        8.0,
+        2.3999999999999995
+      ],
+      "volume_mm3": 204.92705509681423,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": false,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "84663f3e2fb9f0706110cee97489738bef7cdff192a91d77b7bcd638340eb639"
+    },
+    "snap-test-posts": {
+      "stem": "Flockinator-snap-test-posts-v3",
+      "full_array_quantity": 1,
+      "size_mm": [
+        22.0,
+        14.0,
+        7.3
+      ],
+      "volume_mm3": 1056.1563309610106,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": false,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "e38878be00b2a2456d704410672e2ce871bd53410066196628f167a257018cd0"
+    },
+    "spacer-1mm": {
+      "stem": "Flockinator-spacer-1mm-v3",
+      "full_array_quantity": 0,
+      "size_mm": [
+        10.0,
+        10.0,
+        1.0
+      ],
+      "volume_mm3": 65.97344572538564,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": false,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "a2294cf431ecce1371508ac698fc5fb55f9b96b45395bbe6a82074cac0c54d24"
+    },
+    "spacer-2mm": {
+      "stem": "Flockinator-spacer-2mm-v3",
+      "full_array_quantity": 0,
+      "size_mm": [
+        10.0,
+        10.0,
+        2.0
+      ],
+      "volume_mm3": 131.9468914507713,
+      "cad_valid_single_solid": true,
+      "step_reimport_valid": true,
+      "orientation": "Front/down as assembled, translated to bed; review supports",
+      "supports_expected": false,
+      "mesh_watertight": true,
+      "mesh_single_component": true,
+      "mesh_winding_consistent": true,
+      "stl_sha256": "df6db553a2602abd2ad5dec6fa3fefaee275dd354ff6fd6f119ad2c17ace9dbf"
+    }
+  },
+  "checks": {
+    "shell_speaker": {
+      "intersection_mm3": 0.0
+    },
+    "shell_fibre": {
+      "intersection_mm3": 0.0
+    },
+    "grille_speaker": {
+      "intersection_mm3": 0.0
+    },
+    "grille_fibre": {
+      "intersection_mm3": 0.0
+    },
+    "retainer_speaker": {
+      "intersection_mm3": 0.0
+    },
+    "retainer_fibre": {
+      "intersection_mm3": 0.0
+    },
+    "cover_speaker": {
+      "intersection_mm3": 0.0
+    },
+    "cover_fibre": {
+      "intersection_mm3": 0.0
+    },
+    "module_parts_1_0": {
+      "intersection_mm3": 0.0
+    },
+    "module_parts_2_0": {
+      "intersection_mm3": 0.0
+    },
+    "module_parts_2_1": {
+      "intersection_mm3": 0.0
+    },
+    "module_parts_3_0": {
+      "intersection_mm3": 0.0
+    },
+    "module_parts_3_1": {
+      "intersection_mm3": 0.0
+    },
+    "module_parts_3_2": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_cover": {
+      "intersection_mm3": 0.0
+    },
+    "shell_adjacent_identical": {
+      "intersection_mm3": 0.0
+    },
+    "grille_adjacent_identical": {
+      "intersection_mm3": 0.0
+    },
+    "cover_adjacent_identical": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_0_0": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_0_1": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_0_2": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_0_3": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_1_0": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_1_1": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_1_2": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_1_3": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_2_0": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_2_1": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_2_2": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_2_3": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_3_0": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_3_1": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_3_2": {
+      "intersection_mm3": 0.0
+    },
+    "adjacent_3_3": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_top_shell": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_top_grille": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_top_retainer": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_top_cover": {
+      "intersection_mm3": 0.0
+    },
+    "corner_cover_top_shell": {
+      "intersection_mm3": 0.0
+    },
+    "corner_cover_top_grille": {
+      "intersection_mm3": 0.0
+    },
+    "corner_cover_top_retainer": {
+      "intersection_mm3": 0.0
+    },
+    "corner_cover_top_cover": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_left_shell": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_left_grille": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_left_retainer": {
+      "intersection_mm3": 0.0
+    },
+    "corner_shell_left_cover": {
+      "intersection_mm3": 0.0
+    },
+    "corner_cover_left_shell": {
+      "intersection_mm3": 0.0
+    },
+    "corner_cover_left_grille": {
+      "intersection_mm3": 0.0
+    },
+    "corner_cover_left_retainer": {
+      "intersection_mm3": 0.0
+    },
+    "corner_cover_left_cover": {
+      "intersection_mm3": 0.0
+    },
+    "clip_coupon_standard": {
+      "intersection_mm3": 0.0
+    },
+    "clip_coupon_loose": {
+      "intersection_mm3": 0.0
+    },
+    "clip_left_-20": {
+      "intersection_mm3": 0.0
+    },
+    "clip_right_-20": {
+      "intersection_mm3": 0.0
+    },
+    "clip_left_-52": {
+      "intersection_mm3": 0.0
+    },
+    "clip_right_-52": {
+      "intersection_mm3": 0.0
+    },
+    "edge_bore_-45": {
+      "intersection_mm3": 0.0
+    },
+    "edge_bore_45": {
+      "intersection_mm3": 0.0
+    },
+    "no_panel_front_intrusion_straight": {
+      "intersection_mm3": 0.0
+    },
+    "no_panel_front_intrusion_corner": {
+      "intersection_mm3": 0.0
+    },
+    "exported_mesh_edge_holes": {
+      "expected_xy_mm": [
+        [
+          -45,
+          7
+        ],
+        [
+          45,
+          7
+        ]
+      ],
+      "max_centre_error_mm": 0.0
+    },
+    "printer_envelope": {
+      "verified_model": "Bambu Lab X2D",
+      "source": "https://blog.bambulab.com/xcellence-made-simple-bambu-lab-presents-the-x2d/",
+      "dual_nozzle_intersection_mm": [
+        235.5,
+        256,
+        256
+      ],
+      "all_parts_fit_individually": true
+    },
+    "reimported_step_corner_assembly": {
+      "pair_checks": 91,
+      "all_intersection_volumes_below_mm3": 1e-05,
+      "shared_panel_bores_clear": true,
+      "shared_mount_7mm_head_access_clear": true
+    }
+  }
+}

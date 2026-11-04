@@ -1,0 +1,33 @@
+[
+  {
+    "file": "Speaker_lug_gap_2p0_v2.stl",
+    "watertight": true,
+    "connected": true,
+    "jaw_gap_mm": 2.0,
+    "print_orientation_verified": true
+  },
+  {
+    "file": "Speaker_lug_gap_2p1_v2.stl",
+    "watertight": true,
+    "connected": true,
+    "jaw_gap_mm": 2.1,
+    "print_orientation_verified": true
+  },
+  {
+    "file": "Speaker_lug_gap_2p2_v2.stl",
+    "watertight": true,
+    "connected": true,
+    "jaw_gap_mm": 2.2,
+    "print_orientation_verified": true
+  },
+  {
+    "file": "Speaker_post_guide_92x36_D5p6_v2.stl",
+    "watertight": true,
+    "connected": true,
+    "post_pattern_mm": [
+      92,
+      36
+    ],
+    "diameter_mm": 5.6
+  }
+]

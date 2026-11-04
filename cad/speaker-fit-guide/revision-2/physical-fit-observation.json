@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-28",
+  "source": "Owner physical print and speaker fit observation",
+  "verbatim": "the new speaker mount is a perfect fit and all three lug-gap guages are close enough with the tightest fit from the smallest still being possible",
+  "post_guide": {
+    "file": "Speaker_post_guide_92x36_D5p6_v2.stl",
+    "pattern_mm": [92, 36],
+    "post_diameter_mm": 5.6,
+    "result": "Owner reports perfect fit"
+  },
+  "lug_gauges": {
+    "tested_gaps_mm": [2.0, 2.1, 2.2],
+    "result": "All fit; 2.0 mm is tightest but still fits",
+    "measured_lug_thickness_mm": 1.9,
+    "proposed_removable_clip_capture_gap_mm": 2.1,
+    "selection_basis": "Middle tested gap provides nominal 0.2 mm clearance; final flexible clip retention still requires testing"
+  },
+  "scope": "Confirms these printed gauges against the owner's tested speaker. Does not establish final clip strength, vibration isolation, fit across all sixteen speakers or complete panel-case clearance. Actual slicer/material settings were not reported in this observation."
+}

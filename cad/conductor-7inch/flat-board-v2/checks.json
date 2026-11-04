@@ -1,0 +1,185 @@
+{
+  "status": "Visual layout concept only; not print-ready",
+  "width_mm": 195.0,
+  "depth_mm": 132.3209369073509,
+  "front_height_mm": 22.0,
+  "rear_height_mm": 83.70226621414213,
+  "screen_angle_degrees": 25.0,
+  "parts": [
+    {
+      "part": "WedgeBase",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 164607.02486594295
+    },
+    {
+      "part": "ScreenAndCameraBezel",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 43990.38055098078
+    },
+    {
+      "part": "BareLCDReference",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 57750.00000000001
+    },
+    {
+      "part": "ScreenSurface",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 5491.2
+    },
+    {
+      "part": "FlatEVBoardReference",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 10419.199999999997
+    },
+    {
+      "part": "ComponentHeightAllowance",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 30800.000000000004
+    },
+    {
+      "part": "USB_A",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 1820.0000000000005
+    },
+    {
+      "part": "USB_C_1",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 720.0
+    },
+    {
+      "part": "USB_C_2",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 720.0
+    },
+    {
+      "part": "USB_C_3",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 720.0
+    },
+    {
+      "part": "Ethernet",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 4480.0
+    },
+    {
+      "part": "SpeakerBody",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 14415.0
+    },
+    {
+      "part": "SpeakerEarClearance",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 20460.0
+    },
+    {
+      "part": "SpeakerConeIndicator",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 452.38934211693015
+    },
+    {
+      "part": "CameraSensorAllowance",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 3456.0
+    },
+    {
+      "part": "CameraLensIndicator",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 318.0862561759665
+    },
+    {
+      "part": "CameraAdapterAllowance",
+      "valid": true,
+      "solids": 1,
+      "volume_mm3": 2700.0
+    }
+  ],
+  "checks": [
+    {
+      "parts": [
+        "WedgeBase",
+        "FlatEVBoardReference"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "ScreenAndCameraBezel",
+        "FlatEVBoardReference"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "BareLCDReference",
+        "FlatEVBoardReference"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "WedgeBase",
+        "SpeakerBody"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "BareLCDReference",
+        "SpeakerBody"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "FlatEVBoardReference",
+        "SpeakerBody"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "FlatEVBoardReference",
+        "CameraAdapterAllowance"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "BareLCDReference",
+        "CameraSensorAllowance"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "ScreenAndCameraBezel",
+        "CameraSensorAllowance"
+      ],
+      "overlap_mm3": 0.0
+    }
+  ],
+  "limitations": [
+    "PCB v1.6 geometry unmeasured",
+    "Full touch assembly and adapter omitted",
+    "Camera allowances assumed",
+    "Port positions illustrative",
+    "Cable reach and bend clearances not validated",
+    "Fasteners and retention not designed"
+  ]
+}

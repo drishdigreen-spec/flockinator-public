@@ -1,0 +1,176 @@
+// SPDX-License-Identifier: CC-BY-SA-4.0
+// Pattern: Origin
+// Author:  Seunghun LEE
+// Lineage: Created in Blender3D, converted to JS via AI
+// Generated from web/src/lib/presets/pattern-origin.ts
+//
+
+#pragma once
+
+
+
+
+
+
+
+namespace Origin {
+  const char* NAME = "Origin";
+  const char* KNOB_LABELS[4] = {"hue", "speed", "mode", "freq"};
+  constexpr bool ABSOLUTE_READY = true;
+
+  // --- 상태 변수 ---
+  struct Params {
+    int hueDeg = 0;
+    float speed = 2.0f;
+    int mode = 0;
+    float freq = 220.0f;
+  };
+  Params params;
+
+  struct PatternPreset {
+    int rows, cols, gap, tileSize, gridStep, gridCells;
+  };
+
+  const int NUM_PRESETS = 5;
+  const PatternPreset presets[NUM_PRESETS] = {
+    { 1, 2,  4, 56, 7, 8 },
+    { 2, 4,  3, 27, 3, 9 },
+    { 3, 6,  2, 18, 3, 6 },
+    { 3, 6,  2, 18, 2, 9 },
+    { 6, 12, 0, 10, 2, 5 },
+  };
+
+  int curMode = -1;
+  int totalW, totalH, offsetX, offsetY;
+
+  const int MAX_GRID_CELLS = 9;
+  float distLUT[MAX_GRID_CELLS][MAX_GRID_CELLS];
+
+  const int NUM_STOPS = 5;
+  PFColor::ColorStop colorRamp[NUM_STOPS];
+
+  // 노브 변화량 추적을 위한 내부 변수
+  float phase = 0.0f;
+
+  void updateColorRamp(float hue) {
+    uint8_t hr, hg, hb;
+    PFColor::hsvToRgb(hue, 1.0f, 1.0f, hr, hg, hb);
+    colorRamp[0] = {0.000f, 0, 0, 0};
+    colorRamp[1] = {0.154f, 40, 40, 40};
+    colorRamp[2] = {0.556f, hr, hg, hb};
+    colorRamp[3] = {0.816f, 255, 255, 255};
+    colorRamp[4] = {1.000f, 255, 255, 255};
+  }
+
+  inline void sampleColorRamp(float val, uint8_t &r, uint8_t &g, uint8_t &b) {
+    float t = (val + 1.0f) * 0.5f;
+    PFColor::sampleRamp(colorRamp, NUM_STOPS, t, r, g, b);
+  }
+
+  void applyPreset(int idx) {
+    const PatternPreset &p = presets[idx];
+    totalW = p.cols * p.tileSize + (p.cols + 1) * p.gap;
+    totalH = p.rows * p.tileSize + (p.rows + 1) * p.gap;
+    offsetX = (PANEL_RES_W - totalW) / 2;
+    offsetY = (PANEL_RES_H - totalH) / 2;
+
+    float cx = p.tileSize / 2.0f;
+    for (int gy = 0; gy < p.gridCells; gy++)
+      for (int gx = 0; gx < p.gridCells; gx++) {
+        float dx = gx * p.gridStep + p.gridStep / 2.0f - cx;
+        float dy = gy * p.gridStep + p.gridStep / 2.0f - cx;
+        distLUT[gy][gx] = sqrtf(dx * dx + dy * dy);
+      }
+    curMode = idx;
+  }
+
+  // --- 공통 인터페이스 (Setup, Update, Draw) ---
+  void setup() {
+    PFMath::buildSinLUT();
+    applyPreset(0);
+    updateColorRamp(0.0f);
+    phase = 0.0f;
+  }
+
+  void update(float dt, const InputFrame& input) {
+    // Absolute MQTT (0..1000) > Weather/audio 0..1 > encoder/OSC deltas.
+    PFParams::applyInt(input, 0, &params.hueDeg, 0, 359, 10, true);
+    if (input.btnPressed[0] && !input.paramAbsoluteActive[0] && !input.knobAudioActive[0]) {
+      params.hueDeg = 0;
+      PatternflowLog.println("[Origin] Hue → 0°");
+    }
+
+    PFParams::apply(input, 1, &params.speed, 0.0f, 5.0f, 0.1f);
+    if (input.btnPressed[1] && !input.paramAbsoluteActive[1] && !input.knobAudioActive[1]) {
+      params.speed = 0.0f;
+      PatternflowLog.println("[Origin] Speed → 0");
+    }
+
+    PFParams::applyIndex(input, 2, &params.mode, NUM_PRESETS);
+    if (input.btnPressed[2] && !input.paramAbsoluteActive[2] && !input.knobAudioActive[2]) {
+      params.mode = 0;
+      PatternflowLog.println("[Origin] Mode → 0");
+    }
+
+    PFParams::apply(input, 3, &params.freq, 0.1f, 1000.0f, 10.0f);
+    if (input.btnPressed[3] && !input.paramAbsoluteActive[3] && !input.knobAudioActive[3]) {
+      params.freq = 0.1f;
+      PatternflowLog.println("[Origin] Freq → 0.1");
+    }
+
+    // Apply Mode Change
+    if (params.mode != curMode) {
+      applyPreset(params.mode);
+      PatternflowLog.printf("[Origin] Mode %d: %dx%d\n", params.mode, presets[params.mode].cols, presets[params.mode].rows);
+    }
+
+    phase += dt * params.speed * 2.0f;
+    updateColorRamp(params.hueDeg / 360.0f);
+  }
+
+  void draw() {
+    const PatternPreset &p = presets[curMode];
+    float br = 80.0f / 100.0f;
+    int cellW = p.tileSize + p.gap;
+    int cellH = p.tileSize + p.gap;
+    float curFreqBase = (float)params.freq;
+    float curFreqVar  = (float)params.freq * 0.9f;
+
+    for (int y = 0; y < PANEL_RES_H; y++) {
+      for (int x = 0; x < PANEL_RES_W; x++) {
+        int lx = x - offsetX;
+        int ly = y - offsetY;
+        int ti = (lx - p.gap) / cellW;
+        int tj = (ly - p.gap) / cellH;
+
+        if (ti < 0 || ti >= p.cols || tj < 0 || tj >= p.rows) {
+          PFCanvas::setPixel(x, y, 0, 0, 0);
+          continue;
+        }
+
+        int localX = lx - (p.gap + ti * cellW);
+        int localY = ly - (p.gap + tj * cellH);
+
+        if (localX < 0 || localX >= p.tileSize || localY < 0 || localY >= p.tileSize) {
+          PFCanvas::setPixel(x, y, 0, 0, 0);
+          continue;
+        }
+
+        int gx = localX / p.gridStep;
+        int gy = localY / p.gridStep;
+        if (gx >= p.gridCells) gx = p.gridCells - 1;
+        if (gy >= p.gridCells) gy = p.gridCells - 1;
+
+        float dist = distLUT[gy][gx];
+        float tileFreq = curFreqBase + (tj * p.cols + ti) * curFreqVar * 0.15f;
+        float wave = PFMath::fastSin(dist * tileFreq * 2.0f + phase);
+
+        uint8_t r, g, b;
+        sampleColorRamp(wave * br, r, g, b);
+        PFCanvas::setPixel(x, y, r, g, b);
+      }
+    }
+
+    PFCanvas::present();
+  }
+}

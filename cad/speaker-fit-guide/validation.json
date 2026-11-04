@@ -1,0 +1,89 @@
+[
+  {
+    "file": "Speaker_lug_gap_2p2.stl",
+    "watertight": true,
+    "one_connected_body": true
+  },
+  {
+    "file": "Speaker_lug_gap_2p6.stl",
+    "watertight": true,
+    "one_connected_body": true
+  },
+  {
+    "file": "Speaker_lug_gap_3p0.stl",
+    "watertight": true,
+    "one_connected_body": true
+  },
+  {
+    "file": "Speaker_post_guide_D5p2.stl",
+    "watertight": true,
+    "one_connected_body": true,
+    "post_centres_mm": [
+      [
+        -45.0,
+        -18.0
+      ],
+      [
+        -45.0,
+        18.0
+      ],
+      [
+        45.0,
+        -18.0
+      ],
+      [
+        45.0,
+        18.0
+      ]
+    ],
+    "post_diameter_mm": 5.2
+  },
+  {
+    "file": "Speaker_post_guide_D5p6.stl",
+    "watertight": true,
+    "one_connected_body": true,
+    "post_centres_mm": [
+      [
+        -45.0,
+        -18.0
+      ],
+      [
+        -45.0,
+        18.0
+      ],
+      [
+        45.0,
+        -18.0
+      ],
+      [
+        45.0,
+        18.0
+      ]
+    ],
+    "post_diameter_mm": 5.6
+  },
+  {
+    "file": "Speaker_post_guide_D5p9.stl",
+    "watertight": true,
+    "one_connected_body": true,
+    "post_centres_mm": [
+      [
+        -45.0,
+        -18.0
+      ],
+      [
+        -45.0,
+        18.0
+      ],
+      [
+        45.0,
+        -18.0
+      ],
+      [
+        45.0,
+        18.0
+      ]
+    ],
+    "post_diameter_mm": 5.9
+  }
+]

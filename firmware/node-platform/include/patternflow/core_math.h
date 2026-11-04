@@ -1,0 +1,194 @@
+// ═══════════════════════════════════════════════════════════
+// PatternFlow - Shared math helpers (sin LUT, fast trig, fract)
+// Used by patterns to avoid duplicating LUTs and trig wrappers.
+// Call PFMath::buildSinLUT() once from setup() before drawing.
+// License: MIT
+// ═══════════════════════════════════════════════════════════
+#pragma once
+
+// Hardware-free by design, so loadable pattern modules share this file verbatim
+// instead of carrying a second copy that can drift (abi/pf_module.h includes
+// it). A module links freestanding with no Arduino core, hence the guard —
+// nothing here uses Arduino anyway, the include is historical.
+#ifndef PF_MODULE_BUILD
+
+#endif
+#include <math.h>
+#include <stdint.h>
+
+namespace PFMath {
+
+// 1024 entries → ~0.35° resolution. 256 entries quantized small-angle
+// rotation in vortex-style patterns into visible facets; 1024 is fine
+// enough that the LUT is no longer the limiting factor. Cost: 4KB RAM.
+constexpr int SIN_LUT_SIZE = 1024;
+constexpr float TWO_PI_F = 6.28318530717958647692f;
+constexpr float INV_TWO_PI_F = 0.15915494309189533577f;
+constexpr float ANGLE_TO_LUT = INV_TWO_PI_F * (float)SIN_LUT_SIZE;
+
+inline float sinLUT[SIN_LUT_SIZE];
+inline bool sinLUTReady = false;
+
+inline void buildSinLUT() {
+  if (sinLUTReady) return;
+  for (int i = 0; i < SIN_LUT_SIZE; i++) {
+    sinLUT[i] = sinf((float)i / (float)SIN_LUT_SIZE * TWO_PI_F);
+  }
+  sinLUTReady = true;
+}
+
+// Round toward negative infinity, as an int. On this target floorf() is not an
+// instruction: GCC emits `call8 floorf` into a ~50-instruction newlib routine at
+// every use, under -O2, -Os and even -ffast-math, and __builtin_floorf makes no
+// difference. (That is the compiler, and still how it is in code compiled into
+// the firmware. In a module, abi/pf_libm.h has given floorf an exact inline
+// body since 2026-10 - bigger than what follows, because it has to be right
+// for every float.) The FPU does have a FLOOR.S, but reaching it needs inline
+// asm, and asm cannot be checked by a host test - which for a file that IS the
+// pattern SDK is the more expensive problem.
+//
+// So: truncate, which IS one instruction (TRUNC.S), and correct the one case
+// where truncation and flooring differ - a negative non-integer, where trunc
+// lands one above floor. Five instructions and no call, identical arithmetic on
+// the host and the panel, so check_math.py actually verifies what ships.
+//
+// Domain |x| < 2^31, the same limit jsMod documents below and for the same
+// reason: the cast is what does the work.
+inline int ifloor(float x) {
+  const int i = (int)x;
+  return (float)i > x ? i - 1 : i;
+}
+
+inline float floorF(float x) {
+  return (float)ifloor(x);
+}
+
+inline float fract(float x) {
+  float t = (float)(int)x;
+  if (t > x) t -= 1.0f;
+  return x - t;
+}
+
+// fminf/fmaxf are libm calls too in the firmware image - two register-window
+// frames for a comparison the FPU does in one OLT.S - and in a module, where
+// abi/pf_libm.h makes them inline, still up to three compares, because they
+// keep the library's rules for NaN and signed zeros. Written as a comparison,
+// GCC emits exactly that.
+inline float clamp(float x, float lo, float hi) {
+  return x < lo ? lo : (x > hi ? hi : x);
+}
+
+inline float clamp01(float x) {
+  return x < 0.0f ? 0.0f : (x > 1.0f ? 1.0f : x);
+}
+
+// JavaScript's `%` on floats: the sign of the dividend, the magnitude below
+// |m|. A pattern ported from the lab reaches for fmodf here. This is one
+// division and one truncation. The truncation is one instruction (TRUNC.S).
+// The division is NOT - GCC emits a call into __divsf3 for any
+// non-power-of-two divisor, verified on the shipping compiler; the comment
+// used to claim both halves were single instructions and only one of them is.
+// Against fmodf as a call into libm on every pixel - which it is in code
+// compiled into the firmware, and was in a module until 2026-10 - this is far
+// cheaper. In a module the comparison has since changed: abi/pf_libm.h makes
+// fmodf inline there, and fmodf by a constant multiplies by a reciprocal the
+// compiler folded, where this still divides. The same value
+// as fmodf to a last-bit rounding for anything a pattern feeds it; |x / m|
+// has to stay under 2^31, and m must not be 0.
+inline float jsMod(float x, float m) {
+  return x - m * (float)(int)(x / m);
+}
+
+inline float fastSin(float x) {
+  // The `& (SIZE-1)` mask wraps both positive and negative indices into
+  // [0, SIZE), so the explicit floorf + branch path is redundant. (int)
+  // truncates toward zero, which differs from floor by one bucket for
+  // negative arguments — 0.35° at 1024 entries, visually irrelevant and
+  // much cheaper in the inner loop.
+  return sinLUT[(int)(x * ANGLE_TO_LUT) & (SIN_LUT_SIZE - 1)];
+}
+
+inline float fastCos(float x) {
+  return fastSin(x + (float)M_PI_2);
+}
+
+inline float lerp(float a, float b, float t) {
+  return a + (b - a) * t;
+}
+
+// Cheap sqrt(x*x + y*y) replacement. 6.8% maximum relative error - measured
+// and pinned by toolchain/check_math.py, not the ~5% this comment used to
+// claim - and no sqrtf call, which on this target is a call into libm.
+// 0.375 is the shift-friendly coefficient, not the minimax one.
+// Use when the exact radius does not matter visually (radial fades,
+// ring patterns, distance-based hue). Saves real time on the ESP32
+// when this runs inside the pixel loop.
+inline float approxLength(float x, float y) {
+  float ax = fabsf(x);
+  float ay = fabsf(y);
+  float mx = ax > ay ? ax : ay;
+  float mn = ax > ay ? ay : ax;
+  return mx + mn * 0.375f;
+}
+
+// Fast powf replacement for exponents that VARY per pixel — a FIXED exponent
+// should be a 256-entry LUT instead (PFColor::buildPowLUT/buildPowLUTf).
+// exp2(p·log2(x)) with float bit-trick approximations (fastapprox-style):
+// 0.054% maximum relative error over x in (0,1], p in [0.2,5] - measured and
+// pinned by toolchain/check_math.py - which is invisible on an 8-bit panel,
+// and roughly an order of magnitude cheaper than libm powf on the S3.
+//
+// Domain: x > 0. x <= 0 returns 0 — note powf(0, negative) would be +inf,
+// so a caller relying on that (value clamps to full white) must branch on
+// x <= 0 itself.
+inline float fastLog2(float x) {
+  union { float f; uint32_t i; } vx = { x };
+  union { uint32_t i; float f; } mx = { (vx.i & 0x007FFFFFu) | 0x3f000000u };
+  float y = (float)vx.i * 1.1920928955078125e-7f;  // vx.i / 2^23
+  return y - 124.22551499f
+           - 1.498030302f * mx.f
+           - 1.72587999f / (0.3520887068f + mx.f);
+}
+
+inline float fastExp2(float p) {
+  if (p < -126.0f) p = -126.0f;        // below float denormal range → 0-ish
+  else if (p > 126.0f) p = 126.0f;     // keep the bit cast from overflowing
+  float offset = (p < 0.0f) ? 1.0f : 0.0f;
+  int w = (int)p;
+  float z = p - (float)w + offset;
+  union { uint32_t i; float f; } v;
+  v.i = (uint32_t)((float)(1 << 23) *
+        (p + 121.2740575f + 27.7280233f / (4.84252568f - z) - 1.49012907f * z));
+  return v.f;
+}
+
+inline float fastPow(float x, float p) {
+  if (x <= 0.0f) return 0.0f;
+  return fastExp2(p * fastLog2(x));
+}
+
+// Fast atan2 replacement — polynomial approximation, max error 2.03e-4 rad
+// (0.0116°), measured and pinned by toolchain/check_math.py. The comment used
+// to say ~0.0015 rad, which is 7.4x looser than the polynomial actually is.
+// No LUT, one divide for range reduction (a __divsf3 call, as above). Same quadrant behavior
+// and (-π, π] range as atan2f, at a fraction of the cost. atan2f is the most
+// expensive common per-pixel call; use this for angle-driven patterns whose
+// center MOVES. For a fixed panel-center angle, prefer the precomputed
+// PFTables::thetaT (core_tables.h) — that one is free.
+inline float fastAtan2(float y, float x) {
+  float ax = fabsf(x);
+  float ay = fabsf(y);
+  float mx = ax > ay ? ax : ay;
+  if (mx == 0.0f) return 0.0f;  // atan2(0, 0) is undefined; return 0 like most libms
+  float mn = ax > ay ? ay : ax;
+  float a = mn / mx;  // [0, 1]
+  // atan(a) on [0, 1] — minimax cubic-in-a² polynomial.
+  float s = a * a;
+  float r = ((-0.0464964749f * s + 0.15931422f) * s - 0.327622764f) * s * a + a;
+  if (ay > ax) r = 1.57079637f - r;
+  if (x < 0.0f) r = 3.14159274f - r;
+  if (y < 0.0f) r = -r;
+  return r;
+}
+
+} // namespace PFMath

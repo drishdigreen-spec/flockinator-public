@@ -1,0 +1,9 @@
+sample_id,part,filament_product,colour_sku,batch,nozzle_mm,layer_plan_mm,plate_finish,measured_thickness_mm,panel_brightness_percent,registration,colour_cast,hotspots,bleed,viewing_angle,flatness,temperature_C,decision,notes
+P01,full64x64_grid_3mm,PLA Basic,Black 10101,,,,,,,,,,,,,,pending,
+P02,full_panel_sheet_0.3mm,PLA Basic,Jade White 10100,,,,,,,,,,,,,,pending,
+P03,full_panel_sheet_0.3mm,PLA Matte,Ivory White 11100,,,,,,,,,,,,,,pending,
+P04,stock_corner_and_straight_skins,PLA Basic,Jade White 10100,,,,,,,,,,,,,,pending,
+P05,full64x64_grid_6mm,PLA Basic,Black 10101,,,,,,,,,,,,,,optional,
+P06,full_panel_sheet_0.5mm,PLA Basic,Jade White 10100,,,,,,,,,,,,,,optional,
+P07,full64x64_grid_3mm,PLA Matte,Charcoal 11101,,,,,,,,,,,,,,pending,
+P08,stock_corner_and_straight_skins,PLA Matte,Ivory White 11100,,,,,,,,,,,,,,pending,

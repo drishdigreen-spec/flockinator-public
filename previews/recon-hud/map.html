@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"><title>Flockinator · Shared world</title></head>
+<body class="map-page"><main>
+<header><div class="eyebrow">FLOCKINATOR / SCRIPTED PRESENTATION</div><h1>Shared world</h1></header>
+<section id="mission-map-section" aria-label="Shared world presentation">
+<div class="map-toolbar"><button id="map-fullscreen">Full screen</button><span id="map-status" role="status" aria-live="off">Connecting to camera preview…</span></div>
+<canvas id="mission-map" width="1280" height="720" role="img" aria-label="Waiting for shared world positions"></canvas>
+<p class="caption">Cyan: airborne · grey: parked · red ×: lost (position held) · white: selected. Square flashes: orange TX / green RX.</p>
+<p class="caption">Terrain matches the camera ground pattern in fictional units. Red/blue contact dots: scripted reports at illustrative locations. This tab follows its camera preview; it does not control hardware or direct missions.</p>
+</section></main><script type="module" src="map-app.mjs"></script></body></html>

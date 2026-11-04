@@ -1,0 +1,33 @@
+{
+  "valid_shape_objects": 273,
+  "invalid": [],
+  "print_ready": false,
+  "pitch_mm": 200,
+  "acrylic_trial_mm": 6,
+  "panel_face_mm": 160,
+  "speaker_proxy_mm": [
+    99.5,
+    44.8,
+    21.3
+  ],
+  "outer_channel_radius_mm": 37.9,
+  "notes": [
+    "Shape validity only, not interference or engineering validation",
+    "Merged rounded channel network; production seams unresolved",
+    "Pixel texture is illustrative 32x32, not optical tooling",
+    "Electronics and connector positions are unmeasured proxies"
+  ],
+  "carrier_tiles": 4,
+  "tile_max_envelope_mm": [
+    429.25,
+    429.25,
+    6
+  ],
+  "tile_seam_mm": 1.5,
+  "brace_trial_section_mm": [
+    20,
+    25,
+    2
+  ],
+  "speaker_opening_structure_projection_conflicts": []
+}

@@ -1,0 +1,4 @@
+{"id": "false-beacon-001", "seed": 271828, "plane": "app", "targets": ["lab"],
+ "authorised": false,
+ "attacks": [{"module": "kulira-deceive", "action": "false-observation", "at_s": 30, "duration_s": 60, "intensity": 1}],
+ "limits": {"max_duration_s": 600, "intensity_cap": 3, "require_management_health": true}}

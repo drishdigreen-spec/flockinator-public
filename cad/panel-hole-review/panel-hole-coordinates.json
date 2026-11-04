@@ -1,0 +1,154 @@
+{
+  "source": "references/repos/RGB-Matrix-Px-xx/hardware/dimensions/RGB-Matrix-Pxx-64x64/RGB-Matrix-P2_5-64x64-2D.dwg",
+  "sha256": "ff21d199516ebd563c5bbe0ff118daf3771337165403ea4d60e621ee905582d7",
+  "drawing_center_xy": [
+    113.90633644760001,
+    203.0029536532
+  ],
+  "drawing_shell_size_mm": 159.8,
+  "shell_tolerance_mm": 0.1,
+  "nominal_panel_pitch_mm": 160,
+  "M3_edge_holes": [
+    {
+      "entity_handle": "AC8",
+      "center_relative_panel_mm": [
+        -45.0,
+        -73.0
+      ],
+      "drawn_radius_mm": 1.25
+    },
+    {
+      "entity_handle": "B04",
+      "center_relative_panel_mm": [
+        -73.0,
+        -45.0
+      ],
+      "drawn_radius_mm": 1.25
+    },
+    {
+      "entity_handle": "B1F",
+      "center_relative_panel_mm": [
+        -73.0,
+        45.0
+      ],
+      "drawn_radius_mm": 1.25
+    },
+    {
+      "entity_handle": "B3A",
+      "center_relative_panel_mm": [
+        -45.0,
+        73.0
+      ],
+      "drawn_radius_mm": 1.25
+    },
+    {
+      "entity_handle": "B88",
+      "center_relative_panel_mm": [
+        45.0,
+        -73.0
+      ],
+      "drawn_radius_mm": 1.25
+    },
+    {
+      "entity_handle": "C03",
+      "center_relative_panel_mm": [
+        73.0,
+        -45.0
+      ],
+      "drawn_radius_mm": 1.25
+    },
+    {
+      "entity_handle": "C6B",
+      "center_relative_panel_mm": [
+        73.0,
+        45.0
+      ],
+      "drawn_radius_mm": 1.25
+    },
+    {
+      "entity_handle": "C89",
+      "center_relative_panel_mm": [
+        45.0,
+        73.0
+      ],
+      "drawn_radius_mm": 1.25
+    }
+  ],
+  "corner_3p1mm_features": [
+    {
+      "entity_handle": "AC6",
+      "center_relative_panel_mm": [
+        -72.5,
+        -72.5
+      ],
+      "drawn_radius_mm": 1.55
+    },
+    {
+      "entity_handle": "B2A",
+      "center_relative_panel_mm": [
+        -72.5,
+        72.5
+      ],
+      "drawn_radius_mm": 1.55
+    },
+    {
+      "entity_handle": "B86",
+      "center_relative_panel_mm": [
+        72.5,
+        -72.5
+      ],
+      "drawn_radius_mm": 1.55
+    },
+    {
+      "entity_handle": "C87",
+      "center_relative_panel_mm": [
+        72.5,
+        72.5
+      ],
+      "drawn_radius_mm": 1.55
+    }
+  ],
+  "M3_coordinates_top_left_nominal_mm": [
+    [
+      35.0,
+      153.0
+    ],
+    [
+      7.0,
+      125.0
+    ],
+    [
+      7.0,
+      35.0
+    ],
+    [
+      35.0,
+      7.0
+    ],
+    [
+      125.0,
+      153.0
+    ],
+    [
+      153.0,
+      125.0
+    ],
+    [
+      153.0,
+      35.0
+    ],
+    [
+      125.0,
+      7.0
+    ]
+  ],
+  "basis": "M3-labelled edge holes selected by matching circle geometry and annotations. Corner features are separately dimensioned 145 mm apart; do not equate their diameter callout to a verified thread specification.",
+  "near_far_offsets_nominal_mm": [
+    7,
+    35
+  ],
+  "near_far_offsets_shell_mm": [
+    6.9,
+    34.9
+  ]
+}

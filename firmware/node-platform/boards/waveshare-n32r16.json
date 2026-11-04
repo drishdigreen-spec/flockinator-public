@@ -1,0 +1,29 @@
+{
+  "build": {
+    "core": "esp32",
+    "mcu": "esp32s3",
+    "f_cpu": "240000000L",
+    "f_flash": "80000000L",
+    "flash_mode": "dout"
+  },
+  "frameworks": [
+    "espidf"
+  ],
+  "name": "Waveshare ESP32-S3-RGB-Matrix N32R16",
+  "upload": {
+    "flash_size": "32MB",
+    "maximum_size": 8388608,
+    "maximum_ram_size": 327680,
+    "require_upload_port": true,
+    "speed": 921600
+  },
+  "vendor": "Waveshare",
+  "url": "https://docs.waveshare.com/ESP32-S3-RGB-Matrix",
+  "connectivity": [
+    "wifi",
+    "bluetooth"
+  ],
+  "debug": {
+    "openocd_target": "esp32s3.cfg"
+  }
+}

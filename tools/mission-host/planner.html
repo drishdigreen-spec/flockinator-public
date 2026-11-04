@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mission planner · Flockinator</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/planner.css"><script type="module" src="/planner.js"></script></head>
+<body><main><nav><a href="/">← Live mission control</a><a href="/lab">Communication lab →</a><span>FLOCKINATOR / EXERCISE BOARD</span></nav>
+<header><div><p>FIELD OPERATIONS</p><h1>Mission planner</h1><p>Plot a search, rehearse it and compare the contact reports.</p></div><strong id="phase">Connecting…</strong></header>
+<section><div class="line"><h2>Scenario draw</h2><span id="scenario-info"></span></div>
+<p>Draw a new board with different search conditions and zero to 24 contacts. Some tiles can fall beyond the return budget.</p>
+<div class="fields"><label>Scenario seed (optional)<input id="scenario-seed" type="number" min="0" max="4294967295" placeholder="Random"></label>
+<button type="button" id="randomize" disabled>Generate scenario</button></div></section>
+<div class="workspace"><section class="sector"><div class="line"><h2>Search sector</h2><span id="coverage">16 × 12 tiles</span></div>
+<canvas id="board" width="816" height="628" tabindex="0" aria-label="Search sector, 16 columns by 12 rows. Use arrow keys to move and Enter to place. Coordinate inputs follow."></canvas>
+<div class="legend"><span>△ Home</span><span>◎ Focus</span><span>▧ Tree line</span><span>■ Seen</span><span>◇ Contact</span></div>
+<fieldset id="tools" disabled><legend>Plot on the board</legend><div class="fields">
+<label>Map tool<select id="tool"><option value="focus">Move search focus</option><option value="Enemy">Place enemy</option><option value="Friendly">Place friendly</option><option value="waypoint">Plot unit waypoint</option><option value="erase">Erase contact</option></select></label>
+<label>Priority<select id="priority"><option>Normal</option><option>High</option></select></label>
+<label>Unit<select id="unit"></select></label></div>
+<details><summary>Enter a tile or revise a route</summary><div class="fields"><label>Column (1–16)<input type="number" id="col" min="1" max="16" value="8"></label><label>Row (1–12)<input type="number" id="row" min="1" max="12" value="4"></label><button id="place">Apply to tile</button></div><div class="actions"><button id="undo">Undo unit waypoint</button><button id="preset">Restore unit preset</button></div></details></fieldset></section>
+<section class="brief"><h2>Flight plan</h2><fieldset id="config" disabled><legend>Search settings</legend>
+<label>Pattern<select id="pattern"><option>Tree-line fan</option><option>Search grid</option></select></label>
+<label>Deployed units<select id="count"><option>4</option><option>8</option><option>16</option></select></label>
+<label>Tree cover<select id="cover"><option>Open</option><option>Patchy</option><option>Dense</option></select></label>
+<label>Battery per unit<select id="battery"><option value="16">16 points</option><option value="30">30 points</option><option value="44">44 points</option></select></label></fieldset>
+<h3>Return margin</h3><p id="budget"></p><h3>Visibility</h3><p id="odds"></p><p class="note">Odds apply once per unit per contact. A high-priority sighting requests an independent check.</p>
+<div class="actions"><button id="play" class="primary" disabled>Run rehearsal</button><button id="pause" disabled>Pause</button><button id="edit" disabled>Edit plan</button></div>
+<p class="note">This shared rehearsal runs on Vivek. The physical panels continue their scripted mission.</p></section></div>
+<p id="error" role="alert"></p><section><div class="line"><h2>Contact reports</h2><label class="toggle"><input type="checkbox" id="truth" checked> Show planner truth</label></div><p id="report-summary"></p><p id="debrief"></p><div id="contacts"></div>
+<details><summary>Exercise draw</summary><p id="seed"></p><button id="reroll">Use a new draw</button></details></section>
+<section><h2>Exercise memory</h2><p>Download time-stamped observations, decision rules and simulated messages for each deployed unit. The director file holds the scenario truth.</p>
+<div class="fields"><label>Rehearsal<select id="episodes"></select></label><a id="download" hidden>Download journals (.zip)</a></div><p id="card-status" class="note"></p></section>
+<section><h2>Unit log</h2><p class="note">One tile step costs one point. Every unit keeps three points for landing.</p><div id="units"></div></section></main></body></html>

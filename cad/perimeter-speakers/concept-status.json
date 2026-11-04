@@ -1,0 +1,15 @@
+{
+  "status": "Carrier v1 prototypes exported; owner confirmed primary speaker dimensions; physical carrier fit pending",
+  "panel_array_nominal_mm": [
+    640,
+    640
+  ],
+  "reported_magnetic_standoff_mm": 12,
+  "speakers": 16,
+  "single_carriers": 8,
+  "twin_carriers": 4,
+  "speaker_dimensions_owner_confirmed": true,
+  "exported_hole_positions_verified": true,
+  "carrier_physical_fit_verified": false,
+  "printable_speaker_parts_created": true
+}

@@ -1,0 +1,103 @@
+{
+  "status": "Fresh style/engineering study, not hardware-fit or slicer verified",
+  "parts": [
+    {
+      "part": "Housing",
+      "valid": true,
+      "mesh_solid": true,
+      "solids": 1,
+      "triangles": 8294,
+      "bounds_mm": [
+        180.0,
+        235.00000000000045,
+        159.2554300139574
+      ]
+    },
+    {
+      "part": "TextInlay",
+      "valid": true,
+      "mesh_solid": true,
+      "solids": 10,
+      "triangles": 2792,
+      "bounds_mm": [
+        3.9877696161425487,
+        102.91429130502043,
+        9.836424917583031
+      ]
+    },
+    {
+      "part": "BezelInlay",
+      "valid": true,
+      "mesh_solid": true,
+      "solids": 1,
+      "triangles": 32,
+      "bounds_mm": [
+        35.35590092961118,
+        182.0,
+        96.0196573918255
+      ]
+    },
+    {
+      "part": "Base",
+      "valid": true,
+      "mesh_solid": true,
+      "solids": 1,
+      "triangles": 2908,
+      "bounds_mm": [
+        180.0,
+        235.0,
+        3.0
+      ]
+    }
+  ],
+  "overlaps": [
+    {
+      "parts": [
+        "Housing",
+        "TextInlay"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "BezelInlay",
+        "Housing"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "BezelInlay",
+        "TextInlay"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "Base",
+        "Housing"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "Base",
+        "TextInlay"
+      ],
+      "overlap_mm3": 0.0
+    },
+    {
+      "parts": [
+        "Base",
+        "BezelInlay"
+      ],
+      "overlap_mm3": 0.0
+    }
+  ],
+  "master_fully_constrained": true,
+  "screen_rake_from_vertical": 20,
+  "deck_from_horizontal": 15,
+  "shell_origin": "base footprint centre, Z=0 at base bottom",
+  "mesh_tolerance_mm": 0.01,
+  "mesh_angle_deg": 5
+}

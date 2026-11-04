@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.16)
+if(NOT DEFINED ENV{KORVO_SDK_PATH})
+    message(FATAL_ERROR "Set KORVO_SDK_PATH to the pinned esp-dev-kits checkout; see README.md")
+endif()
+set(EXTRA_COMPONENT_DIRS "$ENV{KORVO_SDK_PATH}/examples/esp32-s31-korvo/examples/common_components/esp32_s31_korvo")
+include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+project(flockinator_korvo_monitor VERSION 0.9.0)

@@ -1,0 +1,139 @@
+{
+  "status": "v1 reference-based prototype exports checked; later actual body measurement differs; mounting depth and physical fit pending",
+  "speaker_body_mm": [
+    99.5,
+    44.8,
+    21.2987
+  ],
+  "speaker_mount_pattern_mm": [
+    90,
+    36
+  ],
+  "source_T": "../panel-hole-review/Flockinator-T-joint-v2.step",
+  "coordinate_convention": "X along panel edge, +Y inward, +Z rearward",
+  "speaker_flange_front_face_z": -3.0,
+  "speaker_rearmost_z": 8.15,
+  "nominal_whiteboard_z_assumption": 12,
+  "nominal_whiteboard_clearance_mm": 3.8499999999999996,
+  "speaker_body_gap_to_panel_edge_mm": 15,
+  "bracket_speaker_hole_diameter_mm": 4.0,
+  "fastener_basis": "Provisional M3 with broad washers appropriate to the actual speaker lugs/grommets; model flange opening 6.3 mm is not an M6 thread specification.",
+  "parts": {
+    "single-left": {
+      "stem": "Flockinator-T-speaker-single-left-v1",
+      "quantity": 4,
+      "speaker_centres_x_mm": [
+        -20
+      ],
+      "speaker_mounts_xy_mm": [
+        [
+          -65,
+          -19.4
+        ],
+        [
+          25,
+          -19.4
+        ]
+      ],
+      "bounds_mm": [
+        112.0,
+        66.4,
+        12.000000000000002
+      ],
+      "volume_mm3": 10261.557048013012,
+      "valid_solid": true,
+      "original_T_preserved": true,
+      "STEP_holes_match": true,
+      "STL_transform": "180 degrees about X then translate Z +6 mm; print orientation differs from assembly STEP",
+      "print_requires_supports": true,
+      "STL_checks": {
+        "watertight": true,
+        "single_connected_body": true,
+        "hole_count": 8,
+        "hole_center_error_mm": 3.377661086859836e-07,
+        "print_min_z_mm": 0
+      }
+    },
+    "single-right": {
+      "stem": "Flockinator-T-speaker-single-right-v1",
+      "quantity": 4,
+      "speaker_centres_x_mm": [
+        20
+      ],
+      "speaker_mounts_xy_mm": [
+        [
+          -25,
+          -19.4
+        ],
+        [
+          65,
+          -19.4
+        ]
+      ],
+      "bounds_mm": [
+        112.0,
+        66.4,
+        12.0
+      ],
+      "volume_mm3": 10261.557047722916,
+      "valid_solid": true,
+      "original_T_preserved": true,
+      "STEP_holes_match": true,
+      "STL_transform": "180 degrees about X then translate Z +6 mm; print orientation differs from assembly STEP",
+      "print_requires_supports": true,
+      "STL_checks": {
+        "watertight": true,
+        "single_connected_body": true,
+        "hole_count": 8,
+        "hole_center_error_mm": 3.377661086859836e-07,
+        "print_min_z_mm": 0
+      }
+    },
+    "twin": {
+      "stem": "Flockinator-T-speaker-twin-v1",
+      "quantity": 4,
+      "speaker_centres_x_mm": [
+        -55,
+        55
+      ],
+      "speaker_mounts_xy_mm": [
+        [
+          -100,
+          -19.4
+        ],
+        [
+          -10,
+          -19.4
+        ],
+        [
+          10,
+          -19.4
+        ],
+        [
+          100,
+          -19.4
+        ]
+      ],
+      "bounds_mm": [
+        212.0,
+        66.4,
+        12.0
+      ],
+      "volume_mm3": 15077.581424712202,
+      "valid_solid": true,
+      "original_T_preserved": true,
+      "STEP_holes_match": true,
+      "STL_transform": "180 degrees about X then translate Z +6 mm; print orientation differs from assembly STEP",
+      "print_requires_supports": true,
+      "STL_checks": {
+        "watertight": true,
+        "single_connected_body": true,
+        "hole_count": 10,
+        "hole_center_error_mm": 3.377661086859836e-07,
+        "print_min_z_mm": 0
+      }
+    }
+  },
+  "latest_hardware_measurement": "speaker-reference/owner-measurements.json",
+  "clearance_status": "3.85 mm is the old reference model prediction only; mounting datum for measured hardware awaits clarification"
+}

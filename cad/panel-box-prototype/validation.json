@@ -1,0 +1,27 @@
+{
+  "all_valid": true,
+  "tray_single_solid": true,
+  "vent_max_bridge_mm": 12.0,
+  "vent_rib_mm": 4.0,
+  "cradle_envelope_mm": [
+    102.0,
+    45.0,
+    20.0
+  ],
+  "post_pattern_expected_mm": [
+    92.0,
+    36.0
+  ],
+  "speaker_vs_controller_keepout_mm3": 0.0,
+  "speaker_vs_controller_keepout5p6_mm3": 0.0,
+  "clip_gap_mm": 2.1,
+  "clip_clearance_over_lug_mm": 0.2,
+  "power_plug_vs_speaker_mm3": 10440.0,
+  "power_plug_vs_tray_mm3": 0.0,
+  "status": "PASS",
+  "open_measurements": [
+    "HUB75_CENTRE/engagement on a real assembled node (controller XY provisional)",
+    "VH4 power plug + latch + cable-bend envelope (placeholder box only)",
+    "Clip retention/release force and compliant-pad need (geometry only here)"
+  ]
+}

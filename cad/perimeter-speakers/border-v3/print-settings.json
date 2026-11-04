@@ -1,0 +1,13 @@
+{
+  "format": "human-readable manufacturing requirements; not a Bambu Studio preset",
+  "status": "unsliced prototype",
+  "infill_pattern": "gyroid",
+  "infill_percent": 50,
+  "wall_loops": 5,
+  "scale_percent": 100,
+  "units": "mm",
+  "suggested_initial_material": "Bambu PLA Basic Jade White for visible parts; Basic PLA clip coupon",
+  "layer_height_mm": "select in actual printer preset; review small snap geometry",
+  "supports": "See per-part orientation notes in README; rear covers and overlap ledges need review",
+  "printer_jobs_sent": false
+}

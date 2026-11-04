@@ -1,0 +1,2 @@
+idf_component_register(SRCS "main.cpp" "ripples.cpp" "sensors.cpp" "display.cpp" "audio.cpp" "storage.cpp" "network.cpp" "maintenance.cpp" "node_link.cpp" "face_media.cpp" "mission.cpp" EMBED_FILES "faces.pack" INCLUDE_DIRS "../include" "../../shared"
+    REQUIRES esp_http_server mbedtls esp_wifi esp_netif esp_event fatfs sdmmc esp_driver_sdmmc esp_driver_i2s espressif__esp_codec_dev esp_driver_gpio esphome__esp-hub75 esp_driver_i2c waveshare__qmi8658 nvs_flash esp_psram esp_app_format app_update esp_driver_usb_serial_jtag json esp_hw_support esp_timer esp_system spi_flash)

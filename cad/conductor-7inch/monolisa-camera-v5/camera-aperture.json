@@ -1,0 +1,12 @@
+{
+  "font": "MonoLisa Code Regular",
+  "letter": "first O in FLOCK",
+  "lens_diameter_assumed_mm": 10.0,
+  "radial_clearance_mm": 0.3,
+  "aperture_diameter_mm": 10.6,
+  "bezel_plane_centre_mm": [
+    67.89252232142857,
+    128
+  ],
+  "status": "Lens size, optical view and sensor board mounting unverified; aperture axis follows screen normal"
+}
