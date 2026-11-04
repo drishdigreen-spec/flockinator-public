@@ -1,0 +1,48 @@
+{
+  "scope": "documentation-only non-weaponized survey fixtures",
+  "source_sha256": {
+    "firmware/node-platform/include/recon_render.h": "a0155d2d8b10571395a32bb5f673c2f5502fafa9b08e71f48e7f7e5b9aa7ac7f",
+    "firmware/node-platform/include/pixel_ui.h": "4fecba51ebdfb7f7a875f71d4a008cfccb41d165023f8d0e1dc0a3246b6d3844",
+    "firmware/shared/recon/model.h": "bac85e2548f128d9c4cd15eebf7b5350c196790eacd81612eb5dd69317f02039",
+    "firmware/shared/recon/font.h": "0df2c0c090294cfe0330ff809250a59ee2bf82cf9d891f1b760e957cf7d1536c",
+    "previews/recon-hud/communication.mjs": "f1db2d23734dc8e8b5dfd08c6490c357ed013ffedd5a473be0b5c9f86f2647da",
+    "previews/recon-hud/coordination.mjs": "76b8998ecc8f2002cf83052eca587508b3d887641e55387a99f96d86c9ab72fe",
+    "tools/mission-host/coordination_lab.py": "9dfc4bb763b78d8d1c83ea65fb0666f76ba5f00d98c4958924ee39c26b15cb7f"
+  },
+  "renderer": "C++ firmware recon::render, RGB565 expanded to RGB888",
+  "native_pixels": [
+    64,
+    64
+  ],
+  "published_pixels": [
+    256,
+    256
+  ],
+  "scaling": "nearest neighbour",
+  "fixtures": {
+    "default_node": "A1",
+    "receiver_node": "B1",
+    "owner_node": "C1",
+    "default_phase_seconds": 2.1,
+    "approved_phase_seconds": 0.1,
+    "crash_phase_seconds": 1.2,
+    "motion": 34,
+    "launch": 1,
+    "sensor": "NV",
+    "variation": 0,
+    "camera": 0,
+    "goal": "Observe",
+    "cycle": 1,
+    "communication_sample_seconds": [
+      0.125,
+      0.3125,
+      0.5,
+      0.75
+    ]
+  },
+  "verified": [
+    "35 renders completed",
+    "TX/RX border pixels match both flashes and both gaps",
+    "source hashes unchanged during render"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "images": 32,
+      "broken": 0,
+      "cards": 25
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "images": 32,
+      "broken": 0,
+      "cards": 25
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "images": 32,
+      "broken": 0,
+      "cards": 25
+    }
+  ],
+  "filters": "pass",
+  "details": "pass",
+  "pageErrors": []
+}

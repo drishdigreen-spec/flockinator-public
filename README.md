@@ -11,6 +11,17 @@ both. An ESP32-S31 Korvo controller hosts the web controls, tabletop planner,
 communication/learning lab, and experiment archives; a LilyGo handheld
 provides portable management.
 
+## Explore the visual guide
+
+[**Reading the swarm — illustrated field guide**](https://guruswami-ai.github.io/flockinator-public/)
+
+Follow a quadcopter survey rehearsal through 25 panel states, an illustrated
+mission timeline, a conceptual decision tree, and paired communication flashes.
+The guide explains each display and distinguishes scripted presentation from
+measured communication and learning. Read the
+[full scenario documentation](docs/scenarios/quadcopter-survey/README.md)
+or [watch the project video](https://youtu.be/C9KMvd3-J5c).
+
 ## Meta Muse models at the centre
 
 Flockinator is directed by a swarm of Meta Muse models mirroring the
