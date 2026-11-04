@@ -17,9 +17,7 @@ lanes in a 4x4 matrix, one lane per node, plus one coordinator:
 | d1-d4 | D1-D4 | `muse-spark-1.1` | low | Node evidence assessors |
 | coordinator | fleet | `muse-wonder-full-1.0` | - | Synthesis, experiment and release decisions |
 
-Workers bill API credit through Muse; the coordinator uses a
-Muse subscription route. Credentials are injected by the launcher
-and never stored in this repository. Model IDs, effort, prompts, and
+Credentials are injected by the launcher and never stored in this repository. Model IDs, effort, prompts, and
 request provenance are recorded with every assessment - a routing label
 alone is never treated as proof of which model answered.
 

@@ -40,13 +40,12 @@ right toward up. There is no external snapshot endpoint in this milestone.
 Verification from repo root:
 
 ```sh
-node --test validation/recon-hud/*.test.mjs
-node validation/recon-hud/browser-check.cjs
-node validation/recon-hud/world-browser-check.cjs
+# browser checks live with the preview; run the preview server and open it
+uv run --project tools/node-commissioner python previews/recon-hud/serve.py
 ```
 
 Sixty tests and both browser harnesses pass. Browser evidence, fixed-seed timings
-and known limitations: `../../validation/recon-hud/world-view/README.md`.
+
 The browser milestone itself did not change firmware. A subsequent authorised
 port is now firmware 0.9.0; see `../../docs/validation/world-deployment/README.md`
 for real ESP32 measurements and rollout evidence. Browser and device results

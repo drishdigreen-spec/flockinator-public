@@ -1,7 +1,7 @@
 """Fresh terminal study: FreeCAD Part Design, documented provisional hardware fit."""
 import FreeCAD as A, Part, Sketcher, math, json
 from pathlib import Path
-R=Path('/Volumes/devops/flockinator/cad/conductor-7inch/terminal-fresh-v6')
+R=Path(__file__).resolve().parent
 d=A.newDocument('FlockinatorFreshTerminalV6')
 p=d.addObject('Spreadsheet::Sheet','Params')
 rows=[('body_w',235,'mm','Design brief: wide terminal'),('body_d',180,'mm','Proposed desk footprint'),('wall',3,'mm','Brief allowed maximum'),('lid_t',2.4,'mm','Brief'),('screen_rake',20,'deg','Brief default from vertical'),('deck_angle',15,'deg','Brief'),('blend_r',8,'mm','Brief R6-15'),('corner_r',6,'mm','Brief R4-10'),('recess_depth',2,'mm','Brief'),('text_depth',.5,'mm','Brief'),('screen_active_w',154.2144,'mm','Bare LCD datasheet'),('screen_active_h',85.92,'mm','Bare LCD datasheet'),('clearance',.3,'mm','Brief'),('camera_d',10.6,'mm','Assumed 10 mm lens plus 0.6'),('screen_base_x',-35,'mm','Proposed massing'),('screen_base_z',26,'mm','Proposed massing'),('screen_plane_h',145,'mm','Screen and label band'),('front_x',-90,'mm','Proposed massing'),('rear_x',90,'mm','Proposed massing'),('floor_z',3,'mm','Base seating'),('front_z',11.263,'mm','15 degree deck'),('top_x',9.463,'mm','130*sin20 -35'),('top_z',148.160,'mm','130*cos20 +26'),('insert_hole_d',4,'mm','Brief; selected insert must be checked'),('insert_boss_d',8,'mm','Provisional >= brief minimum')]

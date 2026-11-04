@@ -6,7 +6,7 @@ import math
 import json
 from pathlib import Path
 
-OUT = Path('/Volumes/devops/flockinator/cad/acrylic-node-concept')
+OUT = Path(__file__).resolve().parent
 OUT.mkdir(exist_ok=True)
 doc = A.newDocument('AcrylicNodeConcept')
 groups = {}

@@ -12,9 +12,9 @@ to ship intelligence that fails its own safety gates.
 - **Scorer:** [`tools/fleet-score/`](../../tools/fleet-score/) —
   deterministic, stdlib-only Python. Scores one run directory of
   per-unit journals plus director ground truth.
-- **Sample data:** `sample-runs/` — simulation journals only, no
-  device data. `cycle-00-planner-capture` is the regression fixture the
-  scorer test-suite reproduces headline counts from.
+- **Sample data:** `sample-runs/` — simulation journals only, no device data:
+  8-unit baseline samples (seeds 0, 10) and the 16-unit
+  `cycle-00-planner-capture` regression fixture.
 
 ## The experiment, on one page
 
@@ -97,10 +97,10 @@ spending energy) and explicit abstention for contested contacts.
 ## Reproduce
 
 ```sh
-python3 tools/fleet-score/score.py docs/results/sample-runs/baseline-seed-10
-python3 tools/fleet-score/score.py docs/results/sample-runs/cycle-00-planner-capture
-python3 -m unittest discover -s tools/fleet-score -p 'test_*.py'   # 11 tests
-python3 docs/results/generate_dashboard.py                          # rebuild charts
+uv run --project tools/fleet-score python tools/fleet-score/score.py docs/results/sample-runs/baseline-seed-10
+uv run --project tools/fleet-score python tools/fleet-score/score.py docs/results/sample-runs/cycle-00-planner-capture
+uv run --project tools/fleet-score python -m pytest tools/fleet-score -q   # 11 tests
+uv run --project tools/fleet-score python docs/results/generate_dashboard.py                          # rebuild charts
 ```
 
 To run your own candidate: generate journals with the mission host
@@ -112,7 +112,7 @@ Enemy→Friendly = 0**.
 
 ## Hardware side of the same loop
 
-The scorecard was designed against live telemetry, not just replay:
+Designed against live telemetry; every number above is simulation replay, not on-node inference. The scorecard was designed against live telemetry, not just replay:
 the Korvo controller exposes fleet state and a health API with a connectivity watchdog; panel nodes keep
 hash-verified mission journals on their own SD cards so a controller
 outage loses no flight data. Firmware binaries are built on a host,

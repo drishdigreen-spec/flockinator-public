@@ -6,6 +6,10 @@ may run on the node, on an external host, or across both.
 
 ## System
 
+Terms: a **node** (also panel/body/unit) is one ESP32 + 64x64 display;
+a **lane** is the Muse assessor assigned to that node. Kulira is the
+adversarial host. The Korvo is the standalone controller.
+
 | Component | Role |
 |---|---|
 | 16x node (A1-D4) | ESP32-S3 body: 64x64 panel, sensors, audio, SD, health, OTA |
@@ -37,11 +41,11 @@ radio is not deployment readiness.
 | Module | Responsibility |
 |---|---|
 | `node-platform` | Node hardware, identity, lifecycle, display, sensors, audio, SD |
-| `flock-network` | Discovery, messaging, connectivity, communication events |
-| `agent-runtime` | Local/remote/hybrid brains and body/brain bindings |
-| `cluster-deployment` | Manifests, transport, activation, recovery |
+| `flock-network` | Discovery, messaging, connectivity, communication events (planned; commissioning subset in `firmware/shared/`) |
+| `agent-runtime` | Local/remote/hybrid brains and body/brain bindings (planned) |
+| `cluster-deployment` | Manifests, transport, activation, recovery (in `tools/` + firmware receivers) |
 | `management-console` | Handheld and web management interfaces |
-| `experiments` | Scenarios, observations, reproducible evaluation |
+| `experiments` | Scenarios, observations, reproducible evaluation (in `tools/`, `previews/`, `docs/results/`) |
 | `kulira-core` (+ disrupt/spoof/deceive/observe, planned) | Adversarial friction and its measurement |
 
 Build order: `node-platform` -> `flock-network` -> `agent-runtime` and

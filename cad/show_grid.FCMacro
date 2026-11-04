@@ -1,5 +1,5 @@
 import FreeCAD as App, FreeCADGui as Gui
-doc=App.openDocument('/Volumes/devops/flockinator/cad/Flockinator-grid-fit.FCStd')
+doc=App.openDocument('Flockinator-grid-fit.FCStd')
 for o in doc.Objects:
     o.ViewObject.Visibility=True
     if o.TypeId=='Mesh::Feature':
@@ -14,7 +14,7 @@ doc.Backing.ViewObject.ShapeColor=(0.3,0.3,0.32)
 Gui.updateGui()
 Gui.activeDocument().activeView().viewTop();Gui.activeDocument().activeView().fitAll()
 Gui.updateGui()
-Gui.activeDocument().activeView().saveImage('/Volumes/devops/flockinator/cad/grid-top.png',1600,1600,'White')
+Gui.activeDocument().activeView().saveImage('grid-top.png',1600,1600,'White')
 Gui.activeDocument().activeView().viewAxonometric();Gui.updateGui();Gui.activeDocument().activeView().fitAll()
 import re
 v=Gui.activeDocument().activeView()
@@ -23,6 +23,6 @@ camera=re.sub(r'nearDistance\s+[-+0-9.eE]+','nearDistance 0.1',camera)
 camera=re.sub(r'farDistance\s+[-+0-9.eE]+','farDistance 100000',camera)
 v.setCamera(camera)
 Gui.updateGui()
-Gui.activeDocument().activeView().saveImage('/Volumes/devops/flockinator/cad/grid-isometric.png',1600,1200,'White')
+Gui.activeDocument().activeView().saveImage('grid-isometric.png',1600,1200,'White')
 Gui.activeDocument().activeView().viewTop();Gui.updateGui();Gui.activeDocument().activeView().fitAll()
 doc.recompute();doc.save()

@@ -6,7 +6,7 @@ inference, built and directed with Meta Muse models.
 Sixteen independent ESP32-S3 nodes each drive a 64x64, 160x160 mm RGB
 panel. Each node is a physical body - sensing, local state, display,
 audio, SD storage - whose brain can run locally, on an external host,
-or across both. A Korvo (ESP32-S31) controller hosts the fleet controls,
+or across both. A Korvo-1 (ESP32-S31) controller hosts the fleet controls,
 planner, and learning lab; a LilyGo handheld provides portable
 management. The fleet is visualised as a fictional drone-survey swarm
 so humans can watch agents learn.
@@ -39,6 +39,7 @@ direct the experiments. Evidence and reproduction:
 |---|---|
 | Architecture and traffic classes | [docs/architecture.md](docs/architecture.md) |
 | Experimental methodology | [docs/experiments.md](docs/experiments.md) |
+| Results dashboard and methodology | [docs/results/](docs/results/README.md) |
 | Illustrated survey scenario | [docs/scenarios/quadcopter-survey/](docs/scenarios/quadcopter-survey/README.md) |
 | Hardware, components, finished CAD | [docs/hardware.md](docs/hardware.md), [cad/](cad/README.md) |
 | Build and host tools | [docs/build.md](docs/build.md) |

@@ -1,6 +1,6 @@
 # Hardware and finished models
 
-Everything needed to build the physical swarm. Only finished models are
+Everything in the public subset needed to build the physical swarm. Only finished models are
 published; design iterations and fit studies are summarised as the
 parameters below, not shipped as trees of drafts.
 

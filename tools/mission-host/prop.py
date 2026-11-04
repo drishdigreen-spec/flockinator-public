@@ -1,4 +1,4 @@
-"""Connect the identified Drishdi USB prop to the loopback mission host."""
+"""Connect the identified controller USB prop to the loopback mission host."""
 import argparse
 import fcntl
 import json
@@ -11,7 +11,7 @@ import serial
 from serial.tools.list_ports import comports
 
 IDENTITY = b'KORVO1 00:11:22:33:44:55'
-USB_SERIAL = 'a0a432d0b8bcf01180160a7148e9de0f'
+USB_SERIAL = '00000000000000000000000000000000'  # example: set your controller adapter serial
 BASE = 'http://127.0.0.1:8782'
 opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 

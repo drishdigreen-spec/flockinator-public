@@ -68,7 +68,7 @@ The old single-character `h/d/a/r/i/s` serial commands are **not the live protoc
 
 ## Build and device handling
 
-From `/Volumes/devops/flockinator`:
+From the repository root:
 
 ```sh
 $HOME run --project-dir firmware/management-console -e lilygo-s3

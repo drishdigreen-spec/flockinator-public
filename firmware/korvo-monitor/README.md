@@ -4,7 +4,7 @@ ESP32-S31 Korvo touchscreen fleet monitor and standalone web host, version 0.9.0
 4×4 physical panel overview with row/column coordinates, status counts and a
 selected-panel inspector. Tap a panel for firmware, reported uptime, free RAM and
 reading age. The selected panel has a white outline; colours always have text labels. The provisioned controller hosts the web interface, learning lab, tabletop planner,
-scripted fleet controls and SD exercise archives. Drishdi only needs a browser.
+scripted fleet controls and SD exercise archives. the browser host only needs a browser.
 The USB bridge described in bridge instructions
 is retained for recovery to older firmware. The owner confirmed the original 0.1.0
 display and touch test worked before this fleet-monitor update.
@@ -47,7 +47,7 @@ a development computer. The existing physical panel firmware remains
 
 The previous desktop plan and archives are retained on Vivek. The original plan
 was copied to the controller as a draft ready to rehearse. The 0.8.0 recovery image
-is retained on Drishdi in `~/.local/share/flockinator/korvo-release/0.8.0.bin`.
+is retained on the browser host in `~/.local/share/flockinator/korvo-release/0.8.0.bin`.
 Recovery must flash only the application at `0x10000`, preserving NVS and SD data.
 Re-enable the old LaunchAgents only after restoring the older firmware.
 

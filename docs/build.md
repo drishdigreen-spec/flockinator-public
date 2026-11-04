@@ -37,7 +37,6 @@ On SMB/network-mounted workspaces, keep virtualenvs off the mount, e.g.
 ```sh
 uv run --project tools/node-commissioner python previews/recon-hud/serve.py
 # open http://127.0.0.1:8766/
-node --test validation/recon-hud/*.test.mjs
 ```
 
 Credentials are loaded from a private local store or vault references at

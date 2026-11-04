@@ -2,7 +2,7 @@
   "name": "flockinator-validation",
   "private": true,
   "scripts": {
-    "test": "node --test validation/recon-hud/*.test.mjs validation/survey-simulator/*.test.mjs",
+    "test": "uv run --project tools/node-commissioner python -m pytest tools/node-commissioner tools/kulira-core tools/fleet-score -q",
     "test:browser": "node validation/run-browsers.mjs"
   },
   "devDependencies": {

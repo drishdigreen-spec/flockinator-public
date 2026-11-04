@@ -1,7 +1,8 @@
 """Run with FreeCAD's own runtime. Geometric study, not fabrication drawings."""
 import FreeCAD as App
 import Part, Mesh, math, os, json
-ROOT='/Volumes/devops/flockinator'
+from pathlib import Path
+ROOT=str(Path(__file__).resolve().parent.parent)
 BASE=ROOT+'/references/duality-track-system-bundle-original-track-and-evolution-pack-model_files'
 doc=App.newDocument('FlockinatorCompactFit')
 cache={}

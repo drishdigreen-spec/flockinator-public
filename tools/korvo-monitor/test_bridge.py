@@ -5,7 +5,7 @@ class Frames(unittest.TestCase):
     def test_valid(self):
         status = dict(v=1, type='status', base_mac='00:11:22:33:44:55', label='A1', firmware='0.10.1', uptime_ms=123456, free_internal=2048)
         self.assertEqual(status_frame(0, status, status['base_mac'], 'A1'), b'F1 0 1 0.10.1 123 2\n')
-        for key, value in [('label', 'A2'), ('base_mac', '00:11:22:33:44:55'), ('firmware', 'bad\nline'), ('uptime_ms', -1), ('free_internal', True)]:
+        for key, value in [('label', 'A2'), ('base_mac', '02:00:00:00:00:02'), ('firmware', 'bad\nline'), ('uptime_ms', -1), ('free_internal', True)]:
             bad = dict(status, **{key: value})
             with self.assertRaises(ValueError): status_frame(0, bad, status['base_mac'], 'A1')
     def test_long_uptime(self):

@@ -1,6 +1,6 @@
 import FreeCAD as A, Part, MeshPart, Mesh, json, math, zipfile, xml.etree.ElementTree as ET
 from pathlib import Path
-R=Path('/Volumes/devops/flockinator/cad/conductor-7inch/terminal-fresh-v6');(R/'stl').mkdir(exist_ok=True)
+R=Path(__file__).resolve().parent;(R/'stl').mkdir(exist_ok=True)
 d=A.ActiveDocument
 parts=[('Housing',d.getObject('Cut_TextInlay'),0),('TextInlay',d.getObject('Text_Inlay_Geometry'),1),('BezelInlay',d.getObject('Bezel_Inlay_Geometry'),1),('Base',d.getObject('Fillet_BaseCorners'),1)]
 meshes={};records=[]

@@ -1,0 +1,17 @@
+label,ipv4,dns_name,dhcp_reservation_mac,role,status
+A1,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+A2,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+A3,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+A4,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+B1,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+B2,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+B3,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+B4,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+C1,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+C2,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+C3,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+C4,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+D1,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+D2,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+D3,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
+D4,192.168.1.10,node.example.internal,00:11:22:33:44:55,node,example
