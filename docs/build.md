@@ -20,6 +20,7 @@ handheld; Korvo portable model checks are listed in its README.
 | `mission-host` | Browser lab, planner, and exercise memory (host-side) |
 | `survey-simulator` | Host-owned fictional survey session (Node.js) |
 | `kulira-core` | Seeded chaos-campaign orchestrator (see `tools/kulira-core/README.md`) |
+| `fleet-score` | Deterministic planner-run scorer (stdlib only; `uv run --project tools/fleet-score python -m pytest tools/fleet-score -q`) |
 
 Python is managed with uv, never system pip:
 
