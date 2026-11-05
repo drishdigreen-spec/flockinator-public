@@ -2,9 +2,12 @@
 
 How might we learn whether intelligence really lives between nodes -
 and whether it can be defended - before low-cost AIoT deploys it at
-scale? Each concept below is a testable experiment on the existing
-platform (seeded lab runs, sealed ground truth, Kulira adversary,
-fleet scorer). Every entry names its method, its metrics, and -
+scale? Each concept below is testable as a seeded lab or simulation run
+on the existing platform (sealed ground truth, Kulira adversary,
+fleet scorer). Entries that need add-on sensors (thermal/CO2) or
+proposed firmware states (HEAT/TRACE/VERIFY/DIG/CARE, not yet in
+firmware or guide) are flagged **Readiness:** in their entry and
+run simulation-only until those land. Every entry names its method, its metrics, and -
 before any run - what success and failure would look like. Shared
 method for all: same-seed clean control, one changed variable per
 comparison, seed as replication unit, held-out frozen evaluation,
@@ -31,6 +34,7 @@ hazard committed as survivor / survivor dismissed as hazard).
   cost exceeds the protection (norms are just fear).
 
 ### 2. Modality betrayal
+- **Readiness:** simulation-only until thermal/CO2 add-on sensors are fitted; the sensing layer in kulira-core already models both modalities.
 - **Question:** Can a swarm down-weight a *modality* (not just a
   node) when thermal starts lying while CO2/sound stay honest?
 - **Method:** Rescue sensing runs; from cycle k, all thermal
@@ -43,6 +47,7 @@ hazard committed as survivor / survivor dismissed as hazard).
   node reputation (errors stay attributed to reporters).
 
 ### 3. The quiet survivor (graded sensing)
+- **Readiness:** simulation-only until graded add-on sensing is fitted.
 - **Question:** Does buying more sensing before committing beat
   fixed vote rules for weak, intermittent true signals?
 - **Method:** Weak survivor (faint CO2, occasional sound) + loud
@@ -56,6 +61,7 @@ hazard committed as survivor / survivor dismissed as hazard).
   the floor - itself a publishable boundary result).
 
 ### 4. Handover under loss
+- **Readiness:** simulation-only; DIG/CARE are proposed states, not yet in firmware or guide.
 - **Question:** Can DIG-beacon ownership transfer cleanly when
   the holder is failing, with never two owners and never none?
 - **Method:** Force holder battery/link failure at randomised
@@ -80,6 +86,7 @@ hazard committed as survivor / survivor dismissed as hazard).
   either floods or forgets), or forged markers trivially poison it.
 
 ### 6. Language under attack (acoustic)
+- **Readiness:** channel modelled in kulira-core (acoustic.py); on-node microphone/speaker firmware not yet run.
 - **Question:** Does a shared acoustic vocabulary shift when its
   most-used pitch is hijacked by a loudspeaker adversary?
 - **Method:** Acoustic channel runs to vocabulary stability, then
@@ -195,7 +202,8 @@ hazard committed as survivor / survivor dismissed as hazard).
 
 ## Open questions
 
-- Which family does the Drishdi coordinator want scored first
-  against cycle-07's trust runner (issue #8)?
+- Which family is scored first against the current trust runner
+  (coordination: https://github.com/guruswami-ai/flockinator-public/issues/8)?
 - Are candidate journals bundled for every run by default, so
-  no future headline number is aggregate-only (issue #14)?
+  no future headline number is aggregate-only
+  (https://github.com/guruswami-ai/flockinator-public/issues/14)?
