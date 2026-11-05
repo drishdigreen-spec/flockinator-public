@@ -59,6 +59,9 @@ version: [learn/optimisation-in-nature.md](learn/optimisation-in-nature.md).
 Synchronised animation, packet counts, and extra observations are not,
 by themselves, evidence of cooperation or intelligence.
 
+Twelve further scenarios with methods and pre-declared
+success/failure conditions: [experiment-catalogue.md](experiment-catalogue.md).
+
 ## Reference scenario
 
 The illustrated quadcopter survey
