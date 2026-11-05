@@ -29,7 +29,7 @@ scenario is a visualisation of that question, not an operational system.
    and reversible: application/layer-1-3 interference, impersonation,
    and false reports on the experimental channel only. Network jamming
    devices are never used; management, stop, and recovery traffic is
-   never touched. See `tools/kulira-core/`.
+   never touched. Full design: [kulira-friction.md](kulira-friction.md) and `tools/kulira-core/`.
 4. **Held-out judgement.** Grade on fresh seeds with learning frozen.
    Report distributions, failures, and inconclusive results - not a
    single intelligence score.

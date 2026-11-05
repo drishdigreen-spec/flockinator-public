@@ -45,7 +45,7 @@ direct the experiments. Evidence and reproduction:
 | Build and host tools | [docs/build.md](docs/build.md) |
 | Firmware | [firmware/node-platform](firmware/node-platform/README.md), [firmware/korvo-monitor](firmware/korvo-monitor/README.md), [firmware/management-console](firmware/management-console/README.md) |
 | Browser preview | [previews/recon-hud](previews/recon-hud/README.md) |
-| Adversary tooling | [tools/kulira-core](tools/kulira-core/README.md) |
+| Adversary (Kulira) and friction plan | [docs/kulira-friction.md](docs/kulira-friction.md), [tools/kulira-core](tools/kulira-core/README.md) |
 
 ## Quick start
 

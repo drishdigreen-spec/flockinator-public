@@ -1,6 +1,7 @@
 # Kulira Core
 
-Seeded, bounded, hash-logged chaos orchestrator. See `SPEC-kulira-core.md`.
+Seeded, bounded, hash-logged chaos orchestrator. See [docs/kulira-friction.md](../../docs/kulira-friction.md) for the
+interference node, friction plan, and adversary model.
 
 ## Commands (repo root, on Kulira)
 
