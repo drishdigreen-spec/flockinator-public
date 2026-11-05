@@ -23,3 +23,11 @@ def test_bundled_policies_differ_at_unit_trust():
     world2 = [dict(world[0], truth="survivor")]
     assert score_world(world2, "E")["committed"] == 0
     assert score_world(world2, "COMP")["committed"] == 1
+
+from kulira_core.composite import run_factorial
+
+def test_factorial_cells_consistent_with_policies():
+    # F-T0 must reproduce E exactly on identical streams; L-T1, COMP
+    out = run_factorial(range(200, 220))
+    assert set(out) == {"F-T0", "F-T1", "L-T0", "L-T1"}
+    assert all(v["forged_dangerous"] == 0 for v in out.values())
