@@ -8,7 +8,8 @@ decisions that fast - our senses overload following even one or two
 birds. Flockinator rebuilds that puzzle with sixteen small robot
 panels so we can slow it down, measure it, attack it, and learn how
 groups become smarter than their members - and how that smartness
-can be stolen.
+can be stolen. The same channels that make a group capable also
+make it attackable; that is why trust is tested, not assumed.
 
 ## The seven ideas
 
@@ -49,4 +50,5 @@ can be stolen.
 The illustrated mission: [search-and-rescue survey guide](../scenarios/quadcopter-survey/README.md).
 The moving preview: [recon HUD](../../previews/recon-hud/README.md).
 Ready for the method? [Experimental methodology](../experiments.md).
+Ready for the scoreboard? [Results lab book](../results/README.md).
 Ready for the attacks? [Attack taxonomy](../attack-taxonomy.md).
