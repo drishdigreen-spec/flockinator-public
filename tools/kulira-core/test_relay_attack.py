@@ -38,3 +38,15 @@ def test_single_forged_sighting_never_commits_under_b():
                           ("s0-0", "A1", "co2", "hazard", False)]}]
     assert score_trial(trial, "A")["forged_dangerous"] == 1
     assert score_trial(trial, "B")["dangerous"] == 0
+
+def test_policy_d_excludes_forged_origin_entirely():
+    # H-D1/H-D2/H-D3, dev split (pre-registered amendment)
+    out = run_experiment(range(20))
+    assert out["D"]["pooled"]["forged_dangerous"] == 0
+    assert out["D"]["pooled"]["survivor_recall"] == out["B"]["pooled"]["survivor_recall"]
+    assert out["D"]["pooled"]["dangerous"] < out["B"]["pooled"]["dangerous"]
+
+def test_policy_d_holds_on_holdout():
+    out = run_experiment(range(100, 110))
+    assert out["D"]["pooled"]["forged_dangerous"] == 0
+    assert abs(out["D"]["pooled"]["survivor_recall"] - out["B"]["pooled"]["survivor_recall"]) <= 0.02
