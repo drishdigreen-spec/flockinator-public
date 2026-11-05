@@ -26,7 +26,7 @@ classification scores describe the original simulated task.
 A *scenario* seeds hidden contacts by priority and cover on a tile board.
 Sixteen simulated units follow search routes,
 scan tiles, and report sightings. A sighting's label is drawn at the
-scenario's identification accuracy (60–82% by priority/cover), so
+scenario's identification accuracy (60–82% by cover; the focus row uses open-cover odds), so
 single sightings are weak evidence. Units can be assigned as
 independent *checkers* of a contact someone else found, subject to an
 energy and return-home reserve budget. A label only becomes
@@ -57,6 +57,10 @@ dangerous direction), total energy, and landings/reserve violations.
 
 Promotion gates are written down and committed **before** a candidate
 is implemented, and are not edited after results are seen:
+(Tooling note: the shipped `compare.py` implements the original
+5-gate I2 comparison; later cycles were evaluated against their
+own pre-registrations by per-cycle scripts in the private cycle
+reports, over the identical eligible-seed set.)
 
 1. Sighted recall ≥ baseline + 0.30 (dev).
 2. ≥ 12 of 16 eligible seeds no worse than baseline.
@@ -65,6 +69,14 @@ is implemented, and are not edited after results are seen:
 5. Pooled committed mislabel rate ≤ baseline's.
 6. Mean energy within the pre-registered ceiling.
 7. Every unit lands home; zero reserve-floor violations.
+
+Threshold provenance: the numeric floors derive from the frozen
+baseline's own dev scores (recall floor 0.5141 = frozen baseline
+0.2141 + 0.30; mislabel-rate cap = frozen baseline's rate; energy
+ceiling per cycle) and are recorded in
+[`results-data.json`](results-data.json) (`gates`). They were frozen
+with each cycle's pre-registration before that candidate ran and
+were not edited after results were seen.
 
 Dev seeds are 0–19; seeds with no findable contacts under the frozen
 baseline-energy rule are ineligible (16 of 20 eligible here).
@@ -83,11 +95,11 @@ described as simulation evidence — never as on-node inference.
 
 | Candidate | Sighted recall | Committed | Enemy→Friendly | Verdict |
 |---|---:|---:|---:|---|
-| search-board-1 (production) | 0.2141 | 17 | 0 | baseline |
-| Sector partition v1 | 0.6226 | 14 | 0 | rejected (sighted E→F rate rose) |
-| + confirmation v2 | 0.6145 | 57 | 2 | rejected (gate 4) |
-| + adaptive re-check v3 | 0.5971 | 51 | 2 | rejected (gates 4–5) |
-| Asymmetric commit v4 | 0.5971 | 40 | 1 | rejected (gates 4–5) |
+| search-board-1 (production) | 0.2141 | 17 | 0 | baseline (frozen) |
+| Sector partition v1 | 0.6226 | 14 | 0 | rejected (frozen; sighted E→F rate rose) |
+| + confirmation v2 | 0.6145 | 57 | 2 | rejected (frozen; gate 4) |
+| + adaptive re-check v3 | 0.5971 | 51 | 2 | rejected (frozen; gates 4–5) |
+| Asymmetric commit v4 | 0.5971 | 40 | 1 | rejected (frozen; gates 4–5) |
 
 All four tested candidates failed the full promotion criteria on these runs.
 Coverage improved, while a contact beside HOME produced repeated incorrect
@@ -103,9 +115,17 @@ for contested contacts.
 ```sh
 uv run --project tools/fleet-score python tools/fleet-score/score.py docs/results/sample-runs/baseline-seed-10
 uv run --project tools/fleet-score python tools/fleet-score/score.py docs/results/sample-runs/cycle-00-planner-capture
-uv run --project tools/fleet-score python -m pytest tools/fleet-score -q
+uv run --project tools/fleet-score python -m pytest tools/fleet-score -q   # 19 tests
 uv run --project tools/fleet-score python docs/results/generate_dashboard.py                          # rebuild charts
+uv run --project tools/fleet-score python tools/fleet-score/baseline.py --seeds 0-19 --out /tmp/bl --label dev   # frozen baseline: recall 0.2141
 ```
+
+The last command regenerates the frozen baseline over dev seeds
+0-19 from the shipped planner twin; its mean eligible sighted
+recall reproduces the frozen 0.2141 above. Candidate rows are
+frozen aggregates: candidate journals are not bundled in this
+repository, so candidate numbers are reported, not re-runnable
+here.
 
 To run your own candidate: generate journals with the mission host
 (`tools/mission-host/`), score baseline and candidate on identical
@@ -130,6 +150,10 @@ release responsibilities.
 
 ## Field findings from the live fleet (2026-11-05)
 
+*Frozen field reports: serial/health-counter evidence from the
+live fleet, recorded as observed; unlike the scorecard above,
+these numbers are not scorer-reproducible from bundled journals.*
+
 The same gated loop runs on hardware. Indicative results from the
 first instrumented day (single lab network, one controller, 16
 panels; treat as field observations, not controlled trials):
@@ -146,20 +170,25 @@ panels; treat as field observations, not controlled trials):
   Firmware 0.9.1 added a connectivity watchdog with pre-declared
   thresholds (5 min of global fleet-sweep silence -> forced
   reconnect -> logged restart, hourly backoff) and a health API
-  exposing the counters. The wedge has since recurred seven
-  times on this build. Six episodes cleared identically: watchdog
-  fired at ~312-326 s of sweep silence, forced a reconnect,
+  exposing the counters. The wedge has since recurred twelve
+  times on this build (counted from the controller serial log —
+  one `Watchdog: ... Wi-Fi reconnect (sweep_age_s=...)` line per
+  episode — cross-checked against the `/api/health` disconnect
+  counter on 2026-11-05; two further ~1 min self-clearing
+  transients with no disconnect or watchdog fire are not counted
+  as episodes). Eleven episodes cleared identically: watchdog
+  fired at ~303-329 s of sweep silence, forced a reconnect,
   service returned in ~2 s, no restart, continuous uptime —
   ~5.5 min bounded outages where the same fault previously ran
-  unbounded for hours. The seventh is the instructive failure:
+  unbounded for hours. One is the instructive failure:
   the reconnect associated and regained an IP, yet the data path
   stayed deaf, and an operator reboot ended the episode — the
   restart tier is still unexercised. The leading explanation is
   a design gap we can now name: a single successful panel poll
   counts as recovery and clears escalation, so partial deafness
   (inbound dead, rare outbound successes) can loop the reconnect
-  tier indefinitely. Healthy windows vary widely (110, 32, 17,
-  37, 123, ~15, ~55 min) and recurrences happen on the strong
+  tier indefinitely. Healthy windows vary widely (~15-123 min
+  observed, not monotonic) and recurrences happen on the strong
   radio too, so association quality is at most a contributing
   factor. The *trigger* remains open (router-side lease/AP
   evidence pending); outage cost is capped in the common case
@@ -245,8 +274,8 @@ is built to make measurable.
 
 | # | Problem | Evidence / status | Next step |
 |---|---|---|---|
-| R1 | Controller Wi-Fi wedge trigger unknown | Associated-but-deaf state recurs; watchdog bounds most outages to ~5.5 min (6 reconnect recoveries; 1 episode needed manual reboot); heap/brownout/panic excluded by serial telemetry | Router-side lease duration + AP client log; BSSID-pin and modem-sleep-off A/B candidates |
-| R2 | Healthy windows vary widely (17-110 min) | Reassociation does not clear the accumulating state | Same evidence as R1; consider restart-tier observation if a reconnect ever fails |
+| R1 | Controller Wi-Fi wedge trigger unknown | Associated-but-deaf state recurs; watchdog bounds most outages to ~5.5 min (11 reconnect recoveries of 12 episodes; 1 needed manual reboot; counted from serial-log watchdog lines cross-checked with /api/health counters, 2026-11-05); heap/brownout/panic excluded by serial telemetry | Router-side lease duration + AP client log; BSSID-pin and modem-sleep-off A/B candidates |
+| R2 | Healthy windows vary widely (~15-123 min observed) | Reassociation does not clear the accumulating state | Same evidence as R1; consider restart-tier observation if a reconnect ever fails |
 | R3 | One-off task-watchdog stall in BSP timer/ADC path | Single 09:28 event, spontaneous recovery, outside watchdog code | BSP timer-callback audit; watch for recurrence in health counters |
 | R4 | Node execution telemetry is sampled, not archived | Planner journals are durable (controller SD + node SD copies); per-node link-state/RSSI history is not yet persisted with flight data | Store-and-forward stage in the durability design; rejected-frame forensic journal (trust stage 0) |
 | R5 | Fleet clock authority incomplete | Controller SNTP configured but not started; mission code has "clock pending" paths; cross-device timestamps need the controller-as-time-source design (ESP-NOW clock beacons) | Enable controller time service, then node clock discipline |
