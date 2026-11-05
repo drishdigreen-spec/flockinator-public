@@ -227,6 +227,19 @@ highly-coupled systems — and where the efficiency actually lives
 bookkeeping) — is itself an open research question this framework
 is built to make measurable.
 
+## Residual problems (open at competition freeze, 2026-11-05)
+
+| # | Problem | Evidence / status | Next step |
+|---|---|---|---|
+| R1 | Controller Wi-Fi wedge trigger unknown | Associated-but-deaf state recurs; watchdog bounds outages to ~5.5 min (4 live recoveries); heap/brownout/panic excluded by serial telemetry | Router-side lease duration + AP client log; BSSID-pin and modem-sleep-off A/B candidates |
+| R2 | Healthy windows vary widely (17-110 min) | Reassociation does not clear the accumulating state | Same evidence as R1; consider restart-tier observation if a reconnect ever fails |
+| R3 | One-off task-watchdog stall in BSP timer/ADC path | Single 09:28 event, spontaneous recovery, outside watchdog code | BSP timer-callback audit; watch for recurrence in health counters |
+| R4 | Node execution telemetry is sampled, not archived | Planner journals are durable (controller SD + node SD copies); per-node link-state/RSSI history is not yet persisted with flight data | Store-and-forward stage in the durability design; rejected-frame forensic journal (trust stage 0) |
+| R5 | Fleet clock authority incomplete | Controller SNTP configured but not started; mission code has "clock pending" paths; cross-device timestamps need the controller-as-time-source design (ESP-NOW clock beacons) | Enable controller time service, then node clock discipline |
+| R6 | No in-band key rotation | Node maintenance accepts only the identical provisioned key; capture recovery is physical re-provisioning | Key-epoch design before any relayed mesh (see trust families) |
+| R7 | Judgement ceiling at current sensing | Four gated commit policies rejected; no vote rule reaches Enemy->Friendly = 0 at 60-82% identify accuracy | Graded sensing pre-registration (accuracy earned by energy spend) |
+| R8 | Trust policies unmeasured | Scorer segregates unverifiable reports; adversarial-review fixes are frozen in an amendment, treatments not yet run | Fix round + re-review, then cycle-07 stage-1 runs |
+
 The drone survey is the current scenario, not the point. The same
 loop — seeded scenarios, director truth held apart from agent
 inputs, attributable telemetry, gated firmware evolution — applies
