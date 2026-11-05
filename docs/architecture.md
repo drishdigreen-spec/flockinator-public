@@ -46,7 +46,7 @@ radio is not deployment readiness.
 | `cluster-deployment` | Manifests, transport, activation, recovery (in `tools/` + firmware receivers) |
 | `management-console` | Handheld and web management interfaces |
 | `experiments` | Scenarios, observations, reproducible evaluation (in `tools/`, `previews/`, `docs/results/`) |
-| `kulira-core` (+ disrupt/spoof/deceive/observe, planned) | Adversarial friction and its measurement |
+| `kulira-core` (+ disrupt/spoof/deceive/observe, bridge, e2e, rf-inventory) | Adversarial friction and its measurement |
 
 Build order: `node-platform` -> `flock-network` -> `agent-runtime` and
 `cluster-deployment` -> `experiments` and `management-console`.

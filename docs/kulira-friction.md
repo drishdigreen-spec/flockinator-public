@@ -57,8 +57,8 @@ gracefully, and recovers - with time-to-detect, nodes deceived,
 propagation depth, and recovery time reported. The orchestrator is
 `tools/kulira-core/`; its design contract (scenario schema, safety
 gate, kill-switch, tamper-evident log) is implemented and tested,
-while the attack modules (`disrupt`, `spoof`, `deceive`, RF actuation)
-are layered on top in that order.
+while the attack modules (`disrupt`, `spoof`, `deceive`, plus bridge/e2e and
+passive RF inventory) are implemented and tested on top of it.
 
 ## The adversary brain: Hermes + abliterated Muse Glimmer
 
