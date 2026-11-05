@@ -68,6 +68,11 @@ def test_load_scenario_json(tmp_path):
     p = tmp_path / "s.json"; p.write_text(json.dumps(base()))
     assert load_scenario(p, labels=LABELS).id == "false-beacon-001"
 
-def test_management_targeting_action_rejected():
-    d = base(attacks=[{"module": "kulira-deceive", "action": "mimic_management_ping", "at_s": 0, "duration_s": 5, "intensity": 1}])
-    with pytest.raises(ScenarioError, match="management"): parse_scenario(d, labels=LABELS)
+@pytest.mark.parametrize("evil", ["mimic_management_ping", "mimic_mgmt_ping", "management-ping", "ota_update", "push_firmware", "mgmt", "reboot_node", ""])
+def test_protected_or_unknown_actions_rejected_structurally(evil):
+    d = base(attacks=[{"module": "kulira-deceive", "action": evil, "at_s": 0, "duration_s": 5, "intensity": 1}])
+    with pytest.raises(ScenarioError, match="allowlisted"): parse_scenario(d, labels=LABELS)
+
+def test_allowlisted_action_accepted():
+    s = parse_scenario(base(), labels=LABELS)
+    assert s.attacks[0].action == "false-observation"
