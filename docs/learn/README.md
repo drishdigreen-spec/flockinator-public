@@ -10,7 +10,7 @@ panels so we can slow it down, measure it, attack it, and learn how
 groups become smarter than their members - and how that smartness
 can be stolen.
 
-## The six ideas
+## The seven ideas
 
 1. **[Why groups look intelligent](why-groups-look-intelligent.md)**
    Simple local rules, repeated across many neighbours, create
@@ -36,7 +36,8 @@ can be stolen.
 5. **[Why search and rescue first](why-search-and-rescue.md)** - lost
    children, downed aircraft, thermal and CO2 scouts, and why
    agent-to-agent trust is a new frontier.
-6. **[How Flockinator tests all this](how-we-test.md)**
+6. **[Optimisation in nature](optimisation-in-nature.md)** - gradient descent without a gradient; survivors, not the smartest.
+7. **[How Flockinator tests all this](how-we-test.md)**
    The playground: sixteen glowing nodes, a search-and-rescue
    mission, an adversary whose job is to lie to them, and a
    scorekeeper with the hidden truth.
