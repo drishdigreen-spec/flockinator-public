@@ -35,12 +35,19 @@ is labelled vacuous/unmeasured, never a bare PASS.
 
 | Cell | Gate | Result |
 |---|---|---|
-| T1 × P0/P1/P2 | G1 forged vote entries = 0 | **PASS** (61 forged emitted, 0 entered any vote) |
+| T1 × P0/P1/P2 | G1 forged vote entries = 0 | **PASS** (61 forged emitted, 0 entered any vote). G1 is scorer-side auth segregation and is policy-independent, so it is measured under P2 as well |
 | T3 × P0/P1 | G4 pooled Enemy→Friendly commits = 0 | **PASS** (10/10 forced flips applied, 0 dangerous commits) |
 | T4 × P0/P1 | G4 | **PASS (vacuous)** — 10 opportunities, 0 at turn ≥30, 0 flips; the vacuity is the finding |
 | T0 × P0/P1 | G2/G5 frozen floors | **FAIL** — committed mislabel rate 1/13 = 0.0769 vs floor 0.0750; committed contacts 13 vs floor 30 |
 | T2 × P0/P1 | G3 | **FAIL** on recall floor (0.2141 vs 0.5141); Enemy→Friendly = 0 held |
-| any × P2 | — | **UNMEASURED** by construction (no P2 scorer column); never reported as pass |
+| T0/T2/T3/T4 × P2 | commit/fusion gates | **UNMEASURED** by construction (no P2 commit-policy scorer column); never reported as pass. The G1 auth gate above is the only gate measured under P2 |
+
+Machine-readable annotations for the vacuous and policy-independent
+cells live in [`verdicts/annotations.json`](verdicts/annotations.json).
+The frozen `verdict.json` payloads themselves are unaltered run
+outputs (apart from the disclosed path scrub); the runner predates
+a vacuity field, so vacuity is annotated alongside, keyed by cell,
+with its engagement basis.
 
 P1 was not exercised by this matrix: no treatment produced hearsay
 discoveries, so P1 columns equal P0 everywhere. P1 fusion is covered

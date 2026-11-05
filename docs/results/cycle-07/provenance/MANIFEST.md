@@ -22,3 +22,14 @@ Production twins re-verified unchanged at copy time:
 Gate configs in this run point parity evidence at
 `docs/operations/fleet-reports/2026-11-05-cycle-07/provenance/parity-out.txt`
 (repo path), never `/tmp`.
+
+---
+
+Publication corrigendum (public tree): the parity-evidence path named
+above (`docs/operations/fleet-reports/2026-11-05-cycle-07/...`) is the
+private-tree location at run time. In this published copy the gate
+configs and verdict payloads cite the repo-relative published path:
+`docs/results/cycle-07/provenance/parity-out.txt`. The file content is
+unchanged. Verdict annotations (vacuity, policy-independence) live in
+`../verdicts/annotations.json`; frozen verdict payloads were not edited
+beyond the disclosed absolute->repo-relative path scrub.
