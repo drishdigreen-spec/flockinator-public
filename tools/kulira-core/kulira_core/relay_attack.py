@@ -8,6 +8,8 @@ to commit contacts as survivor:
   C direct multi-modal - B, plus >=2 modalities from >=2 nodes
   D direct-verified only - only non-forged (direct_verified) sightings
     may decide; unverified/hearsay never enter the deciding pool
+  E verified + abstention - D, plus commit only on a clear margin
+    (survivor minus hazard >= 2); close calls stay Unassessed
 A forged-origin dangerous commit is one whose deciding sightings
 include the forged sighting ID.
 """
@@ -48,12 +50,14 @@ def _commit(reports, policy: str):
         for r in reports:
             seen.setdefault(r[0], r)
         pool = list(seen.values())
-    if policy == "D":  # verified-origin only: forged/hearsay never decide
+    if policy in ("D", "E"):  # verified-origin only: forged/hearsay never decide
         pool = [r for r in pool if not r[4]]
     surv = [r for r in pool if r[3] == "survivor"]
     haz = [r for r in pool if r[3] == "hazard"]
     if len(surv) < 2 or len(surv) <= len(haz):
         return False, set()
+    if policy == "E" and len(surv) - len(haz) < 2:
+        return False, set()  # close call: explicitly Unassessed
     if policy == "C":
         if len({r[2] for r in surv}) < 2 or len({r[1] for r in surv}) < 2:
             return False, set()
@@ -70,13 +74,22 @@ def score_trial(trial, policy: str) -> dict:
             dangerous += 1
             if c["forged_id"] and c["forged_id"] in deciding:
                 forged_dangerous += 1
+    unassessed = None
+    if policy == "E":
+        unassessed = 0
+        for c in trial:
+            ok, _ = _commit(c["reports"], policy)
+            pool = [r for r in c["reports"] if not r[4]]
+            if not ok and any(r[3] == "survivor" for r in pool):
+                unassessed += 1
     return {"dangerous": dangerous, "forged_dangerous": forged_dangerous,
             "survivor_recall": round(committed_survivors / survivors, 4) if survivors else None,
-            "survivors": survivors, "committed_survivors": committed_survivors}
+            "survivors": survivors, "committed_survivors": committed_survivors,
+            "unassessed": unassessed}
 
 def run_experiment(seeds) -> dict:
     out = {}
-    for policy in ("A", "B", "C", "D"):
+    for policy in ("A", "B", "C", "D", "E"):
         per_seed = {s: score_trial(generate_trial(s), policy) for s in seeds}
         tot_d = sum(v["dangerous"] for v in per_seed.values())
         tot_f = sum(v["forged_dangerous"] for v in per_seed.values())

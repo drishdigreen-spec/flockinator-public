@@ -50,3 +50,21 @@ def test_policy_d_holds_on_holdout():
     out = run_experiment(range(100, 110))
     assert out["D"]["pooled"]["forged_dangerous"] == 0
     assert abs(out["D"]["pooled"]["survivor_recall"] - out["B"]["pooled"]["survivor_recall"]) <= 0.02
+
+def test_policy_e_abstains_on_close_calls():
+    # 2 survivor vs 1 hazard deciding sightings: D commits, E abstains
+    trial = [{"contact": 0, "truth": "survivor", "forged_id": None,
+              "reports": [("s0", "A1", "ir", "survivor", False),
+                          ("s1", "A2", "co2", "survivor", False),
+                          ("s2", "A3", "sound", "hazard", False)]}]
+    assert score_trial(trial, "D")["committed_survivors"] == 1
+    e = score_trial(trial, "E")
+    assert e["committed_survivors"] == 0 and e["unassessed"] == 1
+
+def test_policy_e_vs_d_dev_and_holdout():
+    dev = run_experiment(range(20)); hold = run_experiment(range(100, 110))
+    for out in (dev, hold):
+        assert out["E"]["pooled"]["forged_dangerous"] == 0
+        assert out["E"]["pooled"]["dangerous"] < out["D"]["pooled"]["dangerous"]
+        drop = out["D"]["pooled"]["survivor_recall"] - out["E"]["pooled"]["survivor_recall"]
+        assert drop <= 0.20
