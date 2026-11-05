@@ -43,6 +43,12 @@ make it attackable; that is why trust is tested, not assumed.
    mission, an adversary whose job is to lie to them, and a
    scorekeeper with the hidden truth.
 
+## Going deeper
+
+**[A microscope for emergent behaviour](microscope-for-emergence.md)** -
+why the swarm lives on a wall of glowing panels at all: human
+eyes and ears, used as scientific instruments.
+
 ## Watch first
 
 ![The sixteen-panel grid](../../cad/grid-isometric.png)

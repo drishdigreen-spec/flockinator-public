@@ -25,6 +25,23 @@ version: [learn/optimisation-in-nature.md](learn/optimisation-in-nature.md).
 - **Between nodes** — inter-node trust, corroboration, and communication
   norms that emerge (or fail) under pressure.
 
+## Why a wall: designing for human perception
+
+A key reason this system is physical: to constrain agentic
+systems into scenarios optimised for human biology. Agents are
+forced through human-perceptible channels - displayed state,
+auditory markers, readable language - consolidated on a wall of
+nodes, with bottlenecks and checkpoints where human senses and
+comprehension are useful for detecting behaviour nobody predicted.
+Text logs and binary interaction graphs at swarm scale are
+normally meaningless to a human reader; a watching human spots
+the unusual pattern first, and sealed evidence then confirms or
+refutes the spot. Flockinator is a microscope for emergent
+behaviour and a feedback mechanism researchers can conceptualise
+while experiments run. Decision record:
+[ADR-001](decisions/ADR-001-human-perceptible-swarm.md) ·
+plain language: [learn/microscope-for-emergence.md](learn/microscope-for-emergence.md).
+
 ## Method
 
 1. **Isolation first.** Train each small model alone; record its private
