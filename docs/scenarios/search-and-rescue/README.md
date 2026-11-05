@@ -77,7 +77,7 @@ all new writing uses survivor/hazard.
 The scored path already exists: simulated swarm + Kulira deceive
 + scorer bridge + fleet scorer (`validation/kulira/e2e-001/`),
 and a sensing layer that scores real-reading shapes is
-implemented in the pending rescue-sensing PR (#23). A full rescue
+implemented in `tools/kulira-core/kulira_core/sensing.py` (merged). A full rescue
 cycle - HEAT/TRACE sightings from mixed camera modes, Kulira
 fabricating one, VERIFY demanding a second modality - is the
 next scenario to seed once the states above are accepted into
