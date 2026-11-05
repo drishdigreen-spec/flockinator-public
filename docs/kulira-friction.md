@@ -99,6 +99,9 @@ same cage as every other Kulira action:
 - Its outputs are treated as untrusted input by the fleet-side
   reviewers, exactly like any other adversarial payload.
 
+Full catalogue: [attack-taxonomy.md](attack-taxonomy.md) - attack types,
+impact, observed surprises, and the tiny-model asymmetry.
+
 ## Why put a model in charge of the friction?
 
 Because the property under study - intelligence that lives *between*
