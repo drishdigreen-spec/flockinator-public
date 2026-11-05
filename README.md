@@ -1,11 +1,17 @@
-# Flockinator
+# Flockinator - a microscope for emergent behaviour
 
 **Meta Global AI Developer Hackathon 2026 · Indie Developer · Push the Frontier**
+
+Sixteen embodied agents, staged in sound, light, and language on a wall of
+nodes, so humans can spot what emerges between agents - then prove or refute
+the spot against sealed evidence.
 
 Flockinator is a physical lab for studying how small agents share information,
 handle misleading reports and improve through measured experiments. Sixteen
 ESP32-S3 nodes display a simulated search-and-rescue swarm, making each role
-visible while Meta Muse models help build, review and refine the system.
+visible while Meta Muse models help build, review and refine the system. Why a
+wall at all: [a microscope for emergent behaviour](docs/learn/microscope-for-emergence.md)
+([decision record](docs/decisions/ADR-001-human-perceptible-swarm.md)).
 
 **[Watch the narrated demo](https://www.youtube.com/watch?v=HaYNTBhXbu4)** ·
 [Results and evidence](docs/results/README.md) ·

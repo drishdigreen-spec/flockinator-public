@@ -2,6 +2,11 @@
 
 New here? Start here. No engineering background needed.
 
+Flockinator is a microscope for emergent behaviour: a wall of
+sixteen glowing nodes that stages agent interaction in sound,
+light, and language, so human pattern-spotting can find the
+questions and sealed evidence can answer them.
+
 A flock of birds turns as one, in a blink. No bird is in charge, no
 bird sees the whole sky, and no human watching could make those
 decisions that fast - our senses overload following even one or two
