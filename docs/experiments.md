@@ -51,6 +51,9 @@ scenario is a visualisation of that question, not an operational system.
 Synchronised animation, packet counts, and extra observations are not,
 by themselves, evidence of cooperation or intelligence.
 
+Twelve further scenarios with methods and pre-declared
+success/failure conditions: [experiment-catalogue.md](experiment-catalogue.md).
+
 ## Reference scenario
 
 The illustrated quadcopter survey
