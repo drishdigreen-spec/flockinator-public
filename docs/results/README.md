@@ -139,19 +139,21 @@ panels; treat as field observations, not controlled trials):
   Firmware 0.9.1 added a connectivity watchdog with pre-declared
   thresholds (5 min of global fleet-sweep silence -> forced
   reconnect -> logged restart, hourly backoff) and a health API
-  exposing the counters. The wedge has since recurred three
-  times on this build; each time the watchdog fired at ~315-326 s
+  exposing the counters. The wedge has since recurred four
+  times on this build; each time the watchdog fired at ~312-326 s
   of sweep silence, forced a reconnect, and service returned in
   ~2 s with no restart and continuous uptime — ~5.5 min bounded
   outages where the same fault previously ran unbounded for
-  hours. Two honest patterns: healthy windows between wedges are
-  shrinking (110 -> 32 -> 17 min), so whatever state accumulates
-  is not cleared by reassociation; and recurrences happen on the
-  strong radio too, so association quality is at most a
-  contributing factor. A fresh association reliably cures the
-  deaf state; the *trigger* remains open (router-side lease/AP
-  evidence pending). Diagnosis continues with outage cost capped
-  by design and every event timestamped in health counters.
+  hours. Healthy windows between wedges vary widely and not
+  monotonically (110, 32, 17, then 37 min), and recurrences
+  happen on the strong radio too, so association quality is at
+  most a contributing factor and whatever state accumulates is
+  not cleared by reassociation. A fresh association reliably
+  cures the deaf state; the *trigger* remains open (router-side
+  lease/AP evidence pending). Diagnosis continues with outage
+  cost capped by design and every event timestamped in health
+  counters (disconnects and got-IP counts now read as a recovery
+  log).
 - **Multiple radios, one SSID.** Association logs show the lab SSID
   served by two mesh/repeater radios on different 2.4 GHz channels
   at very different strengths (about -69 dBm vs -34 dBm at this
