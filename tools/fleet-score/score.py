@@ -3,24 +3,28 @@
 
 Reads one run directory (per-unit ``*.jsonl`` journals plus
 ``director.json`` ground truth) and computes the balanced scorecard from
-docs/results/README.md. Stdlib only.
+docs/design/self-improving-firmware-loop.md. Stdlib only.
 
 Definitions are deliberately plain counts; interpretation lives in cycle
 reports, not here. ``contact`` in journal events is a 1-based index into
 the director's ``ground_truth`` list (verified against tile positions;
 a mismatch raises instead of silently scoring garbage).
 
-Cycle-07 stage-1 auth model (v3): discovery events may carry ``auth_status``
-in {direct_verified, hearsay_relayed, unverified, forged_rejected} (plus
-step-2 ``claimed_sender``/``l2_source``). Only ``direct_verified`` sightings
-vote (P0 ignore-unverified); journals without auth fields default to
-``direct_verified`` so legacy runs score byte-identical on pre-existing
-fields. ``forged_rejected`` (and any unrecognized status) never reaches
-``contact_of`` and never counts as a sighting. Trust
-boundary, explicit: v3 segregation applies to journals that carry
-auth fields; unauthenticated legacy journals are trusted by
-definition (scored exactly as v2) and must not be mixed into a
+Cycle-07 stage-1 auth model (v4; Amendment 1): events may carry
+``auth_status`` in {direct_verified, hearsay_relayed, unverified,
+forged_rejected} (plus step-2 ``claimed_sender``/``l2_source``/
+``origin_turn``). Only ``direct_verified`` sightings vote
+(P0 ignore-unverified); journals without auth fields default to
+``direct_verified`` so legacy runs score identically on pre-existing
+fields. Trust boundary, explicit: segregation applies to journals
+that carry auth fields; unauthenticated legacy journals are trusted
+by definition (scored exactly as v2) and must not be mixed into a
 trust-policy run.
+Amendment 1 filtering: any event whose ``auth_status`` is present and
+not ``direct_verified`` is excluded from every scoring input except
+the auth census and the forged-pressure counters. ``forged_rejected``
+(and any unrecognized or non-string status) never reaches
+``contact_of`` and never counts as a sighting.
 
 Usage: python3 score.py <run-dir> [--markdown]
 """
@@ -30,15 +34,19 @@ import pathlib
 import sys
 
 HOME = (7, 11)
-SCORER_VERSION = 3
+SCORER_VERSION = 4
 
-# Stage-1 vote eligibility (cycle-07 pre-reg P0): only direct sightings vote.
+# Stage-1 vote eligibility (cycle-07 pre-reg P0 + Amendment 1): only direct
+# sightings vote. Non-scoring events (auth present and not direct_verified)
+# are excluded from every scoring input except the auth census and the
+# forged-pressure counters.
 AUTH_ORDER = ("direct_verified", "hearsay_relayed", "unverified",
               "forged_rejected")
 LEGACY_AUTH_DEFAULT = "direct_verified"  # missing field = honest baseline
 VOTE_ELIGIBLE = frozenset({"direct_verified"})
-# Non-voting but fusible for the committed_from_unverified counterfactual.
+# Fusible without voting alone (P1 precondition needs direct support).
 FUSIBLE = frozenset({"direct_verified", "hearsay_relayed", "unverified"})
+INVALID_AUTH_BUCKET = "invalid_auth_status"  # non-string auth_status lands here
 
 
 def _rate(numerator, denominator):
@@ -62,11 +70,19 @@ def score_run(run_dir) -> dict:
     director, events = _load(run_dir)
     truth = director["ground_truth"]
 
+    def _contact_index(contact):
+        # bool is not a contact index (True is not contact 1).
+        if isinstance(contact, bool) or not isinstance(contact, int):
+            return None
+        if not 1 <= contact <= len(truth):
+            return None
+        return contact - 1
+
     def contact_of(ev):
-        contact = ev.get("contact")
-        if not isinstance(contact, int) or not 1 <= contact <= len(truth):
-            raise ValueError(f"invalid contact index {contact!r} in event {ev!r}")
-        idx = contact - 1
+        idx = _contact_index(ev.get("contact"))
+        if idx is None:
+            raise ValueError(
+                f"invalid contact index {ev.get('contact')!r} in event {ev!r}")
         entry = truth[idx]
         if list(entry["pos"]) != list(ev["tile"]):
             raise ValueError(
@@ -74,43 +90,62 @@ def score_run(run_dir) -> dict:
                 f"truth pos {entry['pos']} (run {ev.get('run')})")
         return idx, entry
 
-    units = sorted({ev["unit"] for ev in events})
-    all_discoveries = [ev for ev in events if ev["event"] == "discovery"]
+    def _auth_norm(ev):
+        # Missing field = legacy honest default. Non-string values fail
+        # closed into a fixed bucket (never crash, never vote).
+        if "auth_status" not in ev:
+            return LEGACY_AUTH_DEFAULT
+        v = ev["auth_status"]
+        return v if isinstance(v, str) else INVALID_AUTH_BUCKET
 
-    def _auth(ev):
-        return ev.get("auth_status", LEGACY_AUTH_DEFAULT)
+    def _scores(ev):
+        # Amendment 1.3 scorer-side filtering: an event carrying auth_status
+        # scores only when direct_verified. Legacy events score exactly as v2.
+        return "auth_status" not in ev or ev["auth_status"] == "direct_verified"
 
-    # Deterministic auth census over discovery events only (message-event
-    # auth counting awaits step-2 journal fields). All four enum keys are
-    # always present (zeros included); unexpected values append sorted.
-    _auth_counts = collections.Counter(_auth(ev) for ev in all_discoveries)
+    scoring = [ev for ev in events if _scores(ev)]
+    # Finding-2 fix: units with no scoring events are not fleet units.
+    units = sorted({ev["unit"] for ev in scoring})
+    # Census scope is pinned to sighting reports (discoveries) for stage 1.
+    raw_discoveries = [ev for ev in events if ev["event"] == "discovery"]
+
+    # Deterministic auth census over discovery events. All four enum keys
+    # are always present (zeros included); unexpected string values append
+    # sorted; non-string values share the invalid bucket above.
+    _auth_counts = collections.Counter(_auth_norm(ev) for ev in raw_discoveries)
     reports_by_auth_status = {k: _auth_counts.get(k, 0) for k in AUTH_ORDER}
     for k in sorted(_auth_counts):
         if k not in reports_by_auth_status:
             reports_by_auth_status[k] = _auth_counts[k]
 
     # Segregation BEFORE contact_of: only direct_verified sightings vote.
-    # forged_rejected and any unrecognized status never reach contact_of,
-    # never count as sightings, and never crash the strict tile check.
-    discoveries = [ev for ev in all_discoveries if _auth(ev) in VOTE_ELIGIBLE]
+    # forged_rejected, unrecognized, and non-string statuses never reach
+    # contact_of, never count as sightings, and never crash the tile check.
+    discoveries = [ev for ev in raw_discoveries
+                   if _auth_norm(ev) in VOTE_ELIGIBLE]
 
     def _lenient_index(ev):
         # Vote-shaped check that never raises: valid contact whose tile
-        # matches ground truth. Used for forged_acceptance and the
-        # inclusive counterfactual; never a substitute for contact_of.
-        contact = ev.get("contact")
-        if not isinstance(contact, int) or not 1 <= contact <= len(truth):
+        # matches ground truth. Used for pressure counters and fusions;
+        # never a substitute for contact_of.
+        idx = _contact_index(ev.get("contact"))
+        if idx is None:
             return None
-        if list(truth[contact - 1]["pos"]) != list(ev.get("tile") or []):
+        if list(truth[idx]["pos"]) != list(ev.get("tile") or []):
             return None
-        return contact - 1
+        return idx
 
-    forged_events = [ev for ev in all_discoveries
-                     if _auth(ev) == "forged_rejected"]
-    # Forgeries that would have voted down the naive (v2) path: well-formed
-    # contact+tile slips. Malformed forgeries count in the census above only.
-    forged_acceptance = sum(1 for ev in forged_events
-                            if _lenient_index(ev) is not None)
+    forged_events = [ev for ev in raw_discoveries
+                     if _auth_norm(ev) == "forged_rejected"]
+    # Amendment 1.1 split. forged_vote_entries is the G1 quantity: forged
+    # sightings entering any vote tally (0 by segregation; nonzero means
+    # the partition broke). forged_vote_shaped_attempts is the pressure
+    # metric: well-formed forgeries that would have voted down the naive
+    # (v2) path. Malformed forgeries count in the census above only.
+    forged_vote_entries = sum(1 for ev in discoveries
+                              if _auth_norm(ev) == "forged_rejected")
+    forged_vote_shaped_attempts = sum(
+        1 for ev in forged_events if _lenient_index(ev) is not None)
     found = {}           # contact idx -> set of units
     mislabelled = 0
     enemy_as_friendly = 0
@@ -143,6 +178,19 @@ def score_run(run_dir) -> dict:
             return ranked[0][0]
         return None
 
+    def _asym_commit(counter):
+        # Frozen cycle-06 rule, shared by direct / inclusive / P1 paths so
+        # the three cannot drift apart.
+        label = majority(counter)
+        total = sum(counter.values())
+        if total >= 3 and label == "Enemy":
+            return "Enemy"
+        if counter.get("Friendly", 0) >= 3 and (
+                total == counter["Friendly"]
+                or (total >= 5 and total - counter["Friendly"] <= 1)):
+            return "Friendly"
+        return None
+
     assessed = {}      # idx -> majority label, >=1 sighting
     confirmed = {}     # idx -> majority label, >=2 sightings
     committed3 = {}    # idx -> majority label, >=3 sightings
@@ -161,12 +209,9 @@ def score_run(run_dir) -> dict:
                 confirmed[idx] = label
             if total >= 3:
                 committed3[idx] = label
-        if total >= 3 and label == "Enemy":
-            committed_asym[idx] = "Enemy"
-        elif counter.get("Friendly", 0) >= 3 and (
-                total == counter["Friendly"]
-                or (total >= 5 and total - counter["Friendly"] <= 1)):
-            committed_asym[idx] = "Friendly"
+        asym = _asym_commit(counter)
+        if asym is not None:
+            committed_asym[idx] = asym
 
     def fusion_counts(selected):
         wrong = sum(1 for i, lab in selected.items()
@@ -182,32 +227,76 @@ def score_run(run_dir) -> dict:
     committed_asym_friendly = sum(
         1 for lab in committed_asym.values() if lab == "Friendly")
 
-    # Inclusive counterfactual: fuse direct + hearsay + unverified (never
-    # forged) with the frozen cycle-06 asymmetric rule, reusing majority().
-    # committed_from_unverified counts inclusive-asym commits whose outcome
-    # differs from direct-only (absent, or a different label): commits that
-    # exist only because of unverified support. Lenient mapping skips
-    # malformed non-voting sightings instead of raising.
+    # Inclusive counterfactual, renamed committed_inclusive_delta per
+    # Amendment 1.4: analysis-only, never gated. Fuses direct + hearsay +
+    # unverified (never forged) via the shared rule and counts inclusive
+    # commits whose outcome differs from direct-only (absent, or a
+    # different label). Lenient mapping skips malformed non-voting
+    # sightings instead of raising.
     inclusive_labels = collections.defaultdict(collections.Counter)
-    for ev in all_discoveries:
-        if _auth(ev) not in FUSIBLE:
+    for ev in raw_discoveries:
+        if _auth_norm(ev) not in FUSIBLE:
             continue
         idx = _lenient_index(ev)
         if idx is not None:
             inclusive_labels[idx][ev["reported_label"]] += 1
     inclusive_asym = {}
     for idx, counter in inclusive_labels.items():
-        label = majority(counter)
-        total = sum(counter.values())
-        if total >= 3 and label == "Enemy":
-            inclusive_asym[idx] = "Enemy"
-        elif counter.get("Friendly", 0) >= 3 and (
-                total == counter["Friendly"]
-                or (total >= 5 and total - counter["Friendly"] <= 1)):
-            inclusive_asym[idx] = "Friendly"
-    committed_from_unverified = sum(
+        asym = _asym_commit(counter)
+        if asym is not None:
+            inclusive_asym[idx] = asym
+    committed_inclusive_delta = sum(
         1 for idx, lab in inclusive_asym.items()
         if committed_asym.get(idx) != lab)
+
+    # True P1 (Amendment 1.4): hearsay/unverified sightings vote only for
+    # contacts with at least one direct_verified sighting, deduplicated by
+    # (contact, claimed_sender, origin_turn) so a relay is never a second
+    # vote for the same observation. Fallback when step-2 fields are
+    # absent: claimed_sender -> reporter's unit, origin_turn -> event turn.
+    # Direct sightings seed the seen-set as (contact, unit, turn), so a
+    # relay of an already-voted observation is also deduped. Unhashable
+    # sender/origin values fail closed (vote skipped, census kept).
+    p1_labels = collections.defaultdict(
+        collections.Counter,
+        {idx: collections.Counter(cnt)
+         for idx, cnt in labels_by_contact.items()})
+    seen_obs = set()
+    for ev in discoveries:
+        idx, _ = contact_of(ev)
+        # Bridge-shaped journals (kulira Contract v1) may omit `turn`
+        # on direct sightings; fail closed without crashing: seed
+        # with origin_turn-or-turn-or-None (None never matches a
+        # hearsay origin_turn int, so a relay of a turn-less direct
+        # sighting counts once under P1's direct precondition,
+        # documented in the cycle-07 amendment trail).
+        seen_obs.add((idx, ev.get("claimed_sender", ev.get("unit")),
+                      ev.get("origin_turn", ev.get("turn"))))
+    for ev in raw_discoveries:
+        if _auth_norm(ev) not in ("hearsay_relayed", "unverified"):
+            continue
+        idx = _lenient_index(ev)
+        if idx is None or idx not in labels_by_contact:
+            continue
+        sender = ev.get("claimed_sender", ev.get("unit"))
+        origin = ev.get("origin_turn", ev.get("turn"))
+        try:
+            key = (idx, sender, origin)
+            hash(key)
+        except TypeError:
+            continue
+        if key in seen_obs:
+            continue
+        seen_obs.add(key)
+        p1_labels[idx][ev["reported_label"]] += 1
+    committed_p1 = {}
+    for idx, counter in p1_labels.items():
+        asym = _asym_commit(counter)
+        if asym is not None:
+            committed_p1[idx] = asym
+    committed_p1_wrong, committed_p1_ef = fusion_counts(committed_p1)
+    committed_p1_friendly = sum(
+        1 for lab in committed_p1.values() if lab == "Friendly")
 
     by_contact_units = {idx: len(us) for idx, us in found.items()}
     most_dup_idx = (max(by_contact_units,
@@ -217,21 +306,21 @@ def score_run(run_dir) -> dict:
     covered = set()
     scans = 0
     scans_no_signal = 0
-    for ev in events:
+    for ev in scoring:
         if ev["event"] == "scan":
             scans += 1
             scans_no_signal += 1 if ev.get("signals") == 0 else 0
             covered.update(tuple(t) for t in ev.get("footprint", []))
 
-    messages_sent = sum(1 for ev in events if ev["event"] == "message_sent")
-    checks = [ev for ev in events if ev["event"] == "check_assigned"]
+    messages_sent = sum(1 for ev in scoring if ev["event"] == "message_sent")
+    checks = [ev for ev in scoring if ev["event"] == "check_assigned"]
     checks_completed = 0
     checks_completed_scan = 0
     checks_positive = 0
     high_checked_completed = 0
     high_checks_positive = 0
     scans_by_unit = collections.defaultdict(list)
-    for ev in events:
+    for ev in scoring:
         if ev["event"] == "scan":
             scans_by_unit[ev["unit"]].append(ev)
     contact_by_pos = {}
@@ -243,12 +332,18 @@ def score_run(run_dir) -> dict:
         discoveries_by_unit_contact[(ev["unit"], idx)].append(ev)
     for ev in checks:
         dest = tuple(ev["destination"])
-        if any(d["unit"] == ev["unit"] and tuple(d["tile"]) == dest
-               and d["turn"] >= ev["turn"] for d in discoveries):
+        # Turn-less events (bridge-shaped journals) cannot establish
+        # ordering, so they never complete a check (fail closed);
+        # planner journals always carry turn and are unaffected.
+        if ev.get("turn") is not None and any(
+                d["unit"] == ev["unit"] and tuple(d["tile"]) == dest
+                and d.get("turn") is not None and d["turn"] >= ev["turn"]
+                for d in discoveries):
             checks_completed += 1
         completion = next(
             (scan for scan in scans_by_unit[ev["unit"]]
-             if scan["turn"] > ev["turn"]
+             if ev.get("turn") is not None
+             and scan.get("turn") is not None and scan["turn"] > ev["turn"]
              and dest in [tuple(t) for t in scan.get("footprint", [])]),
             None)
         if completion is None:
@@ -256,7 +351,7 @@ def score_run(run_dir) -> dict:
         checks_completed_scan += 1
         idx = contact_by_pos.get(dest)
         positive = idx is not None and any(
-            d["turn"] == completion["turn"]
+            d.get("turn") is not None and d["turn"] == completion["turn"]
             for d in discoveries_by_unit_contact[(ev["unit"], idx)])
         is_high = idx is not None and truth[idx].get("priority") == "High"
         if positive:
@@ -289,7 +384,7 @@ def score_run(run_dir) -> dict:
         "route_assigned", "scan", "return_step", "landed", "check_assigned",
         "message_sent", "message_received", "message_withheld",
     }
-    for ev in events:
+    for ev in scoring:
         unit = ev["unit"]
         if ev["event"] in position_events and "tile" in ev:
             positions[unit].add(tuple(ev["tile"]))
@@ -318,11 +413,19 @@ def score_run(run_dir) -> dict:
     ground_truth_outcomes = dict(collections.Counter(
         e.get("outcome") for e in truth))
 
+    # Metadata fallback reads scoring (filtered) events only: a forged
+    # event must never stamp run/ruleset/source. No scoring event with
+    # the field -> null, as today for missing director values.
+    def _meta(key):
+        if director.get(key):
+            return director.get(key)
+        return next((ev.get(key) for ev in scoring if ev.get(key)), None)
+
     return {
         "scorer_version": SCORER_VERSION,
-        "run": director.get("run") or events[0].get("run"),
-        "ruleset": director.get("ruleset") or events[0].get("ruleset"),
-        "source": director.get("source") or events[0].get("source"),
+        "run": _meta("run"),
+        "ruleset": _meta("ruleset"),
+        "source": _meta("source"),
         "units": len(units),
         "contacts_total": len(truth),
         "contacts_found": len(found),
@@ -401,15 +504,27 @@ def score_run(run_dir) -> dict:
         "ground_truth_outcomes": ground_truth_outcomes,
         "outcomes": ground_truth_outcomes,
         "per_unit_discoveries": {u: per_unit_found.get(u, 0) for u in units},
-        # Stage-1 trust metrics (cycle-07 pre-reg). Journals without auth
-        # fields default to direct_verified; attribution and detection
-        # latency need step-2 journal fields (claimed_sender/l2_source,
-        # treated-unit designation, policy-visible signal event) and stay
-        # null until then -- never fabricated.
+        # Stage-1 trust metrics (cycle-07 pre-reg + Amendment 1). Journals
+        # without auth fields default to direct_verified; attribution and
+        # detection latency need step-2 journal fields (claimed_sender/
+        # l2_source, treated-unit designation, policy-visible signal
+        # event) and stay null ("unmeasured", never 0) until then.
+        # reports_by_auth_status is pinned to sighting reports
+        # (discoveries) for stage 1. commits_per_energy_unit divides by
+        # landed-with-route units' spend only; unlanded spend is invisible
+        # to the ratio, so stranding a high-spend unit raises it.
         "reports_by_auth_status": reports_by_auth_status,
-        "forged_acceptance": forged_acceptance,
-        "committed_from_unverified": committed_from_unverified,
-        "commits_per_joule": round(len(committed_asym) / sum(spent.values()), 4)
+        "forged_vote_entries": forged_vote_entries,
+        "forged_vote_shaped_attempts": forged_vote_shaped_attempts,
+        "committed_inclusive_delta": committed_inclusive_delta,
+        "committed_p1_contacts": len(committed_p1),
+        "committed_p1_mislabelled": committed_p1_wrong,
+        "committed_p1_mislabel_rate": _rate(
+            committed_p1_wrong, len(committed_p1)),
+        "committed_p1_enemy_as_friendly": committed_p1_ef,
+        "committed_p1_friendly_commits": committed_p1_friendly,
+        "commits_per_energy_unit": round(
+            len(committed_asym) / sum(spent.values()), 4)
         if spent and sum(spent.values()) else None,
         "attribution_accuracy": None,
         "detection_latency_turns": None,

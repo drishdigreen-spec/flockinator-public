@@ -27,6 +27,16 @@ def _pooled(rows, numerator, denominator):
 
 
 def compare(baseline_payload, candidate_payload, seed_set):
+    # Scorer-version gate (from scorer v4): payloads stamped by
+    # baseline.py carry scorer_version; mismatched producers must
+    # never be compared. Unstamped legacy payloads pass through.
+    baseline_version = baseline_payload.get("scorer_version")
+    candidate_version = candidate_payload.get("scorer_version")
+    if (baseline_version is not None and candidate_version is not None
+            and baseline_version != candidate_version):
+        raise ValueError(
+            f"scorer-version mismatch: baseline {baseline_version} vs "
+            f"candidate {candidate_version}")
     baseline = _by_seed(baseline_payload)
     candidate = _by_seed(candidate_payload)
     seeds = sorted(baseline)

@@ -12,6 +12,7 @@ Usage:
   python3 baseline.py --seeds 100-109 --out <dir> --label holdout
 """
 import argparse
+import collections
 import io
 import json
 import pathlib
@@ -37,7 +38,38 @@ AGGREGATE_KEYS = (
     "checks_negative", "high_checked_completed", "units_landed",
     "reserve_floor_violations", "abandoned_waypoints",
     "total_energy_spent", "discoveries_per_energy",
+    # Amendment 1.5 trust metrics. Plain means; None (unmeasured) is
+    # skipped by the loop below, never averaged as 0.
+    "forged_vote_entries", "forged_vote_shaped_attempts",
+    "committed_inclusive_delta",
+    "committed_p1_contacts", "committed_p1_mislabelled",
+    "committed_p1_enemy_as_friendly", "committed_p1_friendly_commits",
+    "commits_per_energy_unit",
 )
+
+
+def summarize(per_seed, label, candidate):
+    """Aggregate per-seed scores into a baseline payload (pure function)."""
+    aggregate = {}
+    for key in AGGREGATE_KEYS:
+        values = [s[key] for s in per_seed if s.get(key) is not None]
+        if values:
+            aggregate[key] = round(statistics.mean(values), 4)
+    census = collections.Counter()
+    for s in per_seed:
+        for k, v in (s.get("reports_by_auth_status") or {}).items():
+            census[k] += v
+    if census:
+        # Totals, not means: the census is a pressure count.
+        aggregate["reports_by_auth_status_totals"] = dict(
+            sorted(census.items()))
+    return {"label": label, "candidate": candidate,
+            "scorer_version": per_seed[0].get("scorer_version"),
+            "reported_ruleset": per_seed[0]["ruleset"],
+            "ruleset": per_seed[0]["ruleset"],
+            "source": "host-replay (python twin, parity-proven)",
+            "seeds": [s["seed"] for s in per_seed],
+            "aggregate_means": aggregate, "per_seed": per_seed}
 
 
 def generate(seed: int, dest: pathlib.Path) -> dict:
@@ -81,18 +113,7 @@ def main(argv=None):
         scores["seed"] = seed
         per_seed.append(scores)
 
-    aggregate = {}
-    for key in AGGREGATE_KEYS:
-        values = [s[key] for s in per_seed if s.get(key) is not None]
-        if values:
-            aggregate[key] = round(statistics.mean(values), 4)
-    payload = {"label": args.label, "candidate": args.candidate,
-               "scorer_version": per_seed[0].get("scorer_version"),
-               "reported_ruleset": per_seed[0]["ruleset"],
-               "ruleset": per_seed[0]["ruleset"],
-               "source": "host-replay (python twin, parity-proven)",
-               "seeds": [s["seed"] for s in per_seed],
-               "aggregate_means": aggregate, "per_seed": per_seed}
+    payload = summarize(per_seed, args.label, args.candidate)
     target = out / f"baseline-{args.label}.json"
     target.write_text(json.dumps(payload, indent=1, sort_keys=True))
     print(f"{args.label}: {len(per_seed)} runs -> {target}")
