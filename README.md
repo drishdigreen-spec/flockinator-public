@@ -35,6 +35,10 @@ build the firmware, model the 3D hardware, troubleshoot nodes, and
 direct the experiments. Evidence and reproduction:
 [docs/meta-muse/](docs/meta-muse/README.md).
 
+## Learn the ideas first
+
+New to swarms? [Learn: swarms, shared intelligence, and trust](docs/learn/README.md) - plain-language help pages with pictures, no background needed.
+
 ## Explore
 
 | Area | Entry point |
