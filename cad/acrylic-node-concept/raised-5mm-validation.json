@@ -1,8 +1,0 @@
-{
-  "panel_count": 16,
-  "panel_face_z_mm": 77,
-  "channel_face_z_mm": 72,
-  "projection_mm": 5,
-  "valid_shapes": true,
-  "print_ready": false
-}
