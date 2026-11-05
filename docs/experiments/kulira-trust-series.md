@@ -55,3 +55,11 @@ gates on judgement at 60-82% identify accuracy. This series is the
 adversary-side explanation of *why* judgement is hard, and which
 commit/admission rules survive contact with a liar - measured on
 the Kulira side, in the same pre-registered, seeded, gated style.
+## Seed-use ledger
+
+Dev seeds 0-19 were reused across this whole series, and
+evaluation seeds 100-109 were reused across experiments after
+their first use. After first exposure they are **design-exposed
+evaluation seeds, not fresh holdouts**; later experiments' use
+of them is reported as such. Future candidates should freeze
+their protocol before selecting new evaluation seeds.

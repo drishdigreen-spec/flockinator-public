@@ -114,3 +114,9 @@ isolated small models, an environment that pushes back intelligently,
 and sealed ground truth to judge who actually adapted.
 
 Measured results from this programme: [Kulira trust experiment series](experiments/kulira-trust-series.md).
+**Provenance assumption, stated plainly:** in the Kulira
+simulators, a report's verified/forged status is a supplied
+label that the policy logic consumes. That tests policy given
+trustworthy classification; it does not demonstrate deployed
+cryptographic verification of message origins on nodes. A valid
+sender can still lie (see colluding minorities).
