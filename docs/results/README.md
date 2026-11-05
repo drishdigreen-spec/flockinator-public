@@ -203,7 +203,10 @@ panels; treat as field observations, not controlled trials):
   rotation does not exist in-band today and is carried as an
   explicit residual risk; insider error outranks forgery as the
   expected harm. The scorer now segregates unverifiable reports
-  before they can touch a vote (fail-closed, independently
+  before they can touch a vote (fail-closed for journals that
+  carry auth fields; unauthenticated legacy journals are trusted
+  by definition and must not be mixed into a trust-policy run —
+  independently
   probed), with the trust-policy cycle pre-registered and its
   instrument fixes gated on adversarial re-review. Authentication
   proves who spoke; corroboration decides what to believe — the

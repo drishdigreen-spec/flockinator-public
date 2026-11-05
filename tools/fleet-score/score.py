@@ -3,7 +3,7 @@
 
 Reads one run directory (per-unit ``*.jsonl`` journals plus
 ``director.json`` ground truth) and computes the balanced scorecard from
-docs/design/self-improving-firmware-loop.md. Stdlib only.
+docs/results/README.md. Stdlib only.
 
 Definitions are deliberately plain counts; interpretation lives in cycle
 reports, not here. ``contact`` in journal events is a 1-based index into
@@ -16,7 +16,11 @@ step-2 ``claimed_sender``/``l2_source``). Only ``direct_verified`` sightings
 vote (P0 ignore-unverified); journals without auth fields default to
 ``direct_verified`` so legacy runs score byte-identical on pre-existing
 fields. ``forged_rejected`` (and any unrecognized status) never reaches
-``contact_of`` and never counts as a sighting.
+``contact_of`` and never counts as a sighting. Trust
+boundary, explicit: v3 segregation applies to journals that carry
+auth fields; unauthenticated legacy journals are trusted by
+definition (scored exactly as v2) and must not be mixed into a
+trust-policy run.
 
 Usage: python3 score.py <run-dir> [--markdown]
 """
