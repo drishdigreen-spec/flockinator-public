@@ -1,0 +1,28 @@
+{
+ "usb_serial": [
+  {
+   "path": "/dev/cu.usbserial-10310",
+   "kind": "usb-serial",
+   "model": null,
+   "status": "unidentified",
+   "tx_authorised": false
+  },
+  {
+   "path": "/dev/cu.usbserial-1032430",
+   "kind": "usb-serial",
+   "model": null,
+   "status": "unidentified",
+   "tx_authorised": false
+  },
+  {
+   "path": "/dev/cu.usbserial-10330",
+   "kind": "usb-serial",
+   "model": null,
+   "status": "unidentified",
+   "tx_authorised": false
+  }
+ ],
+ "hackrf": {
+  "present": false
+ }
+}
