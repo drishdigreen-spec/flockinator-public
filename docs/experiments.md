@@ -93,10 +93,14 @@ ecosystem-level strategy, yet those higher-level patterns are real,
 adaptive, and abundant. They are also hard to quantify, because our
 metrics are built per-agent. Flockinator is an instrument for that
 measurement problem: sixteen embodied agents with sealed ground truth,
-so extra-node intelligence can be defined operationally - the paired
-gain of the communicating swarm over the sum of its isolated agents,
-at matched observation and energy budgets - and watched as it emerges,
-fails, or is deceived.
+so cooperative benefit can be measured with paired runs. For each seed, compute
+the same pre-declared task score for communicating agents and for those agents
+acting on private cues alone, using the same aggregation rule, observations and
+resource budgets. Subtract the private-cue score from the communicating score,
+then report the distribution of differences across seeds with uncertainty.
+Individual accuracy percentages must use that aggregation rule before comparison.
+This protocol is a proposed test of shared intelligence. A completed physical
+paired-gain result remains an open measurement in the public results record.
 
 **Implication for agent design.** If intelligence can live between
 agents, then designing intelligent systems in the AI age is not only
