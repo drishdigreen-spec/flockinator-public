@@ -11,6 +11,8 @@ planner, and learning lab; a LilyGo handheld provides portable
 management. The fleet is visualised as a fictional drone-survey swarm
 so humans can watch agents learn.
 
+![Flockinator 4x4 grid layout](cad/grid-isometric.png)
+
 ## Why
 
 Small models are trained in isolation, then judged by a hostile world.

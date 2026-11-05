@@ -16,9 +16,10 @@ $UV_PROJECT_ENVIRONMENT/bin/python -m kulira_core.cli campaign report --run vali
 $UV_PROJECT_ENVIRONMENT/bin/python -m pytest tools/kulira-core -q
 ```
 
-Scenarios are JSON. `kulira-disrupt` (app-plane drop/delay/duplicate,
-seeded; delay recorded, not slept, at this layer) wraps any actuator:
-see `kulira_core/disrupt.py` and `scenarios/disrupt-lab.json`.
-Dry-run evidence: `validation/kulira/disrupt-lab-001-42/`. Live/RF runs require `authorised: true` after review;
+Scenarios are JSON. Modules: `disrupt` (drop/delay/duplicate),
+`spoof` (forgery/replay + validator), `deceive` (authentic-but-false),
+`observe` (scoring), `bridge` (scorer vocabulary), `e2e` (scored lab
+run), `rf_inventory` (passive only). Test suite: 65 tests.
+Dry-run evidence: `validation/kulira/` (disrupt, Glimmer, e2e runs). Live/RF runs require `authorised: true` after review;
 network jamming devices are never used — interference is L1/2/3 protocol
 technique on the lab network only. Dry-run emits no fleet traffic.

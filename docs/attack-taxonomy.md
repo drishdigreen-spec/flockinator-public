@@ -50,9 +50,11 @@ model when first seen:
    observed in a run).** Forwarded sightings are the natural swarm
    behaviour and the natural forgery: one false sighting, relayed
    helpfully, would present as many independent confirmations.
-   No run in this repo yet demonstrates the failure; the defence
-   (count sighting ids, never reporters; scorer v3 hearsay
-   segregation) exists because the design analysis exposed it.
+   No fleet run yet demonstrates the failure; a lab-sim run does:
+   `validation/kulira/e2e-001` shows two forwarded copies segregated
+   as hearsay (scorer: hearsay_relayed=2) with no false commit.
+   The defence (count sighting ids, never reporters) exists because
+   the design analysis exposed it.
 4. **Associated-but-deaf (availability without a crash).** The live
    controller wedge: associated to WiFi, yet blackholing traffic in
    both directions, for hours, across seven episodes with six
