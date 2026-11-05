@@ -139,21 +139,24 @@ panels; treat as field observations, not controlled trials):
   Firmware 0.9.1 added a connectivity watchdog with pre-declared
   thresholds (5 min of global fleet-sweep silence -> forced
   reconnect -> logged restart, hourly backoff) and a health API
-  exposing the counters. The wedge has since recurred six
-  times on this build; each time the watchdog fired at ~312-326 s
-  of sweep silence, forced a reconnect, and service returned in
-  ~2 s with no restart and continuous uptime — ~5.5 min bounded
-  outages where the same fault previously ran unbounded for
-  hours. Healthy windows between wedges vary widely and not
-  monotonically (110, 32, 17, 37, 123, then ~15 min), and recurrences
-  happen on the strong radio too, so association quality is at
-  most a contributing factor and whatever state accumulates is
-  not cleared by reassociation. A fresh association reliably
-  cures the deaf state; the *trigger* remains open (router-side
-  lease/AP evidence pending). Diagnosis continues with outage
-  cost capped by design and every event timestamped in health
-  counters (disconnects and got-IP counts now read as a recovery
-  log).
+  exposing the counters. The wedge has since recurred seven
+  times on this build. Six episodes cleared identically: watchdog
+  fired at ~312-326 s of sweep silence, forced a reconnect,
+  service returned in ~2 s, no restart, continuous uptime —
+  ~5.5 min bounded outages where the same fault previously ran
+  unbounded for hours. The seventh is the instructive failure:
+  the reconnect associated and regained an IP, yet the data path
+  stayed deaf, and an operator reboot ended the episode — the
+  restart tier is still unexercised. The leading explanation is
+  a design gap we can now name: a single successful panel poll
+  counts as recovery and clears escalation, so partial deafness
+  (inbound dead, rare outbound successes) can loop the reconnect
+  tier indefinitely. Healthy windows vary widely (110, 32, 17,
+  37, 123, ~15, ~55 min) and recurrences happen on the strong
+  radio too, so association quality is at most a contributing
+  factor. The *trigger* remains open (router-side lease/AP
+  evidence pending); outage cost is capped in the common case
+  and every event is timestamped in health counters.
 - **Multiple radios, one SSID.** Association logs show the lab SSID
   served by two mesh/repeater radios on different 2.4 GHz channels
   at very different strengths (about -69 dBm vs -34 dBm at this
@@ -231,7 +234,7 @@ is built to make measurable.
 
 | # | Problem | Evidence / status | Next step |
 |---|---|---|---|
-| R1 | Controller Wi-Fi wedge trigger unknown | Associated-but-deaf state recurs; watchdog bounds outages to ~5.5 min (4 live recoveries); heap/brownout/panic excluded by serial telemetry | Router-side lease duration + AP client log; BSSID-pin and modem-sleep-off A/B candidates |
+| R1 | Controller Wi-Fi wedge trigger unknown | Associated-but-deaf state recurs; watchdog bounds most outages to ~5.5 min (6 reconnect recoveries; 1 episode needed manual reboot); heap/brownout/panic excluded by serial telemetry | Router-side lease duration + AP client log; BSSID-pin and modem-sleep-off A/B candidates |
 | R2 | Healthy windows vary widely (17-110 min) | Reassociation does not clear the accumulating state | Same evidence as R1; consider restart-tier observation if a reconnect ever fails |
 | R3 | One-off task-watchdog stall in BSP timer/ADC path | Single 09:28 event, spontaneous recovery, outside watchdog code | BSP timer-callback audit; watch for recurrence in health counters |
 | R4 | Node execution telemetry is sampled, not archived | Planner journals are durable (controller SD + node SD copies); per-node link-state/RSSI history is not yet persisted with flight data | Store-and-forward stage in the durability design; rejected-frame forensic journal (trust stage 0) |
@@ -239,6 +242,7 @@ is built to make measurable.
 | R6 | No in-band key rotation | Node maintenance accepts only the identical provisioned key; capture recovery is physical re-provisioning | Key-epoch design before any relayed mesh (see trust families) |
 | R7 | Judgement ceiling at current sensing | Four gated commit policies rejected; no vote rule reaches Enemy->Friendly = 0 at 60-82% identify accuracy | Graded sensing pre-registration (accuracy earned by energy spend) |
 | R8 | Trust policies unmeasured | Scorer segregates unverifiable reports; adversarial-review fixes are frozen in an amendment, treatments not yet run | Fix round + re-review, then cycle-07 stage-1 runs |
+| R9 | Watchdog escalation can be cleared by partial success | One authenticated panel poll counts as recovery and resets escalation, so partial deafness (inbound dead, rare outbound successes) may loop reconnects without reaching the restart tier; restart tier still unexercised | Sustained-recovery clear (>=k distinct panels or consecutive ticks), reconnect-count escalation, inbound-served proxy — as a pre-registered candidate |
 
 The drone survey is the current scenario, not the point. The same
 loop — seeded scenarios, director truth held apart from agent
