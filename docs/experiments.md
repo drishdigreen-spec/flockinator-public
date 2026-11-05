@@ -8,6 +8,14 @@ nature's slow optimisation (hardship and selection over evolutionary
 time) into seeded, measurable runs humans can watch. The search-and-rescue
 scenario is a visualisation of that question, not an operational system.
 
+## Optimisation stance
+
+The swarm is not optimised toward a smartest state; it is
+filtered toward a survivable one. Promotion gates are viability
+gates (zero dangerous error first, usefulness second), declared
+before runs because the gates *are* the landscape. Plain-language
+version: [learn/optimisation-in-nature.md](learn/optimisation-in-nature.md).
+
 ## Three loci of intelligence
 
 - **In the node** — the small local model/policy each ESP32 body carries.
