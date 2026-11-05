@@ -79,7 +79,10 @@ def parse_scenario(data: dict, labels=DEFAULT_LABELS) -> Scenario:
         aplane = raw.get("plane", plane)
         if aplane not in PLANES:
             raise ScenarioError(f"unknown plane: {aplane!r}")
-        attacks.append(AttackAction(module, str(raw.get("action", "")), at_s, dur, intensity, aplane))
+        action_name = str(raw.get("action", ""))
+        if "management" in action_name.lower() or "ota" in action_name.lower() or "firmware" in action_name.lower():
+            raise ScenarioError(f"action targets protected management plane: {action_name}")
+        attacks.append(AttackAction(module, action_name, at_s, dur, intensity, aplane))
     gadget_ref = data.get("gadget_ref")
     needs_gadget = plane == "rf" or any(a.plane == "rf" for a in attacks)
     if needs_gadget and not gadget_ref:

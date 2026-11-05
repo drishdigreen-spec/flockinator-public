@@ -1,0 +1,48 @@
+{
+  "scenario_id": "friction-lab-2026-11-05-01",
+  "seed": 8421,
+  "state": "COMPLETED",
+  "dry_run": true,
+  "log_verified": true,
+  "management_health_ok": true,
+  "actions": [
+    {
+      "module": "kulira-disrupt",
+      "action": "inject_latency_spike",
+      "at_s": 0.0,
+      "duration_s": 60.0,
+      "intensity": 1,
+      "plane": "app"
+    },
+    {
+      "module": "kulira-spoof",
+      "action": "duplicate_heartbeat",
+      "at_s": 90.0,
+      "duration_s": 45.0,
+      "intensity": 1,
+      "plane": "app"
+    },
+    {
+      "module": "kulira-deceive",
+      "action": "false-observation-peer-reports",
+      "at_s": 240.0,
+      "duration_s": 60.0,
+      "intensity": 2,
+      "plane": "app"
+    },
+    {
+      "module": "kulira-disrupt",
+      "action": "drop_ack_packets",
+      "at_s": 360.0,
+      "duration_s": 120.0,
+      "intensity": 2,
+      "plane": "app"
+    }
+  ],
+  "metrics": {
+    "time_to_detect_s": null,
+    "nodes_deceived": [],
+    "propagation_depth": 0,
+    "recovery_time_s": null
+  }
+}

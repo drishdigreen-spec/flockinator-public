@@ -67,3 +67,7 @@ def test_expand_schedule_deterministic_and_sorted():
 def test_load_scenario_json(tmp_path):
     p = tmp_path / "s.json"; p.write_text(json.dumps(base()))
     assert load_scenario(p, labels=LABELS).id == "false-beacon-001"
+
+def test_management_targeting_action_rejected():
+    d = base(attacks=[{"module": "kulira-deceive", "action": "mimic_management_ping", "at_s": 0, "duration_s": 5, "intensity": 1}])
+    with pytest.raises(ScenarioError, match="management"): parse_scenario(d, labels=LABELS)
