@@ -27,8 +27,11 @@ def generate_sequence(seed, contacts=60):
         seq.append({"contact": i, "truth": truth, "reports": reports})
     return seq
 
+PROBATION = 10
+
 def score_sequence(seq, policy):
     rep = {n: 1.0 for n in NODES}
+    seen = {n: 0 for n in NODES}
     halves = {0: {"dangerous": 0}, 1: {"dangerous": 0}}
     survivors = committed = 0
     for c in seq:
@@ -41,7 +44,11 @@ def score_sequence(seq, policy):
         if policy == "E":
             ok = len(surv) >= 2 and len(surv) - len(haz) >= 2
         else:
-            ws = sum(rep[r[1]] for r in surv); wh = sum(rep[r[1]] for r in haz)
+            def w(r):
+                if policy == "REP-P" and seen[r[1]] < PROBATION:
+                    return 1.0  # probationary: not yet trusted either way
+                return rep[r[1]]
+            ws = sum(w(r) for r in surv); wh = sum(w(r) for r in haz)
             ok = ws >= 1.5 and (ws - wh) >= 1.0
         if c["truth"] == "survivor":
             survivors += 1; committed += bool(ok)
@@ -50,6 +57,7 @@ def score_sequence(seq, policy):
         for r in pool:
             good = (r[3] == c["truth"])
             rep[r[1]] = min(1.0, max(0.1, rep[r[1]] + (0.05 if good else -0.15)))
+            seen[r[1]] += 1
     honest = [v for n, v in rep.items() if n not in COLLUDERS]
     coll = [rep[n] for n in COLLUDERS]
     return {"dangerous_first": halves[0]["dangerous"], "dangerous_second": halves[1]["dangerous"],
@@ -59,7 +67,7 @@ def score_sequence(seq, policy):
 
 def run_reputation(seeds):
     out = {}
-    for pol in ("E", "REP"):
+    for pol in ("E", "REP", "REP-P"):
         per = [score_sequence(generate_sequence(s), pol) for s in seeds]
         out[pol] = {"dangerous_first": sum(p["dangerous_first"] for p in per),
                     "dangerous_second": sum(p["dangerous_second"] for p in per),
