@@ -1,9 +1,9 @@
 from kulira_core.sensing import Reading, assess_contact
 
-def test_heat_anomaly_alone_is_weak_evidence():
+def test_same_node_two_modalities_is_moderate_not_strong():
     r=[Reading("A1","temperature_c",31.0,22.0,"s1"), Reading("A1","humidity_percent",48.0,45.0,"s1")]
     a=assess_contact(r, min_modalities=2)
-    assert a["strength"]=="weak" and a["modalities"]==["humidity_percent","temperature_c"]
+    assert a["strength"]=="moderate" and a["modalities"]==["humidity_percent","temperature_c"]
 
 def test_two_modalities_from_independent_nodes_is_strong():
     r=[Reading("A1","temperature_c",31.0,22.0,"s1"), Reading("B1","co2_ppm",1400,450,"s1")]
