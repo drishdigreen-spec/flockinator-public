@@ -54,7 +54,7 @@ firmware and host tools.
 | Rescue scenario and panel states | [Rescue scenarios](docs/scenarios/search-and-rescue/README.md), [illustrated state guide](docs/scenarios/quadcopter-survey/README.md) |
 | Hardware and expansion | [Components](docs/hardware.md), [CAD models](cad/README.md) |
 | Adversarial experiments | [Kulira](docs/kulira-friction.md), [attack taxonomy](docs/attack-taxonomy.md) |
-| Sound, music and future experiments | [Acoustic model and goals](docs/learn/acoustic-language.md), [experiment catalogue](docs/experiment-catalogue.md) |
+| Sound, music and future experiments | [Acoustic model and goals](docs/learn/acoustic-language.md), [experiment catalogue](docs/experiment-catalogue.md), [Patternflow scenario](docs/scenarios/patternflow-flocking/README.md) |
 
 This public repository contains firmware, tools, designs and synthetic experiment
 fixtures. Real-node journals, recordings and credentials stay in private storage.
