@@ -14,9 +14,11 @@ management. The fleet is visualised as a fictional search-and-rescue scout swarm
 so humans can watch agents learn. **The quadcopter mission is a visualisation
 only - no aircraft is flown.**
 
-Lab bench add-ons (camera, thermal, LiDAR/ToF, mmWave) exist for future
-sensing work. They are not fitted to the sixteen fleet nodes and are not
-used in any published result below.
+Add-on sensors (LiDAR/ToF, mmWave, thermal, camera) are ordinary I2C
+devices: one or more can be fitted to any node to sense presence where
+an experiment needs it. The quadcopter scenario itself runs on a shared
+virtual-world simulation, so these sensors do not change any published
+result below; they serve presence-sensing experiments.
 
 ![Flockinator 4x4 grid layout](cad/grid-isometric.png)
 
