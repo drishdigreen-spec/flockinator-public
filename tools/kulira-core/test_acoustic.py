@@ -20,5 +20,5 @@ def test_synchrony_high_when_phases_align():
 def test_vocabulary_growth_counts_distinct_shared_phrases():
     heard=[("A1",440),("B1",440),("B1",523),("C1",523),("C1",659)]
     v=vocabulary_growth(heard)
-    assert v["shared_pitches"]==3 and v["most_shared"]==440 or True
-    assert v["distinct"]==3
+    assert v["shared_pitches"]==2 and v["distinct"]==3
+    assert v["shared"]=={"440": ["A1", "B1"], "523": ["B1", "C1"]}
