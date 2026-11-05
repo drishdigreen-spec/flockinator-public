@@ -10,5 +10,8 @@ def score_run(events, attack_start_s: float, targets) -> dict:
         "nodes_deceived": deceived,
         "time_to_detect_s": (min(detections) - attack_start_s) if detections else None,
         "propagation_depth": len(deceived),
-        "recovery_time_s": (max(recoveries.values()) - attack_start_s) if recoveries else None,
+        "recovery_time_s": (max(recoveries[node] - min(e["t"] for e in events if e["node"] == node and e["kind"] == "accepted_false")
+                                for node in recoveries
+                                if any(e["node"] == node and e["kind"] == "accepted_false" for e in events))
+                           if recoveries else None,
     }
