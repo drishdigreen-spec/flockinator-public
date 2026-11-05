@@ -33,8 +33,11 @@ can be stolen.
    decisions alone, the group must make better ones together, and
    that trust is earned by testing - friendly and hostile - long
    before deployment.
-5. **[How Flockinator tests all this](how-we-test.md)**
-   The playground: sixteen glowing nodes, a simulated drone
+5. **[Why search and rescue first](why-search-and-rescue.md)** - lost
+   children, downed aircraft, thermal and CO2 scouts, and why
+   agent-to-agent trust is a new frontier.
+6. **[How Flockinator tests all this](how-we-test.md)**
+   The playground: sixteen glowing nodes, a search-and-rescue
    mission, an adversary whose job is to lie to them, and a
    scorekeeper with the hidden truth.
 
@@ -42,7 +45,7 @@ can be stolen.
 
 ![The sixteen-panel grid](../../cad/grid-isometric.png)
 
-The illustrated mission: [quadcopter survey guide](../scenarios/quadcopter-survey/README.md).
+The illustrated mission: [search-and-rescue survey guide](../scenarios/quadcopter-survey/README.md).
 The moving preview: [recon HUD](../../previews/recon-hud/README.md).
 Ready for the method? [Experimental methodology](../experiments.md).
 Ready for the attacks? [Attack taxonomy](../attack-taxonomy.md).

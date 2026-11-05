@@ -6,7 +6,7 @@ measurements:
 1. **Train small, alone.** Each node's little model learns by
    itself first, so we know what it can do without help.
 2. **Give it a flock.** Nodes share sightings in a simulated
-   drone-survey mission. Did sharing actually help, compared
+   search-and-rescue mission. Did sharing actually help, compared
    with each node keeping its thoughts private? We measure the
    difference, at the same cost.
 3. **Send in the adversary.** Kulira - a separate computer with

@@ -5,7 +5,7 @@
 Can small agent models, trained in isolation, improve - individually and
 as a swarm - when their environment pushes back? Flockinator compresses
 nature's slow optimisation (hardship and selection over evolutionary
-time) into seeded, measurable runs humans can watch. The drone-survey
+time) into seeded, measurable runs humans can watch. The search-and-rescue
 scenario is a visualisation of that question, not an operational system.
 
 ## Three loci of intelligence

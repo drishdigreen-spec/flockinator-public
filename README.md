@@ -8,7 +8,7 @@ panel. Each node is a physical body - sensing, local state, display,
 audio, SD storage - whose brain can run locally, on an external host,
 or across both. A Korvo-1 (ESP32-S31) controller hosts the fleet controls,
 planner, and learning lab; a LilyGo handheld provides portable
-management. The fleet is visualised as a fictional drone-survey swarm
+management. The fleet is visualised as a fictional search-and-rescue scout swarm
 so humans can watch agents learn.
 
 ![Flockinator 4x4 grid layout](cad/grid-isometric.png)
