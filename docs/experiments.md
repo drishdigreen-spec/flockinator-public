@@ -96,3 +96,7 @@ show, falsifiable. Small isolated models plus a well-measured
 interaction layer may be a more robust path to capable swarms than
 any single large one, because the interaction layer is where
 verification, diversity, and recovery naturally live.
+
+Measured cycle results, field findings from the live fleet, and
+the next experiment families are tracked in
+[results/](results/README.md).

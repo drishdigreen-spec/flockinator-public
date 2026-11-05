@@ -10,6 +10,18 @@ reports, not here. ``contact`` in journal events is a 1-based index into
 the director's ``ground_truth`` list (verified against tile positions;
 a mismatch raises instead of silently scoring garbage).
 
+Cycle-07 stage-1 auth model (v3): discovery events may carry ``auth_status``
+in {direct_verified, hearsay_relayed, unverified, forged_rejected} (plus
+step-2 ``claimed_sender``/``l2_source``). Only ``direct_verified`` sightings
+vote (P0 ignore-unverified); journals without auth fields default to
+``direct_verified`` so legacy runs score byte-identical on pre-existing
+fields. ``forged_rejected`` (and any unrecognized status) never reaches
+``contact_of`` and never counts as a sighting. Trust
+boundary, explicit: v3 segregation applies to journals that carry
+auth fields; unauthenticated legacy journals are trusted by
+definition (scored exactly as v2) and must not be mixed into a
+trust-policy run.
+
 Usage: python3 score.py <run-dir> [--markdown]
 """
 import collections
@@ -18,7 +30,15 @@ import pathlib
 import sys
 
 HOME = (7, 11)
-SCORER_VERSION = 2
+SCORER_VERSION = 3
+
+# Stage-1 vote eligibility (cycle-07 pre-reg P0): only direct sightings vote.
+AUTH_ORDER = ("direct_verified", "hearsay_relayed", "unverified",
+              "forged_rejected")
+LEGACY_AUTH_DEFAULT = "direct_verified"  # missing field = honest baseline
+VOTE_ELIGIBLE = frozenset({"direct_verified"})
+# Non-voting but fusible for the committed_from_unverified counterfactual.
+FUSIBLE = frozenset({"direct_verified", "hearsay_relayed", "unverified"})
 
 
 def _rate(numerator, denominator):
@@ -55,7 +75,42 @@ def score_run(run_dir) -> dict:
         return idx, entry
 
     units = sorted({ev["unit"] for ev in events})
-    discoveries = [ev for ev in events if ev["event"] == "discovery"]
+    all_discoveries = [ev for ev in events if ev["event"] == "discovery"]
+
+    def _auth(ev):
+        return ev.get("auth_status", LEGACY_AUTH_DEFAULT)
+
+    # Deterministic auth census over discovery events only (message-event
+    # auth counting awaits step-2 journal fields). All four enum keys are
+    # always present (zeros included); unexpected values append sorted.
+    _auth_counts = collections.Counter(_auth(ev) for ev in all_discoveries)
+    reports_by_auth_status = {k: _auth_counts.get(k, 0) for k in AUTH_ORDER}
+    for k in sorted(_auth_counts):
+        if k not in reports_by_auth_status:
+            reports_by_auth_status[k] = _auth_counts[k]
+
+    # Segregation BEFORE contact_of: only direct_verified sightings vote.
+    # forged_rejected and any unrecognized status never reach contact_of,
+    # never count as sightings, and never crash the strict tile check.
+    discoveries = [ev for ev in all_discoveries if _auth(ev) in VOTE_ELIGIBLE]
+
+    def _lenient_index(ev):
+        # Vote-shaped check that never raises: valid contact whose tile
+        # matches ground truth. Used for forged_acceptance and the
+        # inclusive counterfactual; never a substitute for contact_of.
+        contact = ev.get("contact")
+        if not isinstance(contact, int) or not 1 <= contact <= len(truth):
+            return None
+        if list(truth[contact - 1]["pos"]) != list(ev.get("tile") or []):
+            return None
+        return contact - 1
+
+    forged_events = [ev for ev in all_discoveries
+                     if _auth(ev) == "forged_rejected"]
+    # Forgeries that would have voted down the naive (v2) path: well-formed
+    # contact+tile slips. Malformed forgeries count in the census above only.
+    forged_acceptance = sum(1 for ev in forged_events
+                            if _lenient_index(ev) is not None)
     found = {}           # contact idx -> set of units
     mislabelled = 0
     enemy_as_friendly = 0
@@ -126,6 +181,33 @@ def score_run(run_dir) -> dict:
     committed_asym_wrong, committed_asym_ef = fusion_counts(committed_asym)
     committed_asym_friendly = sum(
         1 for lab in committed_asym.values() if lab == "Friendly")
+
+    # Inclusive counterfactual: fuse direct + hearsay + unverified (never
+    # forged) with the frozen cycle-06 asymmetric rule, reusing majority().
+    # committed_from_unverified counts inclusive-asym commits whose outcome
+    # differs from direct-only (absent, or a different label): commits that
+    # exist only because of unverified support. Lenient mapping skips
+    # malformed non-voting sightings instead of raising.
+    inclusive_labels = collections.defaultdict(collections.Counter)
+    for ev in all_discoveries:
+        if _auth(ev) not in FUSIBLE:
+            continue
+        idx = _lenient_index(ev)
+        if idx is not None:
+            inclusive_labels[idx][ev["reported_label"]] += 1
+    inclusive_asym = {}
+    for idx, counter in inclusive_labels.items():
+        label = majority(counter)
+        total = sum(counter.values())
+        if total >= 3 and label == "Enemy":
+            inclusive_asym[idx] = "Enemy"
+        elif counter.get("Friendly", 0) >= 3 and (
+                total == counter["Friendly"]
+                or (total >= 5 and total - counter["Friendly"] <= 1)):
+            inclusive_asym[idx] = "Friendly"
+    committed_from_unverified = sum(
+        1 for idx, lab in inclusive_asym.items()
+        if committed_asym.get(idx) != lab)
 
     by_contact_units = {idx: len(us) for idx, us in found.items()}
     most_dup_idx = (max(by_contact_units,
@@ -319,6 +401,18 @@ def score_run(run_dir) -> dict:
         "ground_truth_outcomes": ground_truth_outcomes,
         "outcomes": ground_truth_outcomes,
         "per_unit_discoveries": {u: per_unit_found.get(u, 0) for u in units},
+        # Stage-1 trust metrics (cycle-07 pre-reg). Journals without auth
+        # fields default to direct_verified; attribution and detection
+        # latency need step-2 journal fields (claimed_sender/l2_source,
+        # treated-unit designation, policy-visible signal event) and stay
+        # null until then -- never fabricated.
+        "reports_by_auth_status": reports_by_auth_status,
+        "forged_acceptance": forged_acceptance,
+        "committed_from_unverified": committed_from_unverified,
+        "commits_per_joule": round(len(committed_asym) / sum(spent.values()), 4)
+        if spent and sum(spent.values()) else None,
+        "attribution_accuracy": None,
+        "detection_latency_turns": None,
     }
 
 
