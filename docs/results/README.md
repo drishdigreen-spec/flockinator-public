@@ -139,13 +139,13 @@ panels; treat as field observations, not controlled trials):
   Firmware 0.9.1 added a connectivity watchdog with pre-declared
   thresholds (5 min of global fleet-sweep silence -> forced
   reconnect -> logged restart, hourly backoff) and a health API
-  exposing the counters. The wedge has since recurred five
+  exposing the counters. The wedge has since recurred six
   times on this build; each time the watchdog fired at ~312-326 s
   of sweep silence, forced a reconnect, and service returned in
   ~2 s with no restart and continuous uptime — ~5.5 min bounded
   outages where the same fault previously ran unbounded for
   hours. Healthy windows between wedges vary widely and not
-  monotonically (110, 32, 17, 37, then 123 min), and recurrences
+  monotonically (110, 32, 17, 37, 123, then ~15 min), and recurrences
   happen on the strong radio too, so association quality is at
   most a contributing factor and whatever state accumulates is
   not cleared by reassociation. A fresh association reliably
