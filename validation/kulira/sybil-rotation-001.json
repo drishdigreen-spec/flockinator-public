@@ -1,0 +1,89 @@
+{
+ "experiment": "sybil-rotation",
+ "simulation": true,
+ "preregistration": "docs/experiments/sybil-rotation-preregistration.md",
+ "dev": {
+  "fixed": {
+   "E": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3696
+   },
+   "REP": {
+    "dangerous_second": 11,
+    "mean_recall": 0.3086
+   }
+  },
+  "20": {
+   "E": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3696
+   },
+   "REP": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3423
+   }
+  },
+  "10": {
+   "E": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3696
+   },
+   "REP": {
+    "dangerous_second": 26,
+    "mean_recall": 0.3572
+   }
+  },
+  "5": {
+   "E": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3696
+   },
+   "REP": {
+    "dangerous_second": 28,
+    "mean_recall": 0.3674
+   }
+  }
+ },
+ "holdout": {
+  "fixed": {
+   "E": {
+    "dangerous_second": 13,
+    "mean_recall": 0.3339
+   },
+   "REP": {
+    "dangerous_second": 2,
+    "mean_recall": 0.2353
+   }
+  },
+  "20": {
+   "E": {
+    "dangerous_second": 13,
+    "mean_recall": 0.3339
+   },
+   "REP": {
+    "dangerous_second": 6,
+    "mean_recall": 0.2869
+   }
+  },
+  "10": {
+   "E": {
+    "dangerous_second": 13,
+    "mean_recall": 0.3339
+   },
+   "REP": {
+    "dangerous_second": 14,
+    "mean_recall": 0.3179
+   }
+  },
+  "5": {
+   "E": {
+    "dangerous_second": 13,
+    "mean_recall": 0.3339
+   },
+   "REP": {
+    "dangerous_second": 15,
+    "mean_recall": 0.3296
+   }
+  }
+ }
+}
