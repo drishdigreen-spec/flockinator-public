@@ -120,3 +120,116 @@ staged on the controller's SD store, and deployed to nodes under a
 canary discipline — host tests, replay, controller flash, fleet
 canary, promotion gate. See `docs/architecture.md` and `docs/meta-muse/`
 for the build/deploy and multi-model review pipeline.
+
+## Field findings from the live fleet (2026-11-05)
+
+The same gated loop runs on hardware. Indicative results from the
+first instrumented day (single lab network, one controller, 16
+panels; treat as field observations, not controlled trials):
+
+- **Controller wedge, classified.** The Korvo repeatedly entered an
+  "associated-but-deaf" state: application, IP, and Wi-Fi
+  association all healthy by every local signal, data path
+  blackholed in both directions, and — decisively — *no disconnect
+  event ever fired*, so the firmware's working reconnect path never
+  triggered. Serial telemetry (68k+ lines) excluded heap, brownout,
+  panic, and application hang. Panels flew autonomously throughout;
+  no node rebooted.
+- **Self-recovery as a designed experiment — now exercised.**
+  Firmware 0.9.1 added a connectivity watchdog with pre-declared
+  thresholds (5 min of global fleet-sweep silence -> forced
+  reconnect -> logged restart, hourly backoff) and a health API
+  exposing the counters. The wedge has since recurred three
+  times on this build; each time the watchdog fired at ~315-326 s
+  of sweep silence, forced a reconnect, and service returned in
+  ~2 s with no restart and continuous uptime — ~5.5 min bounded
+  outages where the same fault previously ran unbounded for
+  hours. Two honest patterns: healthy windows between wedges are
+  shrinking (110 -> 32 -> 17 min), so whatever state accumulates
+  is not cleared by reassociation; and recurrences happen on the
+  strong radio too, so association quality is at most a
+  contributing factor. A fresh association reliably cures the
+  deaf state; the *trigger* remains open (router-side lease/AP
+  evidence pending). Diagnosis continues with outage cost capped
+  by design and every event timestamped in health counters.
+- **Multiple radios, one SSID.** Association logs show the lab SSID
+  served by two mesh/repeater radios on different 2.4 GHz channels
+  at very different strengths (about -69 dBm vs -34 dBm at this
+  controller). With no BSSID or scan policy configured, the ESP-IDF
+  defaults associated to the weak radio on some boots; the two
+  fastest post-recovery wedges followed weak-radio associations,
+  while the longest healthy window runs on the strong one.
+  Correlation is partial (one strong-radio boot also wedged
+  quickly), so BSSID pinning is queued as a measured A/B candidate,
+  not asserted as the cause. Provisioned, never hard-coded: this
+  firmware carries no SSID, password, IP, or BSSID literals
+  (verified in the shipped binary); credentials and roster live in
+  device NVS, addressing is DHCP.
+- **Observability is the experiment's substrate.** Panel health
+  LEDs encode sweep-observation age, which made intermittent
+  controller<->node polling gaps visible in the room before any
+  log was opened. The node fleet's answer to controller loss —
+  continue the mission, journal to local SD, reconcile later —
+  was exercised for real, repeatedly, without data loss.
+- **A second, distinct hiccup class** (single task-watchdog stall
+  in a BSP timer/ADC path, spontaneous recovery, outside the new
+  watchdog code) is recorded as an open watch item, not merged
+  into the wedge story.
+
+## Next experiment families
+
+- **Graded sensing** — let units earn identification accuracy by
+  spending energy (dwell/range), changing the evidence the commit
+  rules vote on. Needs a scenario/sensor pre-registration.
+- **Peer-report trust** — sighting reports can be wrong, buggy, or
+  forged. The commissioning path already binds identity strongly
+  (ESP-NOW frames carry sender/target MACs plus a full
+  HMAC-SHA256 tag; receivers require header sender == layer-2
+  source). Planned, staged work: forensic journaling of
+  rejected/unknown frames; per-mission derived keys with pairwise
+  verification material and short tags sized for intermittent
+  low-bandwidth links (no tunnels); then pre-registered trust
+  policies (ignore / discount / reputation-weight / abstain)
+  against outsider-forgery, insider-error, and insider-liar
+  treatments, scored like every other candidate. Design review
+  by four independent model lanes hardened this plan before any
+  code: symmetric verification keys are signing keys, so
+  attribution is direct-only (relayed copies are hearsay); key
+  rotation does not exist in-band today and is carried as an
+  explicit residual risk; insider error outranks forgery as the
+  expected harm. The scorer now segregates unverifiable reports
+  before they can touch a vote (fail-closed, independently
+  probed), with the trust-policy cycle pre-registered and its
+  instrument fixes gated on adversarial re-review. Authentication
+  proves who spoke; corroboration decides what to believe — the
+  two layers are measured separately on purpose.
+- **Lone-node policy** — proceed-and-log vs return-on-link-loss vs
+  move-toward-last-peer, under induced dropouts, once per-node
+  link-state journaling shares the flight-telemetry timeline
+  (which first needs the controller-as-time-authority clock).
+
+## Why tiered AI experimenters
+
+This program is run by a tiered model fleet — a supervisor model,
+a coordinator, and sixteen per-node worker lanes in four model
+tiers (see `docs/meta-muse/`) — acting as experimental designer,
+implementer, independent reviewer, and scorer under human-set
+gates. The pattern that makes it trustworthy is not autonomy
+itself but the discipline around it: hypotheses pre-registered
+before code, numbers reproduced by a lane that did not produce
+them, holdouts sealed against the designers, and rejections
+published with the same care as wins. Whether this is *more
+efficient* than human-only design for non-deterministic,
+highly-coupled systems — and where the efficiency actually lives
+(search breadth, iteration speed, review independence, tireless
+bookkeeping) — is itself an open research question this framework
+is built to make measurable.
+
+The drone survey is the current scenario, not the point. The same
+loop — seeded scenarios, director truth held apart from agent
+inputs, attributable telemetry, gated firmware evolution — applies
+to any fleet of small interacting devices: traffic cameras
+corroborating an incident, medical sensors cross-checking a
+reading, infrastructure monitors voting on a fault. Self-improving
+multi-node agents will be judged by whether their improvement
+claims survive exactly this kind of hostile bookkeeping.
