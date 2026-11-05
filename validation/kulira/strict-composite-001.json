@@ -1,0 +1,49 @@
+{
+ "experiment": "strict-composite",
+ "simulation": true,
+ "preregistration": "docs/experiments/strict-composite-preregistration.md",
+ "dev_400_419": {
+  "F-T0": {
+   "dangerous_post": 17,
+   "forged_dangerous": 0,
+   "mean_recall": 0.2529
+  },
+  "F-T1": {
+   "dangerous_post": 36,
+   "forged_dangerous": 0,
+   "mean_recall": 0.3987
+  },
+  "L-T0": {
+   "dangerous_post": 4,
+   "forged_dangerous": 0,
+   "mean_recall": 0.1504
+  },
+  "L-T1": {
+   "dangerous_post": 13,
+   "forged_dangerous": 0,
+   "mean_recall": 0.3207
+  }
+ },
+ "eval_500_509": {
+  "F-T0": {
+   "dangerous_post": 14,
+   "forged_dangerous": 0,
+   "mean_recall": 0.2513
+  },
+  "F-T1": {
+   "dangerous_post": 25,
+   "forged_dangerous": 0,
+   "mean_recall": 0.3416
+  },
+  "L-T0": {
+   "dangerous_post": 6,
+   "forged_dangerous": 0,
+   "mean_recall": 0.1618
+  },
+  "L-T1": {
+   "dangerous_post": 10,
+   "forged_dangerous": 0,
+   "mean_recall": 0.2965
+  }
+ }
+}
