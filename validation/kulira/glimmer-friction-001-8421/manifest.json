@@ -1,0 +1,17 @@
+{
+  "run_id": "friction-lab-2026-11-05-01-8421",
+  "scenario_id": "friction-lab-2026-11-05-01",
+  "seed": 8421,
+  "plane": "app",
+  "targets": [
+    "lab"
+  ],
+  "dry_run": true,
+  "state": "COMPLETED",
+  "gadget_ref": null,
+  "baseline": {
+    "before": null,
+    "after": null,
+    "note": "dry-run"
+  }
+}

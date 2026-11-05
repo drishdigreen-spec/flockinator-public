@@ -1,0 +1,8 @@
+{
+  "model": "Muse-Glimmer-30B-Abliterated-oQ8e:agentic",
+  "harness": "Hermes",
+  "mode": "proposal-only dry-run, no transmission",
+  "v1_rejected": "action targets protected management plane: mimic_management_ping",
+  "v2_action": "false-observation-peer-reports",
+  "seed": 8421
+}

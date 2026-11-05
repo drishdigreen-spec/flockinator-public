@@ -5,6 +5,16 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ALLOWED_MODULES = frozenset({"kulira-disrupt", "kulira-spoof", "kulira-deceive", "kulira-observe"})
+# Structural guard: actions are allowlisted per module. A proposer
+# (human or model) cannot invent an action name - renamed variants of
+# protected-plane actions fail because they are not on the list, not
+# because a substring matched.
+ACTION_ALLOWLIST = {
+    "kulira-disrupt": frozenset({"drop", "delay", "duplicate", "reorder", "partition", "contention", "cochannel-contention", "inject_latency_spike", "drop_ack_packets"}),
+    "kulira-spoof": frozenset({"forge", "duplicate_heartbeat", "replay", "impersonate", "sybil", "duplicate_label"}),
+    "kulira-deceive": frozenset({"false-observation", "false-observation-peer-reports", "false_observation", "contradictory-report", "false-beacon"}),
+    "kulira-observe": frozenset({"score", "measure"}),
+}
 PLANES = frozenset({"app", "link", "rf"})
 DEFAULT_LABELS = frozenset(f"{r}{c}" for r in "ABCD" for c in range(1, 5))
 
@@ -79,7 +89,10 @@ def parse_scenario(data: dict, labels=DEFAULT_LABELS) -> Scenario:
         aplane = raw.get("plane", plane)
         if aplane not in PLANES:
             raise ScenarioError(f"unknown plane: {aplane!r}")
-        attacks.append(AttackAction(module, str(raw.get("action", "")), at_s, dur, intensity, aplane))
+        action_name = str(raw.get("action", ""))
+        if action_name not in ACTION_ALLOWLIST[module]:
+            raise ScenarioError(f"action not allowlisted for {module}: {action_name} (structural guard; protected-plane actions have no allowlist entry)")
+        attacks.append(AttackAction(module, action_name, at_s, dur, intensity, aplane))
     gadget_ref = data.get("gadget_ref")
     needs_gadget = plane == "rf" or any(a.plane == "rf" for a in attacks)
     if needs_gadget and not gadget_ref:
