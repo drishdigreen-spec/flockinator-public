@@ -17,3 +17,8 @@ def test_newcomer_discount_strangles_recall_measured():
     # almost nothing reaches the weighted commit bar. Pin it.
     out = run_sybil(range(20), rotations=(5,))
     assert out["5"]["REP-N"]["mean_recall"] < 0.1
+
+def test_normalised_thresholds_restore_commits_under_rotation():
+    out = run_sybil(range(20), rotations=(5,))
+    assert out["5"]["REP-T"]["dangerous_second"] < out["5"]["REP"]["dangerous_second"]
+    assert out["5"]["REP-T"]["mean_recall"] >= out["5"]["REP"]["mean_recall"] - 0.10

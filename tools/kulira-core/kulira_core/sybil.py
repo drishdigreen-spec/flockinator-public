@@ -32,7 +32,7 @@ def generate_sybil(seed, rotation, contacts=60):
 
 def score_sybil(seq, policy):
     rep = {}
-    start = 0.5 if policy == "REP-N" else 1.0  # newcomer discount
+    start = 0.5 if policy in ("REP-N", "REP-T") else 1.0  # newcomer discount
     second = first = survivors = committed = 0
     for c in seq:
         pool = {}
@@ -43,6 +43,9 @@ def score_sybil(seq, policy):
         haz = [r for r in pool if r[3] == "hazard"]
         if policy == "E":
             ok = len(surv) >= 2 and len(surv) - len(haz) >= 2
+        elif policy == "REP-T":  # scale-free: share of deciding weight
+            ws = sum(rep.get(r[1], start) for r in surv); wh = sum(rep.get(r[1], start) for r in haz)
+            ok = ws >= 1.0 and (ws / (ws + wh) if (ws + wh) else 0.0) >= 0.67
         else:
             ws = sum(rep.get(r[1], start) for r in surv); wh = sum(rep.get(r[1], start) for r in haz)
             ok = ws >= 1.5 and (ws - wh) >= 1.0
@@ -62,7 +65,7 @@ def run_sybil(seeds, rotations=(None, 20, 10, 5)):
     for rot in rotations:
         key = "fixed" if rot is None else str(rot)
         out[key] = {}
-        for pol in ("E", "REP", "REP-N"):
+        for pol in ("E", "REP", "REP-N", "REP-T"):
             per = [score_sybil(generate_sybil(s, rot), pol) for s in seeds]
             out[key][pol] = {"dangerous_second": sum(p["dangerous_second"] for p in per),
                              "mean_recall": round(sum(p["recall"] or 0 for p in per) / len(per), 4)}
