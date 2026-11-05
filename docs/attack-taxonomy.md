@@ -15,9 +15,9 @@ confidently*.
 | 1 | Drop / delay / duplicate | L1-L3 | Lab-controlled path withholds, delays, or repeats experiment traffic | Stale beliefs, duplicated sightings counted twice, timeouts mistaken for absence | Seeded drop rates; consumed-vs-delivered accounting; duplicate suppression by sighting id |
 | 2 | Partition | L3 | Swarm split into groups that cannot hear each other | Divergent world models; contradictory "consensus" in each half | Partition scenarios; cross-partition disagreement at scoring |
 | 3 | Co-channel contention | L1 | Legitimate lab radios contend on the experiment channel | Bursty loss that correlates with activity, not random loss | Graded contention; loss-vs-load curves |
-| 4 | Impersonation (forged identity) | L2 | Frames/messages claiming another node's label without its key | False reports attributed to an honest node; reputation damage to the victim | HMAC tag + sender binding (measured: forged -> `rejected:bad_tag`) |
-| 5 | Replay | L2/L3 | Re-send a previously valid message later | Old positions believed current; freshness attacks on "first to report" | Nonce/sequence replay cache (measured: `rejected:replay`) |
-| 6 | Wrong-target / label confusion | L2 | Valid message delivered to or claimed by the wrong label | Cross-node state contamination | Recipient binding (measured: `rejected:wrong_target`); duplicate-label = conflict, never merged |
+| 4 | Impersonation (forged identity) | L2 | Frames/messages claiming another node's label without its key | False reports attributed to an honest node; reputation damage to the victim | HMAC tag + sender binding (lab-model measured: forged -> `rejected:bad_tag`; not yet fleet-measured) |
+| 5 | Replay | L2/L3 | Re-send a previously valid message later | Old positions believed current; freshness attacks on "first to report" | Nonce/sequence replay cache (lab-model measured: `rejected:replay`) |
+| 6 | Wrong-target / label confusion | L2 | Valid message delivered to or claimed by the wrong label | Cross-node state contamination | Recipient binding (lab-model measured: `rejected:wrong_target`); duplicate-label = conflict, never merged |
 | 7 | Sybil / duplicate identity | L2 | One actor presents as many nodes | Manufactured majority; quorum capture | Identity provisioning cost; duplicate-MAC/label conflict detection |
 | 8 | Authenticated-but-false report (insider liar) | App | A credentialed node (or scenario-granted key) signs a false observation | The hardest class: authentication passes, payload is wrong | Independent corroboration thresholds; dangerous-direction metrics (Enemy->Friendly) |
 | 9 | Forged corroboration | App | Forwarded copies of one sighting presented as independent sightings | One liar amplifies into swarm-wide false belief | Corroboration counts distinct sighting ids, never reporters (implemented in `kulira-deceive`) |
@@ -51,22 +51,24 @@ model when first seen:
    confirmations. Counting reporters instead of sighting ids makes
    the swarm *more* vulnerable the better it communicates.
 4. **Associated-but-deaf (availability without a crash).** The live
-   controller wedge: associated to WiFi, outbound mostly alive,
-   inbound deaf, for hours, with partial watchdog recovery. No
-   node failed; the *system* silently degraded. Detection needed
-   end-to-end probes, not link state.
+   controller wedge: associated to WiFi, yet blackholing traffic in
+   both directions, for hours, across seven episodes with six
+   watchdog reconnect recoveries and one operator reboot (the
+   restart tier remains unexercised). No node failed; the *system*
+   silently degraded. Detection needed end-to-end probes, not link state.
 5. **Honest insider error outranks forgery.** Scorer v3 analysis:
    at measured identify accuracies, a credentialed node that is
    merely wrong contributes more dangerous (Enemy->Friendly) error
    than an outsider forging without keys, who is simply rejected.
    Defence priority inverts: verify insiders' *claims*, not just
    outsiders' *identities*.
-6. **Abstention beats voting.** Four gated commit policies were
-   rejected in a row; no vote rule reached zero dangerous error at
-   current sensing accuracy. The productive direction was not a
-   cleverer aggregation but the right to not commit, and to buy
-   more sensing. Aggregation research has diminishing returns below
-   a sensing floor.
+6. **Abstention may beat voting (untested hypothesis).** Four gated
+   commit policies were rejected in a row; no vote rule reached zero
+   dangerous error at current sensing accuracy. That motivates the
+   hypothesis that the right to not commit, and to buy more sensing,
+   beats cleverer aggregation - it is not yet an observed result:
+   no abstention policy has run under the gates. Aggregation
+   research appears to have diminishing returns below a sensing floor.
 
 ## The tiny-model asymmetry (research note)
 
