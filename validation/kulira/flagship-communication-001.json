@@ -1,0 +1,129 @@
+{
+ "experiment": "flagship-communication-reproduction",
+ "source": "tools/mission-host/coordination_lab.py (field-signals-v1)",
+ "source_commit": "public main 2026-11-05",
+ "seeds": "0-15",
+ "held_out_rounds_per_seed": 32,
+ "team_tasks_per_seed_per_condition": 128,
+ "definition": "team success = at least 3 of 4 agents in a team choose the correct sector; 4 teams x 32 held-out rounds",
+ "per_seed": [
+  {
+   "seed": 0,
+   "clear_success": 0.7812,
+   "scrambled_success": 0.3828,
+   "private_success": 0.6719,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 1,
+   "clear_success": 0.6953,
+   "scrambled_success": 0.2969,
+   "private_success": 0.5781,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 2,
+   "clear_success": 0.7109,
+   "scrambled_success": 0.375,
+   "private_success": 0.6016,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 3,
+   "clear_success": 0.6406,
+   "scrambled_success": 0.2578,
+   "private_success": 0.4844,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 4,
+   "clear_success": 0.625,
+   "scrambled_success": 0.3594,
+   "private_success": 0.4453,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 5,
+   "clear_success": 0.7422,
+   "scrambled_success": 0.3281,
+   "private_success": 0.5469,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 6,
+   "clear_success": 0.7266,
+   "scrambled_success": 0.3125,
+   "private_success": 0.5938,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 7,
+   "clear_success": 0.7109,
+   "scrambled_success": 0.3203,
+   "private_success": 0.5312,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 8,
+   "clear_success": 0.7656,
+   "scrambled_success": 0.3984,
+   "private_success": 0.5938,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 9,
+   "clear_success": 0.75,
+   "scrambled_success": 0.2969,
+   "private_success": 0.5234,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 10,
+   "clear_success": 0.7109,
+   "scrambled_success": 0.3438,
+   "private_success": 0.5625,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 11,
+   "clear_success": 0.7891,
+   "scrambled_success": 0.3281,
+   "private_success": 0.5703,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 12,
+   "clear_success": 0.7422,
+   "scrambled_success": 0.3594,
+   "private_success": 0.5859,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 13,
+   "clear_success": 0.7422,
+   "scrambled_success": 0.2969,
+   "private_success": 0.6094,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 14,
+   "clear_success": 0.7422,
+   "scrambled_success": 0.3672,
+   "private_success": 0.5469,
+   "tasks_per_condition": 128
+  },
+  {
+   "seed": 15,
+   "clear_success": 0.7969,
+   "scrambled_success": 0.3516,
+   "private_success": 0.6172,
+   "tasks_per_condition": 128
+  }
+ ],
+ "mean_of_seed_rates": {
+  "clear_success": 0.7295,
+  "scrambled_success": 0.3359,
+  "private_success": 0.5664
+ },
+ "note": "Muted/private baseline receives no peer messages by design (different information budget). Training and held-out streams separate; evaluation memories frozen. Host simulation only - not on-node learning."
+}
