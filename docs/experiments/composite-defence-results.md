@@ -49,3 +49,5 @@ stack, and both are stated limits, not surprises.
 Simulation only; the combined world is new, so absolute numbers
 are not comparable to the single-attack experiments. Trust rates
 and thresholds are the registered parameters, not tuned.
+
+**Correction (2026-11-05):** the threshold-equivalence wording in the pre-registration is false; this result compares bundled policies and does not isolate learned trust. See [composite-defence-correction.md](composite-defence-correction.md).
