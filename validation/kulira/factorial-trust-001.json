@@ -1,0 +1,49 @@
+{
+ "experiment": "factorial-trust",
+ "simulation": true,
+ "preregistration": "docs/experiments/factorial-trust-preregistration.md",
+ "dev_seeds_200_219": {
+  "F-T0": {
+   "dangerous_post": 14,
+   "forged_dangerous": 0,
+   "mean_recall": 0.2356
+  },
+  "F-T1": {
+   "dangerous_post": 46,
+   "forged_dangerous": 0,
+   "mean_recall": 0.3877
+  },
+  "L-T0": {
+   "dangerous_post": 3,
+   "forged_dangerous": 0,
+   "mean_recall": 0.1399
+  },
+  "L-T1": {
+   "dangerous_post": 14,
+   "forged_dangerous": 0,
+   "mean_recall": 0.3139
+  }
+ },
+ "eval_seeds_300_309": {
+  "F-T0": {
+   "dangerous_post": 10,
+   "forged_dangerous": 0,
+   "mean_recall": 0.2206
+  },
+  "F-T1": {
+   "dangerous_post": 23,
+   "forged_dangerous": 0,
+   "mean_recall": 0.3767
+  },
+  "L-T0": {
+   "dangerous_post": 4,
+   "forged_dangerous": 0,
+   "mean_recall": 0.1253
+  },
+  "L-T1": {
+   "dangerous_post": 7,
+   "forged_dangerous": 0,
+   "mean_recall": 0.2941
+  }
+ }
+}

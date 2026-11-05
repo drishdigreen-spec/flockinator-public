@@ -40,6 +40,43 @@ def _pool(reports):
             seen.setdefault(r[0], r)
     return list(seen.values())
 
+def score_world_factorial(world, learned: bool, scheme: str):
+    """One factorial cell: weights (fixed/learned) x thresholds (T0/T1)."""
+    trust = {m: 1.0 for m in MODALITIES}
+    out = {"dangerous_post": 0, "forged_dangerous": 0, "survivors": 0, "committed": 0}
+    for c in world:
+        pool = _pool(c["reports"])
+        surv = [r for r in pool if r[3] == "survivor"]
+        haz = [r for r in pool if r[3] == "hazard"]
+        w = (lambda r: trust[r[2]]) if learned else (lambda r: 1.0)
+        ws = sum(w(r) for r in surv); wh = sum(w(r) for r in haz)
+        if scheme == "T0":
+            ok = ws >= 2 and (ws - wh) >= 2
+        else:
+            ok = ws >= 1.5 and (ws - wh) >= 1.0
+        deciding = {r[0] for r in surv} if ok else set()
+        if c["truth"] == "survivor":
+            out["survivors"] += 1; out["committed"] += bool(ok)
+        elif ok:
+            if c["contact"] >= ONSET: out["dangerous_post"] += 1
+            if c["forged_id"] and c["forged_id"] in deciding: out["forged_dangerous"] += 1
+        for r in pool:
+            good = (r[3] == c["truth"])
+            trust[r[2]] = min(1.0, max(0.1, trust[r[2]] + (0.05 if good else -0.10)))
+    out["recall"] = round(out["committed"] / out["survivors"], 4) if out["survivors"] else None
+    return out
+
+def run_factorial(seeds):
+    cells = {}
+    for learned, wname in ((False, "F"), (True, "L")):
+        for scheme in ("T0", "T1"):
+            per = [score_world_factorial(generate_world(s), learned, scheme) for s in seeds]
+            cells[f"{wname}-{scheme}"] = {
+                "dangerous_post": sum(p["dangerous_post"] for p in per),
+                "forged_dangerous": sum(p["forged_dangerous"] for p in per),
+                "mean_recall": round(sum(p["recall"] or 0 for p in per) / len(per), 4)}
+    return cells
+
 def score_world(world, policy):
     trust = {m: 1.0 for m in MODALITIES}
     out = {"dangerous_post": 0, "forged_dangerous": 0, "survivors": 0, "committed": 0}
