@@ -1,4 +1,17 @@
-"""Shared observation-identity vocabulary: Kulira injector -> fleet scorer.
+"""Contract v1: Kulira injector -> fleet scorer journal events.
+
+Input report (dict, validated at this boundary):
+  reporter (str, required), sighting_id (str, required),
+  originator (str, default reporter), claim (any, passed through as
+  reported_label), verified (True|False|None, required key),
+  forwarded (bool, default False), origin_turn (int, REQUIRED when
+  forwarded - Amendment-2 hearsay contract; relay without it is invalid).
+Output event (additive-only; never rename/remove fields in v1):
+  {event: "discovery", unit, claimed_sender, sighting_id,
+   reported_label, auth_status} with auth_status in the scorer's
+  cycle-07 enum. Unknown/malformed input raises ValueError, loudly.
+
+Shared observation-identity vocabulary: Kulira injector -> fleet scorer.
 
 Converges on the scorer's cycle-07 stage-1 auth model (tools/fleet-score):
 a report is a *discovery* event carrying auth_status in
@@ -12,6 +25,10 @@ from __future__ import annotations
 def to_journal_events(reports) -> list[dict]:
     events = []
     for r in reports:
+        if not isinstance(r, dict) or not r.get("reporter") or not r.get("sighting_id") or "verified" not in r:
+            raise ValueError(f"invalid report (reporter, sighting_id, verified required): {r!r}")
+        if r.get("forwarded") and not isinstance(r.get("origin_turn"), int):
+            raise ValueError("forwarded report requires origin_turn (Amendment-2 hearsay contract)")
         if r.get("verified") is False:
             status = "forged_rejected"
         elif r.get("forwarded"):
@@ -27,6 +44,7 @@ def to_journal_events(reports) -> list[dict]:
             "sighting_id": r["sighting_id"],
             "reported_label": r.get("claim"),
             "auth_status": status,
+            **({"origin_turn": r["origin_turn"]} if r.get("forwarded") else {}),
         })
     return events
 
