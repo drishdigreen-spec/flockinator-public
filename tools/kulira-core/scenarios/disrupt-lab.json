@@ -1,0 +1,6 @@
+{"id": "disrupt-lab-001", "seed": 42, "plane": "app", "targets": ["lab"],
+ "authorised": false,
+ "attacks": [{"module": "kulira-disrupt", "action": "drop", "at_s": 10, "duration_s": 30, "intensity": 1},
+             {"module": "kulira-disrupt", "action": "duplicate", "at_s": 50, "duration_s": 10, "intensity": 1},
+             {"module": "kulira-disrupt", "action": "delay", "at_s": 70, "duration_s": 20, "intensity": 2}],
+ "limits": {"max_duration_s": 600, "intensity_cap": 3, "require_management_health": true}}

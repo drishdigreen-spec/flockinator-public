@@ -1,0 +1,40 @@
+{
+  "scenario_id": "disrupt-lab-001",
+  "seed": 42,
+  "state": "COMPLETED",
+  "dry_run": true,
+  "log_verified": true,
+  "management_health_ok": true,
+  "actions": [
+    {
+      "module": "kulira-disrupt",
+      "action": "drop",
+      "at_s": 10.0,
+      "duration_s": 30.0,
+      "intensity": 1,
+      "plane": "app"
+    },
+    {
+      "module": "kulira-disrupt",
+      "action": "duplicate",
+      "at_s": 50.0,
+      "duration_s": 10.0,
+      "intensity": 1,
+      "plane": "app"
+    },
+    {
+      "module": "kulira-disrupt",
+      "action": "delay",
+      "at_s": 70.0,
+      "duration_s": 20.0,
+      "intensity": 2,
+      "plane": "app"
+    }
+  ],
+  "metrics": {
+    "time_to_detect_s": null,
+    "nodes_deceived": [],
+    "propagation_depth": 0,
+    "recovery_time_s": null
+  }
+}
