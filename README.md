@@ -11,7 +11,7 @@ visible while Meta Muse models help build, review and refine the system.
 [Results and evidence](docs/results/README.md) ·
 [Results dashboard](https://guruswami-ai.github.io/flockinator-public/results/)
 
-![CAD illustration of the sixteen-node grid](cad/grid-isometric.png)
+![Flockinator working setup with illuminated swarm panels, controllers and host displays](docs/images/flockinator-working-stack.png)
 
 ## What is built
 
