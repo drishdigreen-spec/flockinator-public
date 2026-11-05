@@ -1,0 +1,17 @@
+{
+  "run_id": "disrupt-lab-001-42",
+  "scenario_id": "disrupt-lab-001",
+  "seed": 42,
+  "plane": "app",
+  "targets": [
+    "lab"
+  ],
+  "dry_run": true,
+  "state": "COMPLETED",
+  "gadget_ref": null,
+  "baseline": {
+    "before": null,
+    "after": null,
+    "note": "dry-run"
+  }
+}
