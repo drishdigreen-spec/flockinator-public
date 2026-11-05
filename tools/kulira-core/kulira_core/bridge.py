@@ -37,7 +37,7 @@ def to_journal_events(reports) -> list[dict]:
             status = "direct_verified"
         else:
             status = "unverified"
-        events.append({
+        event = {
             "event": "discovery",
             "unit": r["reporter"],
             "claimed_sender": r.get("originator", r["reporter"]),
@@ -45,7 +45,13 @@ def to_journal_events(reports) -> list[dict]:
             "reported_label": r.get("claim"),
             "auth_status": status,
             **({"origin_turn": r["origin_turn"]} if r.get("forwarded") else {}),
-        })
+        }
+        # Preserve scorer discovery metadata when the report carries it
+        # (fleet scorer contact_of requires contact + matching tile).
+        for field in ("contact", "tile", "turn"):
+            if field in r:
+                event[field] = r[field]
+        events.append(event)
     return events
 
 def direct_sighting_ids(events) -> set:

@@ -28,3 +28,7 @@ def test_malformed_report_invalid():
     import pytest
     with pytest.raises(ValueError, match="invalid report"):
         to_journal_events([{"reporter":"B2"}])
+
+def test_scorer_metadata_preserved():
+    ev=to_journal_events([{"reporter":"B2","originator":"B2","sighting_id":"s1","claim":"Friendly","verified":True,"forwarded":False,"contact":2,"tile":[8,8],"turn":4}])
+    assert ev[0]["contact"]==2 and ev[0]["tile"]==[8,8] and ev[0]["turn"]==4
