@@ -1,0 +1,121 @@
+{
+ "experiment": "newcomer-discount",
+ "simulation": true,
+ "preregistration": "docs/experiments/newcomer-discount-preregistration.md",
+ "dev": {
+  "fixed": {
+   "E": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3696
+   },
+   "REP": {
+    "dangerous_second": 11,
+    "mean_recall": 0.3086
+   },
+   "REP-N": {
+    "dangerous_second": 1,
+    "mean_recall": 0.0353
+   }
+  },
+  "20": {
+   "E": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3696
+   },
+   "REP": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3423
+   },
+   "REP-N": {
+    "dangerous_second": 2,
+    "mean_recall": 0.0458
+   }
+  },
+  "10": {
+   "E": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3696
+   },
+   "REP": {
+    "dangerous_second": 26,
+    "mean_recall": 0.3572
+   },
+   "REP-N": {
+    "dangerous_second": 5,
+    "mean_recall": 0.0524
+   }
+  },
+  "5": {
+   "E": {
+    "dangerous_second": 20,
+    "mean_recall": 0.3696
+   },
+   "REP": {
+    "dangerous_second": 28,
+    "mean_recall": 0.3674
+   },
+   "REP-N": {
+    "dangerous_second": 4,
+    "mean_recall": 0.0559
+   }
+  }
+ },
+ "holdout": {
+  "fixed": {
+   "E": {
+    "dangerous_second": 13,
+    "mean_recall": 0.3339
+   },
+   "REP": {
+    "dangerous_second": 2,
+    "mean_recall": 0.2353
+   },
+   "REP-N": {
+    "dangerous_second": 0,
+    "mean_recall": 0.007
+   }
+  },
+  "20": {
+   "E": {
+    "dangerous_second": 13,
+    "mean_recall": 0.3339
+   },
+   "REP": {
+    "dangerous_second": 6,
+    "mean_recall": 0.2869
+   },
+   "REP-N": {
+    "dangerous_second": 0,
+    "mean_recall": 0.007
+   }
+  },
+  "10": {
+   "E": {
+    "dangerous_second": 13,
+    "mean_recall": 0.3339
+   },
+   "REP": {
+    "dangerous_second": 14,
+    "mean_recall": 0.3179
+   },
+   "REP-N": {
+    "dangerous_second": 0,
+    "mean_recall": 0.007
+   }
+  },
+  "5": {
+   "E": {
+    "dangerous_second": 13,
+    "mean_recall": 0.3339
+   },
+   "REP": {
+    "dangerous_second": 15,
+    "mean_recall": 0.3296
+   },
+   "REP-N": {
+    "dangerous_second": 0,
+    "mean_recall": 0.0141
+   }
+  }
+ }
+}
