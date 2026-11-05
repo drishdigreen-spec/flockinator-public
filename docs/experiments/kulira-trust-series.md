@@ -1,6 +1,6 @@
 # Kulira trust experiment series: what was measured
 
-Nine seeded lab-simulation experiments, each pre-registered in a
+Ten seeded lab-simulation experiments, each pre-registered in a
 first commit before any code ran, each with published evidence in
 `validation/kulira/`. Simulation only throughout: no hardware, no
 radio, no on-node inference. Seeds: dev 0-19, holdout 100-109
@@ -19,6 +19,7 @@ evaluated once per experiment.
 | 7 | Modality betrayal | A sensor type starts lying mid-run? | Modality trust 306->69 dangerous at 0.90 recall; node trust collapses recall (blame pooled at reporter) |
 | 8 | Feedback delay | Outcomes arrive late / half missing? | Discount time tracks latency ~1:1; degraded learning still beats none |
 | 9 | Composite defence | Do the pieces compose under combined attack? | Dangerous 23->13 post-betrayal, recall **rises**, forged stays 0 - **gate passed** |
+| 10 | Reputation defence | Can behaviour suppress verified colluders? | Second-half dangerous ~halved (36->19); reputations separate 0.15 vs 0.74; **cold-start caveat**: slightly worse before history accrues |
 
 ## Current recommended stack (each layer measured separately first)
 
@@ -36,8 +37,10 @@ evaluated once per experiment.
 
 - **Verified collusion** defeats provenance rules: 1 lying insider
   of 8 already lands dangerous commits with honest cooperation.
-  Defences there are behavioural (reputation over time), untested
-  in this series.
+  Behavioural reputation (experiment 10) suppresses colluders
+  after a learning period, but is slightly worse than baseline
+  during cold start, and identity-rotating (Sybil) adversaries
+  defeat it by construction - untested here.
 - **Identify accuracy** bounds everything: at 75% per-sighting
   accuracy, honest error alone produces dangerous commits under
   every voting rule tested. Graded sensing and abstention price
