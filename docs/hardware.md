@@ -38,13 +38,13 @@ fitting a device. Record installed hardware and calibration per experiment.
 |---|---|
 | `Flockinator-grid-fit.FCStd`, `Flockinator-compact-fit.FCStd` | 4x4 grid layout studies: 250 mm and 199.8 mm pitch candidates, 160 mm panels |
 | `acrylic-node-concept/` | Current panel-face/acrylic appearance direction |
-| `conductor-7inch/terminal-fresh-v6/`, `conductor-7inch/sensor-deck-v7/` | Finished controller terminal and sensor-deck models |
-| `perimeter-speakers/border-v3/` | Finished speaker border/carrier release |
+| `conductor-7inch/terminal-fresh-v6/`, `conductor-7inch/sensor-deck-v7/` | Controller terminal (engineering study) and sensor-deck (prototype) models - see `cad/README.md` maturity column |
+| `perimeter-speakers/border-v3/` | Speaker border/carrier geometric prototype |
 | `panel-hole-review/` | Measured panel mounting-hole dimensions (hardware parameters) |
 
-Build scripts beside each model regenerate it in FreeCAD. Figures,
-checks, and parameters in those folders are the measured results the
-models encode.
+Measured parameters are recorded in those folders and in the key
+dimensions below. Build scripts and validation logs are kept in the
+private archive; model maturity is stated in `cad/README.md`.
 
 ## Key dimensions (measured)
 
