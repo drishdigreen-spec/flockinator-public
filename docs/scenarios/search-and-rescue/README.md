@@ -82,3 +82,34 @@ cycle - HEAT/TRACE sightings from mixed camera modes, Kulira
 fabricating one, VERIFY demanding a second modality - is the
 next scenario to seed once the states above are accepted into
 the guide by its owner.
+
+## Implementation audit (parallel review, 5 Nov)
+
+The states above are a design proposal. A full audit found the
+deeper truth a rename must respect:
+
+- The guide has 25 states, the browser preview has a *different*
+  25, and the firmware enum has **30** - including `ENGAGE`,
+  `KILL`, `FRIEND`, `TARGET`, `BLANK`, which the guide omits.
+  `KILL` is not cosmetic: it is 30% of mixed-outcome endings in
+  firmware, maps to an overview of `KIA` after ten seconds, and
+  drives a kill-countdown detail in the renderer. Renaming it is
+  a firmware change (enum, name table, renderer, Korvo speech
+  file list - the Korvo build fails without `kill.pcm`), not a
+  documentation edit.
+- Sensor parity is partial: firmware implements CAM/WH/BH (else
+  NV palette); IR strobe rendering exists only in the browser
+  preview. Auto-cycling rotates CAM/WH/BH/NV, never IR.
+- Adding or renaming a guide state touches, in order: firmware
+  enum + name table, firmware renderer, the C++ guide driver,
+  `states.json` (group must match the guide builder's filters),
+  regenerated panels/SVGs/index/atlas via the guide builder,
+  source-manifest hashes, all `SHA256SUMS`, and a fresh browser
+  check at three widths. That work belongs to the guide/firmware
+  owners; this page is the agreed target semantics for it.
+
+Recommended rescue mapping for the firmware-only states, when
+that work is scheduled: `ENGAGE` -> APPROACH (close inspection),
+`KILL` -> HAZARD (countdown to hazard/battery-critical return,
+overview `LOST` not `KIA`), `TARGET` -> DIGPOINT (confirmed
+point), `FRIEND` -> CREW (friendly/rescuer contact).
