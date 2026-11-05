@@ -1,5 +1,7 @@
 # Flockinator
 
+**Meta Global AI Developer Hackathon 2026 · Indie Developer track · Push the Frontier · solo**
+
 An experimental platform for intelligent agents and distributed
 inference, built and directed with Meta Muse models.
 
@@ -9,7 +11,12 @@ audio, SD storage - whose brain can run locally, on an external host,
 or across both. A Korvo-1 (ESP32-S31) controller hosts the fleet controls,
 planner, and learning lab; a LilyGo handheld provides portable
 management. The fleet is visualised as a fictional search-and-rescue scout swarm
-so humans can watch agents learn.
+so humans can watch agents learn. **The quadcopter mission is a visualisation
+only - no aircraft is flown.**
+
+Lab bench add-ons (camera, thermal, LiDAR/ToF, mmWave) exist for future
+sensing work. They are not fitted to the sixteen fleet nodes and are not
+used in any published result below.
 
 ![Flockinator 4x4 grid layout](cad/grid-isometric.png)
 
@@ -25,6 +32,35 @@ studying intelligence in the node, external to the node, and between
 nodes. Full method and why this is worth doing (security, and the
 extra-node intelligence that lives between agents, not inside them):
 [docs/experiments.md](docs/experiments.md).
+
+## Results so far (simulation replay, not on-node inference)
+
+Planner scorecard against sealed ground truth; full method, gates, and
+field observations: [docs/results/](docs/results/README.md) ·
+[dashboard](https://guruswami-ai.github.io/flockinator-public/results/).
+
+| Candidate | Sighted recall | Committed Enemy→Friendly | Verdict |
+|---|---|---|---|
+| Frozen baseline `search-board-1` | 0.2141 | 0 | Production reference |
+| Sector partition v1 | 0.6226 | 0 committed (sighted rate rose) | Rejected |
+| Sector + confirmation v2 | 0.6145 | 2 | Rejected (gate 4) |
+| Sector + adaptive re-check v3 | 0.5971 | 2 | Rejected (gates 4-5) |
+| Asymmetric commit v4 | 0.5971 | 1 | Rejected (gates 4-5) |
+
+The hard gate is committed Enemy→Friendly = 0; no candidate clears the
+full gate set yet. Coverage improved roughly threefold; judgement at
+60-82% per-sighting identify accuracy is the open problem.
+
+## Known limits
+
+- Scorecard numbers are simulation replay designed against live
+  telemetry, not on-node inference results.
+- Extra-node paired gain (communicating swarm vs isolated agents at
+  matched budgets) is defined in [docs/experiments.md](docs/experiments.md)
+  but not yet measured; no number is claimed for it.
+- Experiment-catalogue entries needing add-on sensors or proposed
+  DIG/CARE states are flagged simulation-only until fitted
+  ([docs/experiment-catalogue.md](docs/experiment-catalogue.md)).
 
 ## Meta Muse models
 
