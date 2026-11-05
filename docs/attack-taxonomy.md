@@ -28,7 +28,7 @@ confidently*.
 | 14 | Learning poisoning | App | Slow drip of subtly biased examples during training windows | Model improves on the poisoned distribution, fails held-out truth | Same-seed controls, held-out frozen evaluation, clean-vs-impaired training crosses |
 | 15 | Selective silence (lying by omission) | App | Honest messages withheld only when they would help | Swarm underperforms with no false message to detect | Private-cue baselines expose the missing cooperative gain |
 
-## Surprising attacks and failures (observed)
+## Surprising attacks and failures (observed; evidence noted per item)
 
 These are why the catalogue exists - none was the headline threat
 model when first seen:
@@ -40,26 +40,33 @@ model when first seen:
    model revised to experiment-plane deception. Lesson: an adaptive
    adversary optimises for authority, not for the attacker's
    intended test plan.
-2. **Unanimous-wrong consensus.** In cycle-06, seed 10 produced a
-   unanimous swarm belief that was wrong (Enemy committed as
-   Friendly). Majority vote amplified a correlated error instead of
-   cancelling it - consensus is not evidence when sightings are
-   correlated.
-3. **Copies that look like corroboration.** Forwarded sightings are
-   the natural swarm behaviour and the natural forgery: one false
-   sighting, relayed helpfully, presents as many independent
-   confirmations. Counting reporters instead of sighting ids makes
-   the swarm *more* vulnerable the better it communicates.
+2. **Unanimous-wrong contact.** In cycle-06, one seed-10 contact
+   was unanimously sighted yet committed Friendly while truly
+   Enemy (results README/results-data.json, frozen aggregate - the
+   candidate journals are not bundled). Majority vote amplified a
+   correlated error instead of cancelling it - consensus is not
+   evidence when sightings are correlated.
+3. **Copies that look like corroboration (theorised, not yet
+   observed in a run).** Forwarded sightings are the natural swarm
+   behaviour and the natural forgery: one false sighting, relayed
+   helpfully, would present as many independent confirmations.
+   No run in this repo yet demonstrates the failure; the defence
+   (count sighting ids, never reporters; scorer v3 hearsay
+   segregation) exists because the design analysis exposed it.
 4. **Associated-but-deaf (availability without a crash).** The live
    controller wedge: associated to WiFi, yet blackholing traffic in
    both directions, for hours, across seven episodes with six
    watchdog reconnect recoveries and one operator reboot (the
    restart tier remains unexercised). No node failed; the *system*
    silently degraded. Detection needed end-to-end probes, not link state.
-5. **Honest insider error outranks forgery.** Scorer v3 analysis:
-   at measured identify accuracies, a credentialed node that is
-   merely wrong contributes more dangerous (Enemy->Friendly) error
-   than an outsider forging without keys, who is simply rejected.
+5. **Honest insider error may outrank forgery (design-review
+   conclusion, not yet a measured comparison).** Four model lanes
+   reviewing the trust design concluded that, at scenario identify
+   accuracies (60-82% by cover), a credentialed node that is merely
+   wrong is the expected dominant source of dangerous
+   (Enemy->Friendly) error, since outsider forgeries are simply
+   rejected. Trust treatments had not been run when this was
+   written; scorer v3 now provides the segregation to test it.
    Defence priority inverts: verify insiders' *claims*, not just
    outsiders' *identities*.
 6. **Abstention may beat voting (untested hypothesis).** Four gated
@@ -78,8 +85,10 @@ evidence. The adversary is Muse Glimmer: a 30B-class local model,
 abliterated, running on a bench host through Hermes. By capability
 it is not close. By *impact* the asymmetry runs the other way:
 
-- **Cost:** the attacker needs one plausible false report at the
-  right moment; the defence needs identity, freshness,
+- **Cost:** the attacker needs a small number of plausible false
+  reports at the right moment (current commit rules need several
+  sightings, which raises but does not remove the asymmetry); the
+  defence needs identity, freshness,
   corroboration, and recovery to be right every time, on 20 mW-class
   radios, forever.
 - **Search:** the attacker searches for *any* seam (Glimmer found
@@ -91,8 +100,8 @@ it is not close. By *impact* the asymmetry runs the other way:
   the attacker. Defence must therefore evolve too - which is the
   evolutionary loop this platform exists to run.
 
-We believe this is a new and critical research field for agent-to-
-agent systems: **asymmetric A2A risk**, where small, cheap, possibly
+We argue this deserves treatment as a distinct research field
+for agent-to-agent systems: **asymmetric A2A risk**, where small, cheap, possibly
 abliterated models attack swarms of larger ones, and where the
 defensible surface is not a smarter model but a measured interaction
 layer - authentication that binds identity, corroboration that
