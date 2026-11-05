@@ -1,6 +1,6 @@
 # Reading the Flockinator swarm
 
-A visual field guide to the **non-weaponized quadcopter survey rehearsal**: what a
+A visual field guide to the **search-and-rescue scout survey rehearsal** (non-weaponized quadcopter platform): what a
 panel shows, what the state is intended to mean, and what evidence would justify
 the next action.
 

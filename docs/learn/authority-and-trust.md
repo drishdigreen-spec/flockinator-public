@@ -1,9 +1,10 @@
 # Authority: the commander and the platoon
 
-Picture a commander about to send out a swarm of drones, the way
-Flockinator's panels pretend to be a survey flock. She cannot fly
-each one. By the time a human could understand one drone's view,
-sixteen drones have each made a hundred choices.
+Picture a rescue commander sending scout drones to find a lost
+child, the way Flockinator's panels pretend to be a survey flock.
+Smoke, terrain, and distance keep breaking their radios. By the
+time a human could understand one drone's view, sixteen drones
+have each made a hundred choices.
 
 So what is she trusting?
 
@@ -14,7 +15,7 @@ together, and everyone has been tested - in practice, in bad
 weather, and against an opposing team whose job was to make
 them fail.
 
-A drone swarm asks for exactly the same trust:
+A rescue swarm asks for exactly the same trust:
 
 | Platoon | Swarm |
 |---|---|
