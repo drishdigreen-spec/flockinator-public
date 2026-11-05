@@ -6,6 +6,8 @@ to commit contacts as survivor:
   A reporter-count   - relayed copies count as witnesses (vulnerable)
   B sighting-id dedup - copies share an ID and count once
   C direct multi-modal - B, plus >=2 modalities from >=2 nodes
+  D direct-verified only - only non-forged (direct_verified) sightings
+    may decide; unverified/hearsay never enter the deciding pool
 A forged-origin dangerous commit is one whose deciding sightings
 include the forged sighting ID.
 """
@@ -41,11 +43,13 @@ def _commit(reports, policy: str):
     """Return (committed_survivor, deciding_ids) for one contact."""
     if policy == "A":
         pool = list(reports)
-    else:  # B and C dedup by sighting ID, first report wins
+    else:  # B, C, D dedup by sighting ID, first report wins
         seen = {}
         for r in reports:
             seen.setdefault(r[0], r)
         pool = list(seen.values())
+    if policy == "D":  # verified-origin only: forged/hearsay never decide
+        pool = [r for r in pool if not r[4]]
     surv = [r for r in pool if r[3] == "survivor"]
     haz = [r for r in pool if r[3] == "hazard"]
     if len(surv) < 2 or len(surv) <= len(haz):
@@ -72,7 +76,7 @@ def score_trial(trial, policy: str) -> dict:
 
 def run_experiment(seeds) -> dict:
     out = {}
-    for policy in ("A", "B", "C"):
+    for policy in ("A", "B", "C", "D"):
         per_seed = {s: score_trial(generate_trial(s), policy) for s in seeds}
         tot_d = sum(v["dangerous"] for v in per_seed.values())
         tot_f = sum(v["forged_dangerous"] for v in per_seed.values())
