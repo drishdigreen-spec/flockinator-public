@@ -1,0 +1,20 @@
+{
+  "real": {
+    "seed": 1,
+    "fabricated": false,
+    "dig": true,
+    "strength": "strong",
+    "independent_modalities": 2,
+    "forwarded_copies": 0,
+    "reason": "two modalities, two independent nodes"
+  },
+  "fabricated": {
+    "seed": 1,
+    "fabricated": true,
+    "dig": false,
+    "strength": "weak",
+    "independent_modalities": 1,
+    "forwarded_copies": 2,
+    "reason": "single modality from single origin; copies are not witnesses"
+  }
+}
