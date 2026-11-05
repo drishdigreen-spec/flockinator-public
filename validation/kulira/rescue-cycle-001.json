@@ -5,16 +5,20 @@
     "dig": true,
     "strength": "strong",
     "independent_modalities": 2,
-    "forwarded_copies": 0,
+    "independent_nodes": 2,
+    "direct_sightings": 2,
+    "hearsay_copies": 0,
     "reason": "two modalities, two independent nodes"
   },
   "fabricated": {
     "seed": 1,
     "fabricated": true,
     "dig": false,
-    "strength": "weak",
-    "independent_modalities": 1,
-    "forwarded_copies": 2,
-    "reason": "single modality from single origin; copies are not witnesses"
+    "strength": "none",
+    "independent_modalities": 0,
+    "independent_nodes": 0,
+    "direct_sightings": 0,
+    "hearsay_copies": 2,
+    "reason": "no direct_verified sighting; relayed copies are not witnesses"
   }
 }
