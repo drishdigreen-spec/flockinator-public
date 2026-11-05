@@ -1,5 +1,4 @@
 from kulira_core.deceive import DeceptionGenerator, corroboration_count, assess_belief
-from kulira_core.spoof import ExperimentMessage
 
 KEY=b"k"*32
 def test_false_observation_is_authentic_but_false():
