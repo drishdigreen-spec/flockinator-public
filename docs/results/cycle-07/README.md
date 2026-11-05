@@ -82,13 +82,29 @@ T4 shares T3's pipeline with the turn-≥30 gate).
   and the planner-twin provenance bundle (`provenance/`, including
   the twin itself and the 100-seed parity output the gate configs
   cite).
-- Not yet in this public tree: the v4 scorer (auth-segregating
-  `score.py`) and `gate_runner.py` used to produce `scores/` and
-  `verdicts/`. They live in the private lab book; porting them here
-  is future work. Until then, treat scores/verdicts as frozen,
-  independently spot-verified reports over the published journals —
-  the journals are the primary evidence and are published in full so
-  anyone can re-derive results with their own scorer.
+- Tooling now ships in this public tree: scorer v4
+  (`tools/fleet-score/score.py`), `gate_runner.py`, and their tests
+  were published after a backward-compatibility check (v4 vs the
+  previous public v3 scorer: identical values on every shared key
+  across all bundled sample runs and all 20 baseline seeds; only
+  `scorer_version` and the auth-segregation keys differ). To
+  reproduce a verdict end-to-end from public files only:
+
+  ```sh
+  uv run --project tools/fleet-score python tools/fleet-score/baseline.py --seeds 0-19 --out /tmp/bl --label dev
+  uv run --project tools/fleet-score python tools/fleet-score/gate_runner.py \
+    --baseline /tmp/bl/baseline-dev.json \
+    --runs docs/results/cycle-07/runs/T3 \
+    --config docs/results/cycle-07/verdicts/verdicts-cfg-T3-P0.json \
+    --out /tmp/verdict-out
+  ```
+
+  Regenerating the baseline with the shipped v4 tooling reproduces
+  the published verdicts exactly (spot-verified T1-P0, T3-P0,
+  T4-P0, T0-P0/P1 at publication). The original matrix was gated
+  against the private frozen cycle-03 baseline; the regenerated
+  baseline's per-seed scores are identical on every shared key, so
+  gate outcomes are unchanged.
 - Historical `/tmp/...` paths inside `provenance/MANIFEST.md`,
   helper scripts, and the `twin.patch` header are run-time records,
   kept verbatim; they are not load-bearing paths. Absolute host
