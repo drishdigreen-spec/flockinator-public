@@ -106,7 +106,7 @@ code{{font:13px ui-monospace,Menlo,monospace;background:#0d1013;padding:1px 5px}
 Korvo ESP32-S31 commander. This page is the lab book for its planner-intelligence loop:
 five measured generations, pre-registered promotion gates, and the honest result —
 <span style="color:var(--red)">four candidates rejected, zero unsafe promotions</span>.
-Every number below regenerates from committed journals with the open scorer.</p>
+Baseline numbers regenerate from the bundled journals with the open scorer; candidate rows are frozen aggregates from the private cycle reports (their journals are not bundled here).</p>
 
 <div class="finding"><b>The finding.</b> Better search coverage nearly tripled recall
 (0.2141 → 0.6226), and confirmation policies pushed committed decisions from 17 to 51–57 —
@@ -152,7 +152,7 @@ still landed home with zero reserve-floor violations in every run.</p>
 seeds 0 and 10) ship in <code>sample-runs/</code>; seed 10 contains the correlated-error
 contact beside HOME that defeated two candidates.</p>
 <pre>python3 tools/fleet-score/score.py docs/results/sample-runs/baseline-seed-10
-python3 -m unittest discover -s tools/fleet-score -p 'test_*.py'   # 11 tests
+python3 -m unittest discover -s tools/fleet-score -p 'test_*.py'   # 19 tests
 python3 docs/results/generate_dashboard.py                          # rebuild this page</pre>
 <p>Full protocol — pre-registration, eligible-seed rules, sealed holdout, gate definitions,
 restore-on-failure discipline — is in the <a href="README.md">results README</a>. Extend it:

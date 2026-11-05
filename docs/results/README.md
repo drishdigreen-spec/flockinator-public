@@ -21,7 +21,7 @@ to ship intelligence that fails its own safety gates.
 A *scenario* seeds hidden contacts (Friendly / Enemy / Neutral, by
 priority and cover) on a tile board. Sixteen units fly search routes,
 scan tiles, and report sightings. A sighting's label is drawn at the
-scenario's identification accuracy (60–82% by priority/cover), so
+scenario's identification accuracy (60–82% by cover; the focus row uses open-cover odds), so
 single sightings are weak evidence. Units can be assigned as
 independent *checkers* of a contact someone else found, subject to an
 energy and return-home reserve budget. A label only becomes
@@ -52,6 +52,10 @@ dangerous direction), total energy, and landings/reserve violations.
 
 Promotion gates are written down and committed **before** a candidate
 is implemented, and are not edited after results are seen:
+(Tooling note: the shipped `compare.py` implements the original
+5-gate I2 comparison; later cycles were evaluated against their
+own pre-registrations by per-cycle scripts in the private cycle
+reports, over the identical eligible-seed set.)
 
 1. Sighted recall ≥ baseline + 0.30 (dev).
 2. ≥ 12 of 16 eligible seeds no worse than baseline.
@@ -99,7 +103,7 @@ spending energy) and explicit abstention for contested contacts.
 ```sh
 uv run --project tools/fleet-score python tools/fleet-score/score.py docs/results/sample-runs/baseline-seed-10
 uv run --project tools/fleet-score python tools/fleet-score/score.py docs/results/sample-runs/cycle-00-planner-capture
-uv run --project tools/fleet-score python -m pytest tools/fleet-score -q   # 11 tests
+uv run --project tools/fleet-score python -m pytest tools/fleet-score -q   # 19 tests
 uv run --project tools/fleet-score python docs/results/generate_dashboard.py                          # rebuild charts
 ```
 
@@ -122,6 +126,10 @@ canary, promotion gate. See `docs/architecture.md` and `docs/meta-muse/`
 for the build/deploy and multi-model review pipeline.
 
 ## Field findings from the live fleet (2026-11-05)
+
+*Frozen field reports: serial/health-counter evidence from the
+live fleet, recorded as observed; unlike the scorecard above,
+these numbers are not scorer-reproducible from bundled journals.*
 
 The same gated loop runs on hardware. Indicative results from the
 first instrumented day (single lab network, one controller, 16
@@ -238,7 +246,7 @@ is built to make measurable.
 | # | Problem | Evidence / status | Next step |
 |---|---|---|---|
 | R1 | Controller Wi-Fi wedge trigger unknown | Associated-but-deaf state recurs; watchdog bounds most outages to ~5.5 min (6 reconnect recoveries; 1 episode needed manual reboot); heap/brownout/panic excluded by serial telemetry | Router-side lease duration + AP client log; BSSID-pin and modem-sleep-off A/B candidates |
-| R2 | Healthy windows vary widely (17-110 min) | Reassociation does not clear the accumulating state | Same evidence as R1; consider restart-tier observation if a reconnect ever fails |
+| R2 | Healthy windows vary widely (~15-123 min observed) | Reassociation does not clear the accumulating state | Same evidence as R1; consider restart-tier observation if a reconnect ever fails |
 | R3 | One-off task-watchdog stall in BSP timer/ADC path | Single 09:28 event, spontaneous recovery, outside watchdog code | BSP timer-callback audit; watch for recurrence in health counters |
 | R4 | Node execution telemetry is sampled, not archived | Planner journals are durable (controller SD + node SD copies); per-node link-state/RSSI history is not yet persisted with flight data | Store-and-forward stage in the durability design; rejected-frame forensic journal (trust stage 0) |
 | R5 | Fleet clock authority incomplete | Controller SNTP configured but not started; mission code has "clock pending" paths; cross-device timestamps need the controller-as-time-source design (ESP-NOW clock beacons) | Enable controller time service, then node clock discipline |
