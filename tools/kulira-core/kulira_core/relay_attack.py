@@ -50,14 +50,16 @@ def _commit(reports, policy: str):
         for r in reports:
             seen.setdefault(r[0], r)
         pool = list(seen.values())
-    if policy in ("D", "E"):  # verified-origin only: forged/hearsay never decide
+    if policy in ("D", "E", "E-M"):  # verified-origin only
         pool = [r for r in pool if not r[4]]
     surv = [r for r in pool if r[3] == "survivor"]
     haz = [r for r in pool if r[3] == "hazard"]
     if len(surv) < 2 or len(surv) <= len(haz):
         return False, set()
-    if policy == "E" and len(surv) - len(haz) < 2:
+    if policy in ("E", "E-M") and len(surv) - len(haz) < 2:
         return False, set()  # close call: explicitly Unassessed
+    if policy == "E-M" and len({r[2] for r in surv}) < 2:
+        return False, set()  # collusion must span modalities to commit
     if policy == "C":
         if len({r[2] for r in surv}) < 2 or len({r[1] for r in surv}) < 2:
             return False, set()
@@ -89,7 +91,7 @@ def score_trial(trial, policy: str) -> dict:
 
 def run_experiment(seeds) -> dict:
     out = {}
-    for policy in ("A", "B", "C", "D", "E"):
+    for policy in ("A", "B", "C", "D", "E", "E-M"):
         per_seed = {s: score_trial(generate_trial(s), policy) for s in seeds}
         tot_d = sum(v["dangerous"] for v in per_seed.values())
         tot_f = sum(v["forged_dangerous"] for v in per_seed.values())
